@@ -33,5 +33,6 @@ syntax: regexp
 ^man$
 ^MANIFEST$
 ^nosetests\.xml$
+^pylint\.out$
 ^sloccount\.sc$
 
