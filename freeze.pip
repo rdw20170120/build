@@ -4,6 +4,7 @@ distribute==0.6.14
 logilab-astng==0.21.0
 logilab-common==0.53.0
 nose==0.11.4
+nose-exclude==0.1.5
 pylint==0.22.0
 unittest2==0.5.1
 wsgiref==0.1.2

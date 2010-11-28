@@ -1,11 +1,16 @@
 #!/bin/bash
 # Clean the project directory of all output and temporary files
 
-rm -fr "${VIRTUAL_ENV}/dist"
-rm -r "${VIRTUAL_ENV}/*.pyc"
-rm "${VIRTUAL_ENV}/.coverage"
 rm "${VIRTUAL_ENV}/MANIFEST"
-rm "${VIRTUAL_ENV}/nosetests.xml"
-rm "${VIRTUAL_ENV}/pylint.out"
-rm "${VIRTUAL_ENV}/sloccount.sc"
+
+rm -fr "${VIRTUAL_ENV}/dist"
+
+find "${VIRTUAL_ENV}" \( -type f -a -name "*.pyc"         \) -exec rm {} \;
+find "${VIRTUAL_ENV}" \( -type f -a -name ".coverage"     \) -exec rm {} \;
+find "${VIRTUAL_ENV}" \( -type f -a -name "coverage.xml"  \) -exec rm {} \;
+find "${VIRTUAL_ENV}" \( -type f -a -name "nosetests.xml" \) -exec rm {} \;
+find "${VIRTUAL_ENV}" \( -type f -a -name "pylint.out"    \) -exec rm {} \;
+find "${VIRTUAL_ENV}" \( -type f -a -name "sloccount.sc"  \) -exec rm {} \;
+
+# TODO: Add clean of *.pyc
 

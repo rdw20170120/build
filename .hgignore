@@ -7,8 +7,13 @@ syntax: glob
 #.DS_Store
 #.installed.cfg
 
+.coverage
+coverage.xml
+nosetests.xml
+pylint.out
+sloccount.sc
+
 syntax: regexp
-^.coverage$
 ^bin/activate$
 ^bin/activate_this\.py$
 ^bin/coverage$
@@ -28,13 +33,9 @@ syntax: regexp
 ^bin/unit2$
 ^bin/unit2-2\.6$
 ^bin/unit2.py$
-^coverage\.xml$
 ^dist$
 ^include$
 ^lib$
 ^man$
 ^MANIFEST$
-^nosetests\.xml$
-^pylint\.out$
-^sloccount\.sc$
 

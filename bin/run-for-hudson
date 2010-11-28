@@ -3,6 +3,8 @@
 
 echo "run-for-hudson..."
 run-nose
+#run-coverage
+#run-coverage-report
 run-pylint
 run-sloccount
 
