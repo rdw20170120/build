@@ -1,8 +1,0 @@
-#!/bin/bash
-# Run build steps for Hudson
-
-source ./activate
-./run-nose
-./run-pylint
-./run-sloccount
-
