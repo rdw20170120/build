@@ -1,0 +1,8 @@
+#!/bin/bash
+# Freeze the dependency requirements for this project using Python Pip.
+
+# NOTE: This script assumes execution as:
+#     ./freeze
+
+pip freeze > ./freeze.pip
+
