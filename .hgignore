@@ -11,10 +11,22 @@ syntax: regexp
 ^bin/activate_this\.py$
 ^bin/easy_install$
 ^bin/easy_install-2\.6$
+^bin/epylint$
+^bin/nosetests$
+^bin/nosetests-2\.6$
 ^bin/pip$
+^bin/pylint$
+^bin/pylint-gui$
+^bin/pyreverse$
+^bin/pytest$
 ^bin/python$
+^bin/symilar$
+^bin/unit2$
+^bin/unit2-2\.6$
+^bin/unit2.py$
 ^include$
 ^lib$
+^man$
 (?i)\.pyc$
 
 #^develop-eggs$
