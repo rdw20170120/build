@@ -1,0 +1,5 @@
+#!/bin/bash
+# Use Python Pip to install dependencies from a previous freeze.
+
+pip install < "${VIRTUAL_ENV}/freeze.pip"
+
