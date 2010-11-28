@@ -1,0 +1,5 @@
+#!/bin/bash
+# Build a source distribution (sdist) of this Python project.
+
+python setup.py sdist
+

@@ -7,6 +7,7 @@ syntax: glob
 #.installed.cfg
 
 syntax: regexp
+^.coverage$
 ^bin/activate$
 ^bin/activate_this\.py$
 ^bin/coverage$
@@ -16,6 +17,7 @@ syntax: regexp
 ^bin/nosetests$
 ^bin/nosetests-2\.6$
 ^bin/pip$
+^bin/pip-2\.6$
 ^bin/pylint$
 ^bin/pylint-gui$
 ^bin/pyreverse$
@@ -25,13 +27,10 @@ syntax: regexp
 ^bin/unit2$
 ^bin/unit2-2\.6$
 ^bin/unit2.py$
+^dist$
 ^include$
 ^lib$
 ^man$
-(?i)\.pyc$
-
-#^develop-eggs$
-#(?i)\.egg$
-#(?i)\.egg-info$
-#(?i)\.gz$
+^MANIFEST$
+^nosetests\.xml$
 
