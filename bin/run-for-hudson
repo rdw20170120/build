@@ -2,9 +2,9 @@
 # Run build steps for Hudson
 
 echo "run-for-hudson..."
+run-sloccount
 run-nose
 #run-coverage
 #run-coverage-report
 run-pylint
-run-sloccount
 
