@@ -2,7 +2,7 @@
 # Use Python Pip to install dependencies from a previous freeze.
 
 # Install from the previously-frozen dependency list
-pip install -r "${VIRTUAL_ENV}/freeze.pip"
+pip --quiet install -r "${VIRTUAL_ENV}/freeze.pip"
 
 # Report the installed dependencies
 pip freeze
