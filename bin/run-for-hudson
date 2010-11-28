@@ -1,6 +1,7 @@
 #!/bin/bash
 # Run build steps for Hudson
 
+echo "run-for-hudson..."
 run-nose
 run-pylint
 run-sloccount

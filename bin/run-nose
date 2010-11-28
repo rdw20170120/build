@@ -1,5 +1,6 @@
 #!/bin/bash
 # Run Nose on this project
 
+echo "run-nose..."
 nosetests --config="${VIRTUAL_ENV}/nose.cfg"
 
