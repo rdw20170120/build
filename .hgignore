@@ -2,6 +2,7 @@ syntax: glob
 .*.swp
 *~
 *.orig
+*.pyc
 
 #.DS_Store
 #.installed.cfg
@@ -27,6 +28,7 @@ syntax: regexp
 ^bin/unit2$
 ^bin/unit2-2\.6$
 ^bin/unit2.py$
+^coverage\.xml$
 ^dist$
 ^include$
 ^lib$

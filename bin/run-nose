@@ -3,4 +3,5 @@
 
 echo "run-nose..."
 nosetests --config="${VIRTUAL_ENV}/nose.cfg"
+coverage xml
 
