@@ -1,5 +1,5 @@
 #!/bin/bash
 # Run Nose on this project
 
-nosetests --with-xunit --enable-audit --enable-cover
+nosetests --verbose --with-id --with-xunit --with-coverage --cover-inclusive
 
