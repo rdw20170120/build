@@ -1,0 +1,24 @@
+syntax: glob
+.*.swp
+*~
+*.orig
+
+#.DS_Store
+#.installed.cfg
+
+syntax: regexp
+^bin/activate$
+^bin/activate_this\.py$
+^bin/easy_install$
+^bin/easy_install-2\.6$
+^bin/pip$
+^bin/python$
+^include$
+^lib$
+(?i)\.pyc$
+
+#^develop-eggs$
+#(?i)\.egg$
+#(?i)\.egg-info$
+#(?i)\.gz$
+

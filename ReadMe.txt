@@ -35,7 +35,6 @@ Ubuntu packages
     build-essential
     openjdk-6-jre-headless (instead of Oracle Java)
     python-dev
-    python-setuptools
 
 ###############################################################################
 Tools that should be avoided are:
@@ -71,6 +70,8 @@ sudo apt-get install hudson
 
 sudo apt-get install mercurial
 sudo apt-get install pylint
+sudo apt-get install python-nose
+sudo apt-get install python-virtualenv
 sudo apt-get install sloccount
 
 ###############################################################################

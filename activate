@@ -1,0 +1,12 @@
+#!/bin/bash
+# Activate the Python virtual environment in this directory.
+# Create it first, if it does not already exist.
+
+# NOTE: This script assumes execution with the current directory set to the
+# directory containing this script.  It also must be "source"d rather than just
+# executed.  This means that it should always be executed as:
+#     source ./activate
+
+[[ ! -f "./bin/activate" ]] && virtualenv --no-site-packages .
+source ./bin/activate
+
