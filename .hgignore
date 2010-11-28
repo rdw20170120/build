@@ -33,4 +33,5 @@ syntax: regexp
 ^man$
 ^MANIFEST$
 ^nosetests\.xml$
+^sloccount\.sc$
 
