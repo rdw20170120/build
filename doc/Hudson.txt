@@ -65,9 +65,9 @@ Build
         Command =
             export TMPDIR=$HOME/temp
             export TEMP_DIR=$TMPDIR
-            source ./activate
-            install-from-freeze
-            run-for-hudson
+            source activate
+            source install-from-freeze
+            source run-for-hudson
 Post-build Actions
     Publish JUnit test result report
         Test report XMLs = **/nosetests.xml
