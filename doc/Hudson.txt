@@ -1,0 +1,80 @@
+###############################################################################
+This project uses Oracle Hudson for continuous integration.  Here is how it is
+configured.
+
+###############################################################################
+To install Oracle Hudson on Ubuntu 10.10:
+
+Establish environment as described in doc/env.txt
+
+wget -O /tmp/hudson-ci.org.key http://hudson-ci.org/debian/hudson-ci.org.key
+sudo apt-key add /tmp/hudson-ci.org.key
+
+sudo apt-get install adduser daemon psmisc
+sudo apt-get install sun-java6-jre
+sudo apt-get install java-virtual-machine java2-runtime
+
+wget -O /tmp/hudson.deb http://hudson-ci.org/latest/debian/hudson.deb
+sudo dpkg --install /tmp/hudson.deb
+
+sudo apt-get update
+sudo apt-get install hudson
+
+###############################################################################
+Plugins (http://server:8080/pluginManager):
+
+Uninstall CVS plugin
+Uninstall Maven Integration plugin
+Uninstall Subversion plugin
+Install Cobertura plugin
+Install Green Balls plugin
+Install Mercurial plugin
+Install Python plugin
+Install SafeRestart plugin
+Install SLOCCount plugin
+Leave SSH Slaves plugin
+Install Violations plugin
+
+###############################################################################
+Hudson server configuration (http://server:8080/configure):
+
+Mercurial installations:
+    Name = Default Mercurial
+    Executable = hg
+Shell
+    Shell executable = bash
+E-mail Notification
+    Hudson URL = http://server:8080/
+
+###############################################################################
+Hudson job configuration (http://server:8080/job/TestJob/configure):
+
+Project name = TestJob (or whatever)
+Source Code Management
+    Mercurial
+        Mercurial Version = (Default)
+        Repository URL = https://robwilliams@bitbucket.org/robwilliams/build
+        Branch = default
+        Repository browser = hgweb
+            URL = https://robwilliams@bitbucket.org/robwilliams/build
+Build Triggers
+    Poll SCM
+        Schedule = * * * * * (every minute)
+Build
+    Execute shell
+        Command =
+            export TMPDIR=$HOME/temp
+            export TEMP_DIR=$TMPDIR
+            source ./activate
+            install-from-freeze
+            run-for-hudson
+Post-build Actions
+    Publish JUnit test result report
+        Test report XMLs = **/nosetests.xml
+    Report Violations
+        pylint XML filename pattern = **/pylint.out
+    Publish SLOCCount analysis results
+    Publish Cobertura Coverage Report
+        Cobertura xml report pattern = **/coverage.xml
+        Consider only stable builds = checked
+
