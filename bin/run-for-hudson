@@ -3,6 +3,6 @@
 
 echo "run-for-hudson..."
 run-nose
-run-pylint
+# run-pylint
 run-sloccount
 

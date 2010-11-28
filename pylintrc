@@ -1,8 +1,5 @@
 [MASTER]
 
-# Specify a configuration file.
-#rcfile=
-
 # Python code to execute, usually for sys.path manipulation such as
 # pygtk.require().
 #init-hook=
@@ -12,7 +9,7 @@ profile=no
 
 # Add <file or directory> to the black list. It should be a base name, not a
 # path. You may set this option multiple times.
-ignore=CVS
+#ignore=
 
 # Pickle collected data for later comparisons.
 persistent=yes
@@ -40,10 +37,10 @@ load-plugins=
 
 # Set the output format. Available formats are text, parseable, colorized, msvs
 # (visual studio) and html
-output-format=text
+output-format=parseable
 
 # Include message's id in output
-include-ids=no
+include-ids=yes
 
 # Put messages in a separate file for each module / package specified on the
 # command line instead of printing them on stdout. Reports (if any) will be
@@ -77,7 +74,8 @@ bad-functions=map,filter,apply,input
 module-rgx=(([a-z_][a-z0-9_]*)|([A-Z][a-zA-Z0-9]+))$
 
 # Regular expression which should only match correct module level names
-const-rgx=(([A-Z_][A-Z0-9_]*)|(__.*__))$
+# const-rgx=(([A-Z_][A-Z0-9_]*)|(__.*__))$
+const-rgx=[a-z_][a-z0-9_]{2,30}$
 
 # Regular expression which should only match correct class names
 class-rgx=[A-Z_][a-zA-Z0-9]+$
@@ -115,7 +113,7 @@ no-docstring-rgx=__.*__
 [FORMAT]
 
 # Maximum number of characters on a single line.
-max-line-length=80
+max-line-length=79
 
 # Maximum number of lines in a module
 max-module-lines=1000
@@ -173,7 +171,7 @@ additional-builtins=
 [MISCELLANEOUS]
 
 # List of note tags to take in consideration, separated by a comma.
-notes=FIXME,XXX,TODO
+notes=FIX,FIXME,XXX,TODO
 
 
 [IMPORTS]
@@ -236,3 +234,4 @@ min-public-methods=2
 
 # Maximum number of public methods for a class (see R0904).
 max-public-methods=20
+

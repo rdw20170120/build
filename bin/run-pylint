@@ -2,5 +2,5 @@
 # Run pylint on this project
 
 echo "run-pylint..."
-pylint -f parseable "${VIRTUAL_ENV}/src/test" | tee "${VIRTUAL_ENV}/pylint.out"
+pylint "${VIRTUAL_ENV}/src/test" | tee "${VIRTUAL_ENV}/pylint.out"
 
