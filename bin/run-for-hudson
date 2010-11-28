@@ -6,6 +6,5 @@ source run-sloccount
 source run-nose
 #source run-coverage
 #source run-coverage-report
-# TODO: Fix pylint and re-enable (breaks build)
-#source run-pylint
+source run-pylint
 
