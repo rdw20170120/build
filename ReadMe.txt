@@ -69,8 +69,7 @@ sudo apt-get update
 sudo apt-get install hudson
 
 sudo apt-get install mercurial
-sudo apt-get install pylint
-sudo apt-get install python-nose
+sudo apt-get install python-dev
 sudo apt-get install python-virtualenv
 sudo apt-get install sloccount
 

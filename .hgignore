@@ -9,6 +9,7 @@ syntax: glob
 syntax: regexp
 ^bin/activate$
 ^bin/activate_this\.py$
+^bin/coverage$
 ^bin/easy_install$
 ^bin/easy_install-2\.6$
 ^bin/epylint$
