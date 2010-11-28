@@ -18,4 +18,5 @@ export PIP_RESPECT_VIRTUALENV=true
 
 # Activate the (possibly new) Python virtual environment
 source ./bin/activate
+export PYTHONHOME=${VIRTUAL_ENV}
 
