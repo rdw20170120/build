@@ -1,6 +1,6 @@
 ## The following requirements were added by pip --freeze:
 coverage==3.4
-distribute==0.6.10
+distribute==0.6.14
 logilab-astng==0.21.0
 logilab-common==0.53.0
 nose==0.11.4
