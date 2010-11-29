@@ -4,7 +4,6 @@
 echo "run-for-hudson..."
 source run-sloccount
 source run-nose
-#source run-coverage
-#source run-coverage-report
 source run-pylint
+source build-sdist
 
