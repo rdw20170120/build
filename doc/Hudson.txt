@@ -11,7 +11,11 @@ wget -O /tmp/hudson-ci.org.key http://hudson-ci.org/debian/hudson-ci.org.key
 sudo apt-key add /tmp/hudson-ci.org.key
 
 sudo apt-get install adduser daemon psmisc
+
 sudo apt-get install sun-java6-jre
+    OR
+sudo apt-get install gcj-jre-headless
+    WHICH PROVIDES
 sudo apt-get install java-virtual-machine java2-runtime
 
 wget -O /tmp/hudson.deb http://hudson-ci.org/latest/debian/hudson.deb
