@@ -58,7 +58,6 @@ Source Code Management
     Mercurial
         Mercurial Version = (Default)
         Repository URL = https://robwilliams@bitbucket.org/robwilliams/build
-        Branch = default
         Repository browser = hgweb
             URL = https://robwilliams@bitbucket.org/robwilliams/build
 Build Triggers
