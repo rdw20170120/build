@@ -19,4 +19,9 @@ sI2
 S'mine.test.test'
 S'testNothing'
 tp9
+sI3
+(S'/home/rob/work/build/code/src/mine/test/test.py'
+S'mine.test.test'
+S'test_nothing'
+tp10
 ss.
