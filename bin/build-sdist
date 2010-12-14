@@ -2,6 +2,6 @@
 # Build a source distribution (sdist) of this Python project.
 
 echo "build-sdist..."
-cd "${VIRTUAL_ENV}"
+cd "${HomeProject}"
 python setup.py sdist
 

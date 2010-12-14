@@ -1,8 +1,10 @@
 #!/bin/bash
 # Use Python Pip to install dependencies from a previous freeze.
 
+_File=${HomeProject}/requirements.pip
+
 # Install from the previously-frozen dependency requirements list
-pip --quiet install -r "${VIRTUAL_ENV}/requirements.pip"
+pip --quiet install -r "${_File}"
 
 # Report the installed dependencies
 pip freeze

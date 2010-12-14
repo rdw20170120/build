@@ -2,6 +2,6 @@
 # Run pylint on this project
 
 echo "run-pylint..."
-cd "${VIRTUAL_ENV}/src"
-pylint --rcfile="${VIRTUAL_ENV}/pylintrc" mine | tee "${VIRTUAL_ENV}/pylint.out"
+cd "${HomeProject}/src"
+pylint --rcfile="${HomeProject}/pylintrc" mine | tee "${HomeProject}/pylint.out"
 

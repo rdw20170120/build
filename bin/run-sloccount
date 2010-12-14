@@ -2,5 +2,5 @@
 # Run sloccount to count lines-of-code (LOC) in this project
 
 echo "run-sloccount..."
-sloccount --duplicates --wide --details "${VIRTUAL_ENV}/src" > "${VIRTUAL_ENV}/sloccount.sc"
+sloccount --duplicates --wide --details "${HomeProject}/src" > "${HomeProject}/sloccount.sc"
 

@@ -1,5 +1,7 @@
 #!/bin/bash
 # Freeze the dependency requirements for this project using Python Pip.
 
-pip freeze -r "${VIRTUAL_ENV}/requirements.pip" > "${VIRTUAL_ENV}/requirements.pip"
+_File=${HomeProject}/requirements.pip
+
+pip freeze -r "${_File}" > "${_File}"
 

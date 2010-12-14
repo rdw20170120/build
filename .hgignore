@@ -14,29 +14,7 @@ pylint.out
 sloccount.sc
 
 syntax: regexp
-^bin/activate$
-^bin/activate_this\.py$
-^bin/coverage$
-^bin/easy_install$
-^bin/easy_install-2\.6$
-^bin/epylint$
-^bin/hg$
-^bin/nosetests$
-^bin/nosetests-2\.6$
-^bin/pip$
-^bin/pip-2\.6$
-^bin/pylint$
-^bin/pylint-gui$
-^bin/pyreverse$
-^bin/pytest$
-^bin/python$
-^bin/symilar$
-^bin/unit2$
-^bin/unit2-2\.6$
-^bin/unit2.py$
+^PVE$
 ^dist$
-^include$
-^lib$
-^man$
 ^MANIFEST$
 

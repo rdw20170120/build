@@ -2,6 +2,6 @@
 # Run Nose on this project
 
 echo "run-nose..."
-cd "${VIRTUAL_ENV}/src/mine"
-nosetests --config="${VIRTUAL_ENV}/nose.cfg" --id-file="${VIRTUAL_ENV}/.noseids"
+cd "${HomeProject}/src/mine"
+nosetests --config="${HomeProject}/nose.cfg" --id-file="${HomeProject}/.noseids"
 

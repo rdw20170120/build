@@ -1,16 +1,14 @@
 #!/bin/bash
 # Clean the project directory of all output and temporary files
 
-rm "${VIRTUAL_ENV}/MANIFEST"
+rm "${HomeProject}/MANIFEST"
 
-rm -fr "${VIRTUAL_ENV}/dist"
+rm -fr "${HomeProject}/dist"
 
-find "${VIRTUAL_ENV}" \( -type f -a -name "*.pyc"         \) -exec rm {} \;
-find "${VIRTUAL_ENV}" \( -type f -a -name ".coverage"     \) -exec rm {} \;
-find "${VIRTUAL_ENV}" \( -type f -a -name "coverage.xml"  \) -exec rm {} \;
-find "${VIRTUAL_ENV}" \( -type f -a -name "nosetests.xml" \) -exec rm {} \;
-find "${VIRTUAL_ENV}" \( -type f -a -name "pylint.out"    \) -exec rm {} \;
-find "${VIRTUAL_ENV}" \( -type f -a -name "sloccount.sc"  \) -exec rm {} \;
-
-# TODO: Add clean of *.pyc
+find "${HomeProject}" \( -type f -a -name "*.pyc"         \) -exec rm {} \;
+find "${HomeProject}" \( -type f -a -name ".coverage"     \) -exec rm {} \;
+find "${HomeProject}" \( -type f -a -name "coverage.xml"  \) -exec rm {} \;
+find "${HomeProject}" \( -type f -a -name "nosetests.xml" \) -exec rm {} \;
+find "${HomeProject}" \( -type f -a -name "pylint.out"    \) -exec rm {} \;
+find "${HomeProject}" \( -type f -a -name "sloccount.sc"  \) -exec rm {} \;
 
