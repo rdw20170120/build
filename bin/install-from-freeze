@@ -1,8 +1,8 @@
 #!/bin/bash
 # Use Python Pip to install dependencies from a previous freeze.
 
-# Install from the previously-frozen dependency list
-pip --quiet install -r "${VIRTUAL_ENV}/freeze.pip"
+# Install from the previously-frozen dependency requirements list
+pip --quiet install -r "${VIRTUAL_ENV}/requirements.pip"
 
 # Report the installed dependencies
 pip freeze

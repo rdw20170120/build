@@ -1,5 +1,5 @@
 #!/bin/bash
 # Freeze the dependency requirements for this project using Python Pip.
 
-pip freeze -r "${VIRTUAL_ENV}/freeze.pip" > "${VIRTUAL_ENV}/freeze.pip"
+pip freeze -r "${VIRTUAL_ENV}/requirements.pip" > "${VIRTUAL_ENV}/requirements.pip"
 
