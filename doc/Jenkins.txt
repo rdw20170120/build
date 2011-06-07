@@ -1,0 +1,71 @@
+###############################################################################
+# This project uses Jenkins for continuous integration.
+#
+# Here is how it is configured.
+###############################################################################
+# To install Jenkins on Ubuntu 10.10:
+
+# Establish environment as described in doc/env.txt
+
+wget -q -O - http://pkg.jenkins-ci.org/debian/jenkins-ci.org.key | sudo apt-key add -
+sudo echo 'deb http://pkg.jenkins-ci.org/debian binary/' > /etc/apt/sources.list.d/jenkins.list
+
+sudo aptitude update
+sudo aptitude install jenkins
+###############################################################################
+# TODO:  REVIEW:  update below from Hudson to Jenkins
+###############################################################################
+Plugins (http://server:8080/pluginManager):
+
+Uninstall CVS plugin
+Uninstall Maven Integration plugin
+Uninstall Subversion plugin
+Install Cobertura plugin
+Install Green Balls plugin
+Install Mercurial plugin
+Install Python plugin
+Install SafeRestart plugin
+Install SLOCCount plugin
+Leave SSH Slaves plugin
+Install Violations plugin
+###############################################################################
+Jenkins server configuration (http://server:8080/configure):
+
+Mercurial installations:
+    Name = Default Mercurial
+    Executable = hg
+Shell
+    Shell executable = bash
+E-mail Notification
+    Jenkins URL = http://server:8080/
+###############################################################################
+Jenkins job configuration (http://server:8080/job/TestJob/configure):
+
+Project name = TestJob (or whatever)
+Source Code Management
+    Mercurial
+        Mercurial Version = (Default)
+        Repository URL = https://robwilliams@bitbucket.org/robwilliams/build
+        Branch = default
+        Repository browser = hgweb
+            URL = https://robwilliams@bitbucket.org/robwilliams/build
+Build Triggers
+    Poll SCM
+        Schedule = * * * * * (every minute)
+Build
+    Execute shell
+        Command =
+            export TMPDIR=$HOME/temp
+            export TEMP_DIR=$TMPDIR
+            source activate
+            source install-from-freeze
+            source run-for-jenkins
+Post-build Actions
+    Publish JUnit test result report
+        Test report XMLs = **/nosetests.xml
+    Report Violations
+        pylint XML filename pattern = **/pylint.out
+    Publish SLOCCount analysis results
+    Publish Cobertura Coverage Report
+        Cobertura xml report pattern = **/coverage.xml
+        Consider only stable builds = checked

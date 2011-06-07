@@ -1,0 +1,9 @@
+#!/bin/bash
+# Run build steps for Jenkins continuous integration server
+
+echo "run-for-jenkins..."
+source run-sloccount
+source run-nose
+#source run-coverage
+#source run-coverage-report
+source run-pylint
