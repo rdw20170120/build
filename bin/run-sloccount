@@ -3,4 +3,3 @@
 
 echo "run-sloccount..."
 sloccount --duplicates --wide --details "${HomeProject}/src" > "${HomeProject}/sloccount.sc"
-

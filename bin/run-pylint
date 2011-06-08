@@ -3,5 +3,4 @@
 
 echo "run-pylint..."
 cd "${HomeProject}/src"
-pylint --rcfile="${HomeProject}/pylintrc" mine | tee "${HomeProject}/pylint.out"
-
+pylint --rcfile="${HomeProject}/pylintrc" test | tee "${HomeProject}/pylint.out"
