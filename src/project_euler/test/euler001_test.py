@@ -1,6 +1,7 @@
 ''' Project Euler Problem 1
 REF:  http://projecteuler.net/index.php?section=problems&id=1
 Created:  05-Oct-2001
+Started:  07-Jun-2011
 Solved:   08-Jun-2011
 
 If we list all the natural numbers below 10 that are multiples of 3 or 5,
@@ -11,11 +12,13 @@ Find the sum of all the multiples of 3 or 5 below 1000.
 
 import nose.tools
 
-# Form the solution
+# Support the solution
 
 def is_multiple_of(small, natural):
     '''Is "natural" number a multiple of "small"?'''
     return True if 0 == natural else 0 == natural % small
+
+# Form the solution
 
 def is_desired_multiple(natural):
     '''Is "natural" number a desired multiple (of 3 or 5)?'''
@@ -26,7 +29,7 @@ def is_desired_multiple(natural):
 
 def desired_multiples_below(natural):
     '''Return the desired multiples below the "natural" number.'''
-    return [n for n in range(natural) if is_desired_multiple(n)]
+    return [n for n in xrange(natural) if is_desired_multiple(n)]
 
 # Test the solution elements
 
@@ -78,5 +81,5 @@ def test_given_sum():
 def test_solution():
     '''Test sum(desired_multiples_below(1000)).'''
     solution = sum(desired_multiples_below(1000))
-    print "Desired solution is calculated to be '{0}'.".format(solution)
+    print "\nDesired solution is calculated to be '{0}'.".format(solution)
     nose.tools.eq_(233168, solution)
