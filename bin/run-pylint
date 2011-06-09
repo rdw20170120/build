@@ -3,4 +3,4 @@
 
 echo "run-pylint..."
 cd "${HomeProject}/src"
-pylint --rcfile="${HomeProject}/pylintrc" project_euler | tee "${HomeProject}/pylint.out"
+pylint --rcfile="${HomeProject}/pylintrc" "${HomePackage}" | tee "${HomeProject}/pylint.out"

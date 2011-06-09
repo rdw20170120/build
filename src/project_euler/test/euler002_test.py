@@ -15,6 +15,14 @@ import nose.tools
 
 # Form the solution
 
+def is_even(value):
+    '''Is "value" even (a multiple of 2)?'''
+    return True if 0 == value else 0 == value % 2
+
+def even(items):
+    '''Return the "items" that are even (a multiple of 2).'''
+    return [i for i in items if is_even(i)]
+
 def fibonacci_term(index):
     '''Return "index"th term of the Fibonacci sequence.
     
@@ -57,9 +65,24 @@ def test_invalid_index_is_rejected():
     '''Test that an invalid index is rejected.'''
     fibonacci_term(-1)
 
+def test_is_even():
+    '''Test is_even().'''
+    nose.tools.ok_(    is_even(0))
+    nose.tools.ok_(not is_even(1))
+    nose.tools.ok_(    is_even(2))
+    nose.tools.ok_(not is_even(3))
+    nose.tools.ok_(    is_even(4))
+
 def test_zeroth_term():
     '''Test the zeroth term of the Fibonacci sequence.'''
     nose.tools.eq_(1, fibonacci_term(0))
+
+def test_sum_of_given_even_terms():
+    '''Test sum of given even-valued terms.'''
+    total  = fibonacci_term(2)
+    total += fibonacci_term(5)
+    total += fibonacci_term(8)
+    nose.tools.eq_(total, sum(even(fibonacci(10))))
 
 def test_sum_of_given_terms():
     '''Test sum of given first ten terms.'''

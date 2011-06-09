@@ -15,11 +15,14 @@ import nose.tools
 
 def is_multiple_of(small, natural):
     '''Is "natural" number a multiple of "small"?'''
-    return False if 0 == natural else 0 == natural % small
+    return True if 0 == natural else 0 == natural % small
 
 def is_desired_multiple(natural):
     '''Is "natural" number a desired multiple (of 3 or 5)?'''
-    return is_multiple_of(3, natural) or is_multiple_of(5, natural)
+    if 0 == natural:
+        return False
+    else:
+        return is_multiple_of(3, natural) or is_multiple_of(5, natural)
 
 def desired_multiples_below(natural):
     '''Return the desired multiples below the "natural" number.'''
@@ -29,7 +32,7 @@ def desired_multiples_below(natural):
 
 def test_is_multiple_of_three():
     '''Test given definition of multiples of three.'''
-    nose.tools.ok_(not is_multiple_of(3, 0))
+    nose.tools.ok_(    is_multiple_of(3, 0))
     nose.tools.ok_(not is_multiple_of(3, 1))
     nose.tools.ok_(not is_multiple_of(3, 2))
     nose.tools.ok_(    is_multiple_of(3, 3))
@@ -42,7 +45,7 @@ def test_is_multiple_of_three():
 
 def test_is_multiple_of_five():
     '''Test given definition of multiples of five.'''
-    nose.tools.ok_(not is_multiple_of(5, 0))
+    nose.tools.ok_(    is_multiple_of(5, 0))
     nose.tools.ok_(not is_multiple_of(5, 1))
     nose.tools.ok_(not is_multiple_of(5, 2))
     nose.tools.ok_(not is_multiple_of(5, 3))
