@@ -19,11 +19,11 @@ def is_desired_multiple(natural):
     '''Is "natural" number a desired multiple (of 3 or 5)?'''
     return is_multiple_of(3, natural) or is_multiple_of(5, natural)
 
-def sum_of_desired_multiples_below(natural):
-    '''Return the sum of the desired multiples below the "natural" number.'''
-    return sum(n for n in range(natural) if is_desired_multiple(n))
+def desired_multiples_below(natural):
+    '''Return the desired multiples below the "natural" number.'''
+    return [n for n in range(natural) if is_desired_multiple(n)]
 
-# Test the solution
+# Test the solution elements
 
 def test_is_multiple_of_three():
     '''Test given definition of multiples of three.'''
@@ -65,13 +65,13 @@ def test_given_multiples():
     assert     is_desired_multiple(9)
 
 def test_given_sum():
-    '''Test given of 23 == sum_of_desired_multiples_below(10).'''
-    assert 23 == sum_of_desired_multiples_below(10)
+    '''Test given of 23 == sum(desired_multiples_below(10)).'''
+    assert 23 == sum(desired_multiples_below(10))
 
-# Report the solution
+# Test the solution
 
-def test_desired_solution():
-    '''Test sum_of_desired_multiples_below(1000).'''
-    solution = sum_of_desired_multiples_below(1000)
+def test_solution():
+    '''Test sum(desired_multiples_below(1000)).'''
+    solution = sum(desired_multiples_below(1000))
     print "Desired solution is calculated to be '{0}'.".format(solution)
     assert 233168 == solution

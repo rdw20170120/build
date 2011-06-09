@@ -32,7 +32,7 @@ def fibonacci(index):
     else:
         return fibonacci(index - 1) + fibonacci(index - 2)
 
-# Test the solution
+# Test the solution elements
 
 def test_given_terms():
     '''Test given terms of Fibonacci sequence.'''
@@ -52,8 +52,9 @@ def test_invalid_index_is_rejected():
     '''Test that an invalid index is rejected.'''
     fibonacci(-1)
 
-def test_zero_term():
+def test_zeroth_term():
     '''Test the zeroth term of the Fibonacci sequence.'''
     assert 1 == fibonacci(0)
 
-# Report the solution
+# Test the solution
+
