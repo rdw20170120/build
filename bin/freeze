@@ -4,4 +4,3 @@
 _File=${HomeProject}/requirements.pip
 
 pip freeze -r "${_File}" > "${_File}"
-

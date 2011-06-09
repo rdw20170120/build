@@ -11,4 +11,3 @@ find "${HomeProject}" \( -type f -a -name "coverage.xml"  \) -exec rm {} \;
 find "${HomeProject}" \( -type f -a -name "nosetests.xml" \) -exec rm {} \;
 find "${HomeProject}" \( -type f -a -name "pylint.out"    \) -exec rm {} \;
 find "${HomeProject}" \( -type f -a -name "sloccount.sc"  \) -exec rm {} \;
-
