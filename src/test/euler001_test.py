@@ -73,5 +73,5 @@ def test_given_sum():
 def test_desired_solution():
     '''Test sum_of_desired_multiples_below(1000).'''
     solution = sum_of_desired_multiples_below(1000)
-    print "Desired solution is calculated to be {0}".format(solution)
+    print "Desired solution is calculated to be '{0}'.".format(solution)
     assert 233168 == solution

@@ -11,6 +11,8 @@ By considering the terms in the Fibonacci sequence whose values do not exceed
 four million, find the sum of the even-valued terms.
 '''
 
+import nose.tools
+
 # Form the solution
 
 def fibonacci(index):
@@ -23,6 +25,10 @@ def fibonacci(index):
         return 1
     elif 1 == index:
         return 1
+    elif 0 > index:
+        raise IndexError(
+            "Index '{0}' is below zero and therefore invalid!".format(index)
+        )
     else:
         return fibonacci(index - 1) + fibonacci(index - 2)
 
@@ -40,5 +46,14 @@ def test_given_terms():
     assert 34 == fibonacci( 8)
     assert 55 == fibonacci( 9)
     assert 89 == fibonacci(10)
+
+@nose.tools.raises(IndexError)
+def test_invalid_index_is_rejected():
+    '''Test that an invalid index is rejected.'''
+    fibonacci(-1)
+
+def test_zero_term():
+    '''Test the zeroth term of the Fibonacci sequence.'''
+    assert 1 == fibonacci(0)
 
 # Report the solution

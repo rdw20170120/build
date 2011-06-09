@@ -1,0 +1,21 @@
+#!/bin/bash
+# Upgrade dependencies using Pip
+
+# Low-level dependencies
+pip install --upgrade distribute
+pip install --upgrade logilab-astng
+pip install --upgrade logilab-common
+pip install --upgrade nosexcover
+pip install --upgrade unittest2
+pip install --upgrade wsgiref
+
+# Primary testing dependencies
+pip install --upgrade coverage
+pip install --upgrade nose
+pip install --upgrade pylint
+
+# Primary source control dependencies
+pip install --upgrade mercurial
+
+# Report new versions
+pip freeze
