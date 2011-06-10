@@ -19,7 +19,12 @@ import nose.tools
 # Support the solution
 
 pseudo_infinite_range_limit = sys.maxsize
-# TODO:  FIX:  Performance problem instantiating full infinite sequence
+
+# TODO:  FIX:  Despite use of generators, it seems that I am instantiating the
+# full pseudo-infinite sequence in some cases.  This consumes massive RAM, and
+# could easily crash the host.  A lesser limit of about 300,000 items seems to
+# consume about half of my physical RAM (1/2 of 8 GB = 4 GB).  That is enough
+# to notice, but not enough to actually impair my machine.
 pseudo_infinite_range_limit = 300000
 
 # Cache for Fibonacci sequence to make recursion feasible
@@ -70,10 +75,58 @@ def fibonacci(count=None):
 
 def fibonacci_below(limit):
     '''Return the first terms of the Fibonacci sequence below "limit".
+    
+       Use the non-generator algorithm.
     '''
     return (value for value in fibonacci() if value < limit)
 
+def fibonacci_generator():
+    '''Return the terms of the Fibonacci sequence.
+    
+       Use a generator to produce the infinite sequence, without RAM usage.
+    '''
+    prv, nxt = 1, 1
+    while 1:
+        print "Yielding {0}...".format(prv)
+        yield prv
+        prv, nxt = nxt, prv + nxt
+
+# def fibonacci_below_via_generator(limit):
+#     '''Return the first terms of the Fibonacci sequence below "limit".
+#     
+#        Use the generator algorithm.
+#     '''
+#     return (value for value in fibonacci_generator() if value < limit)
+
 # Test the solution elements
+
+@nose.tools.raises(IndexError)
+def test_invalid_index_is_rejected():
+    '''Test that an invalid index is rejected.'''
+    fibonacci_term(-1)
+    print "\nCache size is now '{0}'.".format(len(cache))    
+
+def test_zeroth_term():
+    '''Test the zeroth term of the Fibonacci sequence.'''
+    nose.tools.eq_(1, fibonacci_term(0))
+    print "\nCache size is now '{0}'.".format(len(cache))    
+
+def test_is_even():
+    '''Test is_even().'''
+    nose.tools.ok_(    is_even(0))
+    nose.tools.ok_(not is_even(1))
+    nose.tools.ok_(    is_even(2))
+    nose.tools.ok_(not is_even(3))
+    nose.tools.ok_(    is_even(4))
+    print "\nCache size is now '{0}'.".format(len(cache))    
+
+def test_sum_of_given_even_terms():
+    '''Test sum of given even-valued terms.'''
+    total  = fibonacci_term(2)
+    total += fibonacci_term(5)
+    total += fibonacci_term(8)
+    nose.tools.eq_(total, sum(even(fibonacci(10))))
+    print "\nCache size is now '{0}'.".format(len(cache))    
 
 def test_given_terms():
     '''Test given terms of Fibonacci sequence.'''
@@ -87,30 +140,7 @@ def test_given_terms():
     nose.tools.eq_(34, fibonacci_term( 8))
     nose.tools.eq_(55, fibonacci_term( 9))
     nose.tools.eq_(89, fibonacci_term(10))
-
-@nose.tools.raises(IndexError)
-def test_invalid_index_is_rejected():
-    '''Test that an invalid index is rejected.'''
-    fibonacci_term(-1)
-
-def test_is_even():
-    '''Test is_even().'''
-    nose.tools.ok_(    is_even(0))
-    nose.tools.ok_(not is_even(1))
-    nose.tools.ok_(    is_even(2))
-    nose.tools.ok_(not is_even(3))
-    nose.tools.ok_(    is_even(4))
-
-def test_zeroth_term():
-    '''Test the zeroth term of the Fibonacci sequence.'''
-    nose.tools.eq_(1, fibonacci_term(0))
-
-def test_sum_of_given_even_terms():
-    '''Test sum of given even-valued terms.'''
-    total  = fibonacci_term(2)
-    total += fibonacci_term(5)
-    total += fibonacci_term(8)
-    nose.tools.eq_(total, sum(even(fibonacci(10))))
+    print "\nCache size is now '{0}'.".format(len(cache))    
 
 def test_sum_of_given_terms():
     '''Test sum of given first ten terms.'''
@@ -125,6 +155,47 @@ def test_sum_of_given_terms():
     total += fibonacci_term( 9)
     total += fibonacci_term(10)
     nose.tools.eq_(total, sum(fibonacci(10)))
+    print "\nCache size is now '{0}'.".format(len(cache))    
+
+def test_pseudo_infinite_sum():
+    '''Test sum of a pseudo-infinite sequence (avoid RAM abuse).
+    
+       NOTE:  This does NOT use up RAM, so it is possible to avoid that usage.
+    '''
+    terms = pseudo_infinite_range_limit
+    total = sum(value for value in infinite())
+    message = "\nSum of infinite() of about '{0}' terms is '{1}'."
+    print message.format(terms, total)
+    print "Cache size is now '{0}'.".format(len(cache))    
+    
+# Test the solution
+
+def test_solution():
+    '''Test sum(even(fibonacci_below(4000000))).'''
+    solution = sum(even(fibonacci_below(4000000)))
+    print "\nDesired solution is calculated to be '{0}'.".format(solution)
+    nose.tools.eq_(4613732, solution)
+    print "Cache size is now '{0}'.".format(len(cache))
+
+# Test RAM usage
+
+# TODO:  A list comprehension MUST always cover the whole list
+# def test_fibonacci_below_via_generator():
+#     '''Test fibonacci_below_via_generator().'''
+#     total  = fibonacci_term( 1)
+#     total += fibonacci_term( 2)
+#     total += fibonacci_term( 3)
+#     total += fibonacci_term( 4)
+#     total += fibonacci_term( 5)
+#     total += fibonacci_term( 6)
+#     total += fibonacci_term( 7)
+#     total += fibonacci_term( 8)
+#     total += fibonacci_term( 9)
+#     total += fibonacci_term(10)
+#     # sequence = fibonacci_below(100)
+#     # nose.tools.eq_(total, sum(sequence))
+#     nose.tools.eq_(total, sum(fibonacci_below_via_generator(100)))
+#     print "\nCache size is now '{0}'.".format(len(cache))    
 
 def test_fibonacci_below():
     '''Test fibonacci_below().'''
@@ -138,8 +209,10 @@ def test_fibonacci_below():
     total += fibonacci_term( 8)
     total += fibonacci_term( 9)
     total += fibonacci_term(10)
-    sequence = fibonacci_below(100)
-    nose.tools.eq_(total, sum(sequence))
+    # sequence = fibonacci_below(100)
+    # nose.tools.eq_(total, sum(sequence))
+    nose.tools.eq_(total, sum(fibonacci_below(100)))
+    print "\nCache size is now '{0}'.".format(len(cache))    
 
 def test_memory_usage():
     '''Test memory usage by calculating a big Fibonacci term.'''
@@ -147,11 +220,4 @@ def test_memory_usage():
     term = fibonacci_term(index)
     length = len(str(term))
     print "\nFibonacci term '{0}' has '{1}' digits.".format(index, length)
-
-# Test the solution
-
-def test_solution():
-    '''Test sum(even(fibonacci_below(4000000))).'''
-    solution = sum(even(fibonacci_below(4000000)))
-    print "\nDesired solution is calculated to be '{0}'.".format(solution)
-    nose.tools.eq_(4613732, solution)
+    print "Cache size is now '{0}'.".format(len(cache))
