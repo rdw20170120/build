@@ -20,7 +20,7 @@ import nose.tools
 
 pseudo_infinite_range_limit = sys.maxsize
 # TODO:  FIX:  Performance problem instantiating full infinite sequence
-pseudo_infinite_range_limit = 400000
+pseudo_infinite_range_limit = 300000
 
 # Cache for Fibonacci sequence to make recursion feasible
 cache = {0:1, 1:1}
@@ -143,10 +143,10 @@ def test_fibonacci_below():
 
 def test_memory_usage():
     '''Test memory usage by calculating a big Fibonacci term.'''
-    index = 400000
+    index = pseudo_infinite_range_limit
     term = fibonacci_term(index)
     length = len(str(term))
-    print "\nFibonacci term '{0}' ({1}) has '{2}' digits.".format(index, term, length)
+    print "\nFibonacci term '{0}' has '{1}' digits.".format(index, length)
 
 # Test the solution
 
