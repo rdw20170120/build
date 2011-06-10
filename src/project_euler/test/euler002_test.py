@@ -39,6 +39,8 @@ def fibonacci_term(index):
     
        By definition, fibonacci_term(1) == 1 and fibonacci_term(2) = 2,
        so extend to fibonacci_term(0) == 1 for completeness.
+       
+       Recursive implementation is simple and effective, but not efficient.
     '''
     if 0 == index:
         return 1
@@ -56,7 +58,7 @@ def fibonacci(count=None):
     
        If count is None, return an "infinite" Fibonacci sequence.
     '''
-    if None is count:
+    if count is None:
         return [fibonacci_term(i) for i in infinite(1)]
     else:
         return [fibonacci_term(i) for i in xrange(1, count + 1)]
@@ -132,10 +134,22 @@ def test_fibonacci_below():
     total += fibonacci_term( 9)
     total += fibonacci_term(10)
     sequence = fibonacci_below(100)
-    print "\nFibonacci sequence..."
-    for i, v in enumerate(sequence, 1):
-        print "term {0} = {1}".format(i, v)
+    # print "\nFibonacci sequence..."
+    # for i, v in enumerate(sequence, 1):
+    #     print "term {0} = {1}".format(i, v)
     nose.tools.eq_(total, sum(sequence))
 
 # Test the solution
 
+def test_solution():
+    '''Test sum(even(fibonacci_below(4000000))).'''
+    sequence = fibonacci_below(4000000)
+    print "\nFibonacci sequence..."
+    for i, v in enumerate(sequence, 1):
+        print "term {0} = {1}".format(i, v)
+    print "\nFibonacci sequence (evens)..."
+    for i, v in enumerate(even(sequence), 1):
+        print "term {0} = {1}".format(i, v)
+    solution = sum(even(sequence))
+    print "\nDesired solution is calculated to be '{0}'.".format(solution)
+    nose.tools.eq_(1089154, solution)
