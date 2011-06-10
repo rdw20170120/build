@@ -18,6 +18,10 @@ import nose.tools
 
 # Support the solution
 
+pseudo_infinite_range_limit = sys.maxsize
+# TODO:  FIX:  Performance problem of Fibonacci recursion forces need for this
+pseudo_infinite_range_limit = 40
+
 def is_even(value):
     '''Is "value" even (a multiple of 2)?'''
     return True if 0 == value else 0 == value % 2
@@ -29,8 +33,7 @@ def even(items):
 def infinite(start=0, step=1):
     '''Return an infinite sequence, subject to Python limits.
     '''
-    # TODO:  return xrange(start, sys.maxsize, step)
-    return xrange(start, 30, step)
+    return xrange(start, pseudo_infinite_range_limit, step)
 
 # Form the solution
 
@@ -63,10 +66,10 @@ def fibonacci(count=None):
     else:
         return [fibonacci_term(i) for i in xrange(1, count + 1)]
 
-def fibonacci_below(value):
-    '''Return the first terms of the Fibonacci sequence below "value".
+def fibonacci_below(limit):
+    '''Return the first terms of the Fibonacci sequence below "limit".
     '''
-    return [v for v in fibonacci() if v < value]
+    return [value for value in fibonacci() if value < limit]
 
 # Test the solution elements
 
