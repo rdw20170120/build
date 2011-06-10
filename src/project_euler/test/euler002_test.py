@@ -20,7 +20,7 @@ import nose.tools
 
 pseudo_infinite_range_limit = sys.maxsize
 # TODO:  FIX:  Performance problem instantiating full infinite sequence
-pseudo_infinite_range_limit = 40
+pseudo_infinite_range_limit = 400000
 
 # Cache for Fibonacci sequence to make recursion feasible
 cache = {0:1, 1:1}
@@ -31,7 +31,7 @@ def is_even(value):
 
 def even(items):
     '''Return the "items" that have even values (a multiple of 2).'''
-    return [i for i in items if is_even(i)]
+    return (i for i in items if is_even(i))
 
 def infinite(start=0, step=1):
     '''Return an infinite sequence, subject to Python limits.
@@ -64,14 +64,14 @@ def fibonacci(count=None):
        If count is None, return an "infinite" Fibonacci sequence.
     '''
     if count is None:
-        return [fibonacci_term(i) for i in infinite(1)]
+        return (fibonacci_term(i) for i in infinite(1))
     else:
-        return [fibonacci_term(i) for i in xrange(1, count + 1)]
+        return (fibonacci_term(i) for i in xrange(1, count + 1))
 
 def fibonacci_below(limit):
     '''Return the first terms of the Fibonacci sequence below "limit".
     '''
-    return [value for value in fibonacci() if value < limit]
+    return (value for value in fibonacci() if value < limit)
 
 # Test the solution elements
 
@@ -140,6 +140,13 @@ def test_fibonacci_below():
     total += fibonacci_term(10)
     sequence = fibonacci_below(100)
     nose.tools.eq_(total, sum(sequence))
+
+def test_memory_usage():
+    '''Test memory usage by calculating a big Fibonacci term.'''
+    index = 400000
+    term = fibonacci_term(index)
+    length = len(str(term))
+    print "\nFibonacci term '{0}' ({1}) has '{2}' digits.".format(index, term, length)
 
 # Test the solution
 
