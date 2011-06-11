@@ -12,93 +12,15 @@ By considering the terms in the Fibonacci sequence whose values do not exceed
 four million, find the sum of the even-valued terms.
 '''
 
-import sys
-
 import nose.tools
 
-# Support the solution
+from project_euler.solution.generation import even
+from project_euler.solution.generation import pseudo_infinite_range_limit
 
-pseudo_infinite_range_limit = sys.maxsize
-
-# TODO:  FIX:  Despite use of generators, it seems that I am instantiating the
-# full pseudo-infinite sequence in some cases.  This consumes massive RAM, and
-# could easily crash the host.  A lesser limit of about 300,000 items seems to
-# consume about half of my physical RAM (1/2 of 8 GB = 4 GB).  That is enough
-# to notice, but not enough to actually impair my machine.
-pseudo_infinite_range_limit = 300000
-
-# Cache for Fibonacci sequence to make recursion feasible
-cache = {0:1, 1:1}
-
-def is_even(value):
-    '''Is "value" even (a multiple of 2)?'''
-    return True if 0 == value else 0 == value % 2
-
-def even(items):
-    '''Return the "items" that have even values (a multiple of 2).'''
-    return (i for i in items if is_even(i))
-
-def infinite(start=0, step=1):
-    '''Return an infinite sequence, subject to Python limits.
-    '''
-    return xrange(start, pseudo_infinite_range_limit, step)
-
-# Form the solution
-
-def fibonacci_term(index):
-    '''Return "index"th term of the Fibonacci sequence.
-    
-       By definition, fibonacci_term(1) == 1 and fibonacci_term(2) = 2,
-       so extend to fibonacci_term(0) == 1 for completeness.
-       
-       Recursive implementation is simple and effective, but not efficient.
-       
-       Cacheing makes recursion feasible.
-    '''
-    if 0 > index:
-        raise IndexError(
-            "Index '{0}' is below zero and therefore invalid!".format(index)
-        )
-    if not index in cache:
-        cache[index] = fibonacci_term(index - 1) + fibonacci_term(index - 2)
-    return cache[index]
-
-def fibonacci(count=None):
-    '''Return the first "count" terms of the Fibonacci sequence.
-    
-       If count is None, return an "infinite" Fibonacci sequence.
-    '''
-    if count is None:
-        return (fibonacci_term(i) for i in infinite(1))
-    else:
-        return (fibonacci_term(i) for i in xrange(1, count + 1))
-
-def fibonacci_below(limit):
-    '''Return the first terms of the Fibonacci sequence below "limit".
-    
-       Use the non-generator algorithm.
-    '''
-    return (value for value in fibonacci() if value < limit)
-
-def fibonacci_generator():
-    '''Return the terms of the Fibonacci sequence.
-    
-       Use a generator to produce the infinite sequence, without RAM usage.
-    '''
-    prv, nxt = 1, 1
-    while 1:
-        print "Yielding {0}...".format(prv)
-        yield prv
-        prv, nxt = nxt, prv + nxt
-
-# def fibonacci_below_via_generator(limit):
-#     '''Return the first terms of the Fibonacci sequence below "limit".
-#     
-#        Use the generator algorithm.
-#     '''
-#     return (value for value in fibonacci_generator() if value < limit)
-
-# Test the solution elements
+from project_euler.solution.p002 import cache
+from project_euler.solution.p002 import fibonacci
+from project_euler.solution.p002 import fibonacci_below
+from project_euler.solution.p002 import fibonacci_term
 
 @nose.tools.raises(IndexError)
 def test_invalid_index_is_rejected():
@@ -109,15 +31,6 @@ def test_invalid_index_is_rejected():
 def test_zeroth_term():
     '''Test the zeroth term of the Fibonacci sequence.'''
     nose.tools.eq_(1, fibonacci_term(0))
-    print "\nCache size is now '{0}'.".format(len(cache))    
-
-def test_is_even():
-    '''Test is_even().'''
-    nose.tools.ok_(    is_even(0))
-    nose.tools.ok_(not is_even(1))
-    nose.tools.ok_(    is_even(2))
-    nose.tools.ok_(not is_even(3))
-    nose.tools.ok_(    is_even(4))
     print "\nCache size is now '{0}'.".format(len(cache))    
 
 def test_sum_of_given_even_terms():
@@ -157,24 +70,11 @@ def test_sum_of_given_terms():
     nose.tools.eq_(total, sum(fibonacci(10)))
     print "\nCache size is now '{0}'.".format(len(cache))    
 
-def test_pseudo_infinite_sum():
-    '''Test sum of a pseudo-infinite sequence (avoid RAM abuse).
-    
-       NOTE:  This does NOT use up RAM, so it is possible to avoid that usage.
-    '''
-    terms = pseudo_infinite_range_limit
-    total = sum(value for value in infinite())
-    message = "\nSum of infinite() of about '{0}' terms is '{1}'."
-    print message.format(terms, total)
-    print "Cache size is now '{0}'.".format(len(cache))    
-    
-# Test the solution
-
 def test_solution():
     '''Test sum(even(fibonacci_below(4000000))).'''
-    solution = sum(even(fibonacci_below(4000000)))
-    print "\nDesired solution is calculated to be '{0}'.".format(solution)
-    nose.tools.eq_(4613732, solution)
+    total = sum(even(fibonacci_below(4000000)))
+    print "\nDesired solution is calculated to be '{0}'.".format(total)
+    nose.tools.eq_(4613732, total)
     print "Cache size is now '{0}'.".format(len(cache))
 
 # Test RAM usage
