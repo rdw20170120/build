@@ -1,6 +1,7 @@
 ''' generator support functionality
 '''
 
+import itertools
 import sys
 
 from project_euler.solution.math import is_even
@@ -18,7 +19,14 @@ def even(items):
     '''Return the "items" that have even values (a multiple of 2).'''
     return (i for i in items if is_even(i))
 
-def infinite(start=0, step=1):
-    '''Return an infinite sequence, subject to Python limits.
+def infinite(start=0):
+    '''Return an infinite counting sequence, optionally starting at "start".
     '''
-    return xrange(start, pseudo_infinite_range_limit, step)
+    return itertools.count(start)
+
+def pseudo_infinite(start=0):
+    '''Return a pseudo-infinite sequence, optionally starting at "start".
+    
+       Real length of sequence is subject to Python limits.
+    '''
+    return xrange(start, pseudo_infinite_range_limit)

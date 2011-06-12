@@ -1,20 +1,11 @@
 #!/bin/bash
 # Activate the Python virtual environment in this project directory.
 
-# NOTE: This script requires execution as:
-echo 'Execute as: source activate'
+echo 'NOTE:  Execute as: "source activate"'
 
 # Remember project home directory
 # TODO: FIX: Remove assumption that current directory is project root (check!)
 export HomeProject=${PWD}
-
-# Remember project home package (parent package of all project source)
-# NOTE:  All project source should be contained in
-#        ${HomeProject}/src/${HomePackage}
-export HomePackage=project_euler
-
-# Remember location of Python virtual environment (PVE)
-_PVE=${HomeProject}/PVE
 
 # Prepare temporary directory
 # TODO: FIX: Abort if temporary directory is not preconfigured
@@ -26,6 +17,14 @@ export PIP_REQUIRE_VIRTUALENV=true
 export PIP_RESPECT_VIRTUALENV=true
 [[ ! -e "$PIP_DOWNLOAD_CACHE" ]] && mkdir -p "$PIP_DOWNLOAD_CACHE"
 # TODO: FIX: Abort if Pip cache directory is not configured
+
+# Remember project home package (parent package of all project source)
+# NOTE:  All project source should be contained in
+#        ${HomeProject}/src/${HomePackage}
+export HomePackage=project_euler
+
+# Remember location of Python virtual environment (PVE)
+_PVE=${HomeProject}/PVE
 
 # If the virtual environment does not already exist, create it
 [[ ! -f "${_PVE}/bin/activate" ]] && virtualenv --no-site-packages "${_PVE}"

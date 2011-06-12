@@ -79,7 +79,6 @@ def test_solution():
 
 # Test RAM usage
 
-# TODO:  A list comprehension MUST always cover the whole list
 # def test_fibonacci_below_via_generator():
 #     '''Test fibonacci_below_via_generator().'''
 #     total  = fibonacci_term( 1)

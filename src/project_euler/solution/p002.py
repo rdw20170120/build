@@ -1,7 +1,7 @@
 ''' Project Euler Problem 2 solution elements
 '''
 
-from project_euler.solution.generation import infinite
+from project_euler.solution.generation import pseudo_infinite
 
 # Cache for Fibonacci sequence to make recursion feasible
 cache = {0:1, 1:1}
@@ -30,7 +30,7 @@ def fibonacci(count=None):
        If count is None, return an "infinite" Fibonacci sequence.
     '''
     if count is None:
-        return (fibonacci_term(i) for i in infinite(1))
+        return (fibonacci_term(i) for i in pseudo_infinite(1))
     else:
         return (fibonacci_term(i) for i in xrange(1, count + 1))
 
