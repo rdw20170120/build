@@ -1,7 +1,7 @@
 ''' generator support functionality
 '''
 
-import itertools
+# TODO:  import itertools
 import sys
 
 from project_euler.solution.math import is_even

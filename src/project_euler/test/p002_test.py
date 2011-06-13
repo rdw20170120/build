@@ -79,26 +79,6 @@ def test_solution():
     nose.tools.eq_(4613732, total)
     print "Cache size is now '{0}'.".format(p.cache_size())
 
-# Test RAM usage
-
-# def test_fibonacci_below_via_generator():
-#     '''Test fibonacci_below_via_generator().'''
-#     p = P002()
-#     total  = p.fibonacci_term( 1)
-#     total += p.fibonacci_term( 2)
-#     total += p.fibonacci_term( 3)
-#     total += p.fibonacci_term( 4)
-#     total += p.fibonacci_term( 5)
-#     total += p.fibonacci_term( 6)
-#     total += p.fibonacci_term( 7)
-#     total += p.fibonacci_term( 8)
-#     total += p.fibonacci_term( 9)
-#     total += p.fibonacci_term(10)
-#     # sequence = p.fibonacci_below(100)
-#     # nose.tools.eq_(total, sum(sequence))
-#     nose.tools.eq_(total, sum(p.fibonacci_below_via_generator(100)))
-#     print "\nCache size is now '{0}'.".format(p.cache_size())
-
 def test_fibonacci_below():
     '''Test fibonacci_below().'''
     p = P002()
@@ -115,8 +95,9 @@ def test_fibonacci_below():
     nose.tools.eq_(total, sum(p.fibonacci_below(100)))
     print "\nCache size is now '{0}'.".format(p.cache_size())    
 
-def test_memory_usage():
-    '''Test memory usage by calculating a big Fibonacci term.'''
+@nose.tools.raises(RuntimeError)
+def test_big_fibonacci():
+    '''Test big Fibonacci term (throws upon maximum recursion depth).'''
     p = P002()
     index = 100000
     term = p.fibonacci_term(index)
