@@ -1,13 +1,7 @@
-''' Project Euler Problem 1
-REF:  http://projecteuler.net/index.php?section=problems&id=1
-Created:  05-Oct-2001
-Started:  07-Jun-2011
-Solved:   08-Jun-2011
+'''
+Project Euler Problem 1
 
-If we list all the natural numbers below 10 that are multiples of 3 or 5,
-we get 3, 5, 6 and 9. The sum of these multiples is 23.
-
-Find the sum of all the multiples of 3 or 5 below 1000.
+see doc/ProjectEuler-001.txt for details
 '''
 
 import nose.tools
@@ -32,6 +26,7 @@ def test_given_sum():
     '''Test given of 23 == sum(desired_multiples_below(10)).'''
     nose.tools.eq_(23, sum(desired_multiples_below(10)))
 
+@nose.tools.timed(60)
 def test_solution():
     '''Test sum(desired_multiples_below(1000)).'''
     total = sum(desired_multiples_below(1000))

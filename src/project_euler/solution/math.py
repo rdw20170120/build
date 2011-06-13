@@ -1,5 +1,4 @@
-''' math support functionality
-'''
+''' math support functionality'''
 
 def is_even(value):
     '''Is "value" even (a multiple of 2)?'''

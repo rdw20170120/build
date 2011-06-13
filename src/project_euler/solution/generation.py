@@ -1,5 +1,4 @@
-''' generator support functionality
-'''
+''' generator support functionality'''
 
 # TODO:  import itertools
 import sys
@@ -20,8 +19,7 @@ def even(items):
     return (i for i in items if is_even(i))
 
 def infinite(start=0):
-    '''Return an infinite counting sequence, optionally starting at "start".
-    '''
+    '''Return an infinite counting sequence, optionally starting at "start".'''
     # TODO:  return itertools.count(start)
     return pseudo_infinite(start)
 

@@ -1,9 +1,13 @@
-''' Project Euler Problem 2 solution elements'''
+'''
+Project Euler Problem 2
+
+see doc/ProjectEuler-002.txt for details
+'''
 
 from project_euler.solution.generation import pseudo_infinite
 
-class P002(object):
-    '''Provide the solution for Project Euler Problem 2.'''
+class P002_Recursion_Cache(object):
+    '''TODO:  describe.'''
     def cache_size(self):
         '''Return the size of the cache.'''
         return len(self._cache)
@@ -28,15 +32,9 @@ class P002(object):
             )
         return self._cache[index]
 
-    def fibonacci(self, count=None):
-        '''Return the first "count" terms of the Fibonacci sequence.
-        
-           If count is None, return an "infinite" Fibonacci sequence.
-        '''
-        if count is None:
-            return (self.fibonacci_term(i) for i in pseudo_infinite(1))
-        else:
-            return (self.fibonacci_term(i) for i in xrange(1, count + 1))
+    def fibonacci(self):
+        '''Return the terms of the Fibonacci sequence.'''
+        return (self.fibonacci_term(i) for i in pseudo_infinite(1))
 
     def fibonacci_below(self, limit):
         '''Return the first terms of the Fibonacci sequence below "limit".

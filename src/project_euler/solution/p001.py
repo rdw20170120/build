@@ -1,4 +1,8 @@
-''' Project Euler Problem 1 solution elements'''
+'''
+Project Euler Problem 1
+
+see doc/ProjectEuler-001.txt for details
+'''
 
 from project_euler.solution.math import is_multiple_of
 
