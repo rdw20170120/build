@@ -15,108 +15,111 @@ four million, find the sum of the even-valued terms.
 import nose.tools
 
 from project_euler.solution.generation import even
-from project_euler.solution.generation import pseudo_infinite_range_limit
 
-from project_euler.solution.p002 import cache
-from project_euler.solution.p002 import fibonacci
-from project_euler.solution.p002 import fibonacci_below
-from project_euler.solution.p002 import fibonacci_term
+from project_euler.solution.P002 import P002
 
 @nose.tools.raises(IndexError)
 def test_invalid_index_is_rejected():
     '''Test that an invalid index is rejected.'''
-    fibonacci_term(-1)
-    print "\nCache size is now '{0}'.".format(len(cache))    
+    p = P002()
+    p.fibonacci_term(-1)
+    print "\nCache size is now '{0}'.".format(p.cache_size())
 
 def test_zeroth_term():
     '''Test the zeroth term of the Fibonacci sequence.'''
-    nose.tools.eq_(1, fibonacci_term(0))
-    print "\nCache size is now '{0}'.".format(len(cache))    
+    p = P002()
+    nose.tools.eq_(1, p.fibonacci_term(0))
+    print "\nCache size is now '{0}'.".format(p.cache_size())    
 
 def test_sum_of_given_even_terms():
     '''Test sum of given even-valued terms.'''
-    total  = fibonacci_term(2)
-    total += fibonacci_term(5)
-    total += fibonacci_term(8)
-    nose.tools.eq_(total, sum(even(fibonacci(10))))
-    print "\nCache size is now '{0}'.".format(len(cache))    
+    p = P002()
+    total  = p.fibonacci_term(2)
+    total += p.fibonacci_term(5)
+    total += p.fibonacci_term(8)
+    nose.tools.eq_(total, sum(even(p.fibonacci(10))))
+    print "\nCache size is now '{0}'.".format(p.cache_size())    
 
 def test_given_terms():
     '''Test given terms of Fibonacci sequence.'''
-    nose.tools.eq_( 1, fibonacci_term( 1))
-    nose.tools.eq_( 2, fibonacci_term( 2))
-    nose.tools.eq_( 3, fibonacci_term( 3))
-    nose.tools.eq_( 5, fibonacci_term( 4))
-    nose.tools.eq_( 8, fibonacci_term( 5))
-    nose.tools.eq_(13, fibonacci_term( 6))
-    nose.tools.eq_(21, fibonacci_term( 7))
-    nose.tools.eq_(34, fibonacci_term( 8))
-    nose.tools.eq_(55, fibonacci_term( 9))
-    nose.tools.eq_(89, fibonacci_term(10))
-    print "\nCache size is now '{0}'.".format(len(cache))    
+    p = P002()
+    nose.tools.eq_( 1, p.fibonacci_term( 1))
+    nose.tools.eq_( 2, p.fibonacci_term( 2))
+    nose.tools.eq_( 3, p.fibonacci_term( 3))
+    nose.tools.eq_( 5, p.fibonacci_term( 4))
+    nose.tools.eq_( 8, p.fibonacci_term( 5))
+    nose.tools.eq_(13, p.fibonacci_term( 6))
+    nose.tools.eq_(21, p.fibonacci_term( 7))
+    nose.tools.eq_(34, p.fibonacci_term( 8))
+    nose.tools.eq_(55, p.fibonacci_term( 9))
+    nose.tools.eq_(89, p.fibonacci_term(10))
+    print "\nCache size is now '{0}'.".format(p.cache_size())    
 
 def test_sum_of_given_terms():
     '''Test sum of given first ten terms.'''
-    total  = fibonacci_term( 1)
-    total += fibonacci_term( 2)
-    total += fibonacci_term( 3)
-    total += fibonacci_term( 4)
-    total += fibonacci_term( 5)
-    total += fibonacci_term( 6)
-    total += fibonacci_term( 7)
-    total += fibonacci_term( 8)
-    total += fibonacci_term( 9)
-    total += fibonacci_term(10)
-    nose.tools.eq_(total, sum(fibonacci(10)))
-    print "\nCache size is now '{0}'.".format(len(cache))    
+    p = P002()
+    total  = p.fibonacci_term( 1)
+    total += p.fibonacci_term( 2)
+    total += p.fibonacci_term( 3)
+    total += p.fibonacci_term( 4)
+    total += p.fibonacci_term( 5)
+    total += p.fibonacci_term( 6)
+    total += p.fibonacci_term( 7)
+    total += p.fibonacci_term( 8)
+    total += p.fibonacci_term( 9)
+    total += p.fibonacci_term(10)
+    nose.tools.eq_(total, sum(p.fibonacci(10)))
+    print "\nCache size is now '{0}'.".format(p.cache_size())    
 
 def test_solution():
     '''Test sum(even(fibonacci_below(4000000))).'''
-    total = sum(even(fibonacci_below(4000000)))
+    p = P002()
+    total = sum(even(p.fibonacci_below(4000000)))
     print "\nDesired solution is calculated to be '{0}'.".format(total)
     nose.tools.eq_(4613732, total)
-    print "Cache size is now '{0}'.".format(len(cache))
+    print "Cache size is now '{0}'.".format(p.cache_size())
 
 # Test RAM usage
 
 # def test_fibonacci_below_via_generator():
 #     '''Test fibonacci_below_via_generator().'''
-#     total  = fibonacci_term( 1)
-#     total += fibonacci_term( 2)
-#     total += fibonacci_term( 3)
-#     total += fibonacci_term( 4)
-#     total += fibonacci_term( 5)
-#     total += fibonacci_term( 6)
-#     total += fibonacci_term( 7)
-#     total += fibonacci_term( 8)
-#     total += fibonacci_term( 9)
-#     total += fibonacci_term(10)
-#     # sequence = fibonacci_below(100)
+#     p = P002()
+#     total  = p.fibonacci_term( 1)
+#     total += p.fibonacci_term( 2)
+#     total += p.fibonacci_term( 3)
+#     total += p.fibonacci_term( 4)
+#     total += p.fibonacci_term( 5)
+#     total += p.fibonacci_term( 6)
+#     total += p.fibonacci_term( 7)
+#     total += p.fibonacci_term( 8)
+#     total += p.fibonacci_term( 9)
+#     total += p.fibonacci_term(10)
+#     # sequence = p.fibonacci_below(100)
 #     # nose.tools.eq_(total, sum(sequence))
-#     nose.tools.eq_(total, sum(fibonacci_below_via_generator(100)))
-#     print "\nCache size is now '{0}'.".format(len(cache))    
+#     nose.tools.eq_(total, sum(p.fibonacci_below_via_generator(100)))
+#     print "\nCache size is now '{0}'.".format(p.cache_size())
 
 def test_fibonacci_below():
     '''Test fibonacci_below().'''
-    total  = fibonacci_term( 1)
-    total += fibonacci_term( 2)
-    total += fibonacci_term( 3)
-    total += fibonacci_term( 4)
-    total += fibonacci_term( 5)
-    total += fibonacci_term( 6)
-    total += fibonacci_term( 7)
-    total += fibonacci_term( 8)
-    total += fibonacci_term( 9)
-    total += fibonacci_term(10)
-    # sequence = fibonacci_below(100)
-    # nose.tools.eq_(total, sum(sequence))
-    nose.tools.eq_(total, sum(fibonacci_below(100)))
-    print "\nCache size is now '{0}'.".format(len(cache))    
+    p = P002()
+    total  = p.fibonacci_term( 1)
+    total += p.fibonacci_term( 2)
+    total += p.fibonacci_term( 3)
+    total += p.fibonacci_term( 4)
+    total += p.fibonacci_term( 5)
+    total += p.fibonacci_term( 6)
+    total += p.fibonacci_term( 7)
+    total += p.fibonacci_term( 8)
+    total += p.fibonacci_term( 9)
+    total += p.fibonacci_term(10)
+    nose.tools.eq_(total, sum(p.fibonacci_below(100)))
+    print "\nCache size is now '{0}'.".format(p.cache_size())    
 
 def test_memory_usage():
     '''Test memory usage by calculating a big Fibonacci term.'''
-    index = pseudo_infinite_range_limit
-    term = fibonacci_term(index)
+    p = P002()
+    index = 100000
+    term = p.fibonacci_term(index)
     length = len(str(term))
     print "\nFibonacci term '{0}' has '{1}' digits.".format(index, length)
-    print "Cache size is now '{0}'.".format(len(cache))
+    print "Cache size is now '{0}'.".format(p.cache_size())
