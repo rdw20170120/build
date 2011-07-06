@@ -21,7 +21,7 @@ export PIP_RESPECT_VIRTUALENV=true
 # Remember project home package (parent package of all project source)
 # NOTE:  All project source should be contained in
 #        ${HomeProject}/src/${HomePackage}
-export HomePackage=project_euler
+export HomePackage=example
 
 # Remember location of Python virtual environment (PVE)
 _PVE=${HomeProject}/PVE
