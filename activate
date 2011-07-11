@@ -38,3 +38,6 @@ _PathSystem=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 _PathProject=${HomeProject}/bin
 _PathPVE=${_PVE}/bin
 export PATH=${_PathProject}:${_PathPVE}:${_PathSystem}
+
+# Create the output directory
+[[ ! -d ${HomeProject}/out ]] && mkdir ${HomeProject}/out
