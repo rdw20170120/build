@@ -3,4 +3,9 @@
 
 echo "run-nose..."
 cd "${HomeProject}/src"
-nosetests --config="${HomeProject}/nose.cfg" --id-file="${HomeProject}/.noseids" --cover-package=${HomePackage}
+
+_Cmd=nosetests
+_Cmd="$_Cmd --config=${HomeProject}/cfg/nose.cfg"
+_Cmd="$_Cmd --id-file=${HomeProject}/.noseids"
+_Cmd="$_Cmd --cover-package=${HomePackage}"
+$_Cmd

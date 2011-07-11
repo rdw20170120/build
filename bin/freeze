@@ -1,6 +1,6 @@
 #!/bin/bash
-# Freeze the dependency requirements for this project using Python Pip.
+# Freeze the dependencies for this project using Pip
 
-_File=${HomeProject}/requirements.pip
+_File=${HomeProject}/cfg/freeze.pip
 
 pip freeze -r "${_File}" > "${_File}"

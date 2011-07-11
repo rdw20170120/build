@@ -3,4 +3,8 @@
 
 echo "run-pylint..."
 cd "${HomeProject}/src"
-pylint --rcfile="${HomeProject}/pylintrc" "${HomePackage}" | tee "${HomeProject}/pylint.out"
+
+_Cmd=pylint
+_Cmd="$_Cmd --rcfile=${HomeProject}/cfg/pylintrc"
+_Cmd="$_Cmd ${HomePackage}"
+$_Cmd | tee ${HomeProject}/out/pylint.out

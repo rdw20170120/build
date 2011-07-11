@@ -1,5 +1,15 @@
 #!/bin/bash
 # Run sloccount to count lines-of-code (LOC) in this project
+# NOTE:  Do NOT include subdirectories "dist", "out", or "PVE"
 
 echo "run-sloccount..."
-sloccount --duplicates --wide --details "${HomeProject}/src" > "${HomeProject}/sloccount.sc"
+_Cmd=sloccount
+_Cmd="$_Cmd --addlangall --details --wide"
+_Cmd="$_Cmd ${HomeProject}/activate"
+_Cmd="$_Cmd ${HomeProject}/MANIFEST.in"
+_Cmd="$_Cmd ${HomeProject}/setup.py"
+_Cmd="$_Cmd ${HomeProject}/bin"
+_Cmd="$_Cmd ${HomeProject}/cfg"
+_Cmd="$_Cmd ${HomeProject}/doc"
+_Cmd="$_Cmd ${HomeProject}/src"
+$_Cmd > ${HomeProject}/out/sloccount.sc
