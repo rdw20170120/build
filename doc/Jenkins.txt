@@ -12,8 +12,7 @@ sudo echo 'deb http://pkg.jenkins-ci.org/debian binary/' > /etc/apt/sources.list
 
 sudo aptitude update
 sudo aptitude install jenkins
-###############################################################################
-# TODO:  REVIEW:  update below from Hudson to Jenkins
+
 ###############################################################################
 Plugins (http://server:8080/pluginManager):
 
@@ -28,6 +27,7 @@ Install SafeRestart plugin
 Install SLOCCount plugin
 Leave SSH Slaves plugin
 Install Violations plugin
+
 ###############################################################################
 Jenkins server configuration (http://server:8080/configure):
 
@@ -36,8 +36,8 @@ Mercurial installations:
     Executable = hg
 Shell
     Shell executable = bash
-E-mail Notification
-    Jenkins URL = http://server:8080/
+Jenkins URL = http://server:8080/
+
 ###############################################################################
 Jenkins job configuration (http://server:8080/job/TestJob/configure):
 
@@ -51,7 +51,7 @@ Source Code Management
             URL = https://robwilliams@bitbucket.org/robwilliams/build
 Build Triggers
     Poll SCM
-        Schedule = * * * * * (every minute)
+        Schedule = */5 * * * * (every five minutes)
 Build
     Execute shell
         Command =
@@ -69,3 +69,37 @@ Post-build Actions
     Publish Cobertura Coverage Report
         Cobertura xml report pattern = **/coverage.xml
         Consider only stable builds = checked
+
+###############################################################################
+# Configure Jenkins to use SSH for access to BitBucket repository
+# Assuming Jenkins home directory is /var/lib/jenkins
+
+ssh-keygen -f Jenkins.key
+# upload public SSH key to account on BitBucket.org
+
+sudo vi /var/lib/jenkins/.hgrc
+  # Mercurial user configuration
+  [alias]
+
+  [auth]
+  bb.password = 
+  bb.prefix = bitbucket.org/robwilliams/
+  bb.schemes = https
+  bb.username = robwilliams
+
+  [extensions]
+  fetch =
+
+  [ui]
+  ssh = ssh -C
+  username = Jenkins <RDW.20091028a.2bq64D@refactory.biz>
+
+sudo vi /var/lib/jenkins/.ssh/config
+  Host bitbucket.org
+    Compression yes
+    IdentityFile ~/.ssh/Jenkins-private.key
+    User hg
+
+# Login as Jenkins to initialize job workspace
+sudo su - jenkins
+hg clone --rev default ssh://hg@bitbucket.org/robwilliams/euler /var/lib/jenkins/jobs/Euler/workspace

@@ -688,4 +688,12 @@ g305
 S'test_true'
 p309
 tp310
+sI96
+(S'/home/rob/work/build/code/src/example/test/dummy_test.py'
+p311
+S'example.test.dummy_test'
+p312
+S'test_timeout'
+p313
+tp314
 ss.
