@@ -2,6 +2,7 @@ syntax: glob
 .*.swp
 *~
 *.orig
+*.out
 *.pyc
 
 #.DS_Store

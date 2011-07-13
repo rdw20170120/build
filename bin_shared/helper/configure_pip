@@ -6,6 +6,8 @@ export PIP_REQUIRE_VIRTUALENV=true
 export PIP_RESPECT_VIRTUALENV=true
 [[   -z "$PIP_DOWNLOAD_CACHE" ]] && \
   echo 'FATAL: Missing value for $PIP_DOWNLOAD_CACHE' && exit 1
-[[ ! -e "$PIP_DOWNLOAD_CACHE" ]] && mkdir -p "$PIP_DOWNLOAD_CACHE"
+[[ ! -e "$PIP_DOWNLOAD_CACHE" ]] && \
+  echo "INFO:  Creating $PIP_DOWNLOAD_CACHE" && \
+  mkdir -p "$PIP_DOWNLOAD_CACHE"
 [[ ! -d "$PIP_DOWNLOAD_CACHE" ]] && \
   echo "FATAL: Missing directory $PIP_DOWNLOAD_CACHE" && exit 1
