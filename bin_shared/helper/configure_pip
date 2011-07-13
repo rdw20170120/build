@@ -11,4 +11,4 @@ export PIP_RESPECT_VIRTUALENV=true
   mkdir -p "$PIP_DOWNLOAD_CACHE"
 [[ ! -d "$PIP_DOWNLOAD_CACHE" ]] && \
   echo "FATAL: Missing directory $PIP_DOWNLOAD_CACHE" && exit 1
-echo ''
+echo 'No-op to exit cleanly'

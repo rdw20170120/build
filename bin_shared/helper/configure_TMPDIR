@@ -2,7 +2,11 @@
 
 echo 'INFO:  Configure temporary directory (TMPDIR)'
 
-[[   -z "$TMPDIR" ]] && echo 'FATAL: Missing value for $TMPDIR' && exit 1
-[[ ! -e "$TMPDIR" ]] && echo "INFO:  Creating $TMPDIR" && mkdir -p "$TMPDIR"
-[[ ! -d "$TMPDIR" ]] && echo "FATAL: Missing directory $TMPDIR" && exit 1
-echo ''
+[[   -z "$TMPDIR" ]] && \
+  echo 'FATAL: Missing value for $TMPDIR' && exit 1
+[[ ! -e "$TMPDIR" ]] && \
+  echo "INFO:  Creating $TMPDIR" && \
+  mkdir -p "$TMPDIR"
+[[ ! -d "$TMPDIR" ]] && \
+  echo "FATAL: Missing directory $TMPDIR" && exit 1
+echo 'No-op to exit cleanly'

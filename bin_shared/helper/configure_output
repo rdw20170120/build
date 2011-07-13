@@ -9,4 +9,4 @@ echo 'INFO:  Configure output directory'
   mkdir "$HomeProject/out"
 [[ ! -d "$HomeProject/out" ]] && \
   echo "FATAL: Missing directory $HomeProject/out" && exit 1
-echo ''
+echo 'No-op to exit cleanly'
