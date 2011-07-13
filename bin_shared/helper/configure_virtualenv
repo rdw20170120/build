@@ -4,9 +4,9 @@ echo 'INFO:  Configure Python virtualenv'
 
 # Verify Pip integration
 [[   -z "$PIP_REQUIRE_VIRTUALENV" ]] && \
-  echo 'FATAL: Missing value for $PIP_REQUIRE_VIRTUALENV' && exit 1
+  echo 'FATAL:  Missing value for $PIP_REQUIRE_VIRTUALENV' && exit 1
 [[   -z "$PIP_RESPECT_VIRTUALENV" ]] && \
-  echo 'FATAL: Missing value for $PIP_RESPECT_VIRTUALENV' && exit 1
+  echo 'FATAL:  Missing value for $PIP_RESPECT_VIRTUALENV' && exit 1
 
 # If the virtual environment does not already exist, create it
 [[ ! -f "$HomeProject/PVE/bin/activate" ]] && \
@@ -16,5 +16,5 @@ echo 'INFO:  Configure Python virtualenv'
 # Activate the Python virtual environment (PVE)
 source "$HomeProject/PVE/bin/activate"
 [[ -z "$VIRTUAL_ENV" ]] && \
-  echo 'FATAL: Missing value for $VIRTUAL_ENV' && exit 1
+  echo 'FATAL:  Missing value for $VIRTUAL_ENV' && exit 1
 export PYTHONHOME=$VIRTUAL_ENV

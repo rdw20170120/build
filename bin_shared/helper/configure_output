@@ -3,10 +3,9 @@
 echo 'INFO:  Configure output directory'
 
 [[   -z "$HomeProject" ]] && \
-  echo 'FATAL: Missing value for $HomeProject' && exit 1
+  echo 'FATAL:  Missing value for $HomeProject' && exit 1
 [[ ! -e "$HomeProject/out" ]] && \
   echo "INFO:  Creating $HomeProject/out" && \
   mkdir "$HomeProject/out"
-[[ ! -d "$HomeProject/out" ]] && \
-  echo "FATAL: Missing directory $HomeProject/out" && exit 1
-echo 'No-op to exit cleanly'
+[[   -d "$HomeProject/out" ]] && \
+  echo "INFO:  Directory $HomeProject/out exists"
