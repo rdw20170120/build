@@ -1,43 +1,11 @@
 #!/bin/bash
-# Activate the Python virtual environment in this project directory.
+# Activate this project
 
-echo 'NOTE:  Execute as: "source activate"'
+echo 'WARN:  Should be executed as: "source activate", was it?'
 
-# Remember project home directory
-# TODO: FIX: Remove assumption that current directory is project root (check!)
+# Remember the current directory as our project home
 export HomeProject=${PWD}
 
-# Prepare temporary directory
-# TODO: FIX: Abort if temporary directory is not preconfigured
-[[ ! -e "$TMPDIR" ]] && mkdir -p "$TMPDIR"
-
-# Configure Pip
-export PIP_DOWNLOAD_CACHE=$TMPDIR/pip
-export PIP_REQUIRE_VIRTUALENV=true
-export PIP_RESPECT_VIRTUALENV=true
-[[ ! -e "$PIP_DOWNLOAD_CACHE" ]] && mkdir -p "$PIP_DOWNLOAD_CACHE"
-# TODO: FIX: Abort if Pip cache directory is not configured
-
-# Remember project home package (parent package of all project source)
-# NOTE:  All project source should be contained in
-#        ${HomeProject}/src/${HomePackage}
-export HomePackage=example
-
-# Remember location of Python virtual environment (PVE)
-_PVE=${HomeProject}/PVE
-
-# If the virtual environment does not already exist, create it
-[[ ! -f "${_PVE}/bin/activate" ]] && virtualenv --no-site-packages "${_PVE}"
-
-# Activate the (possibly new) Python virtual environment
-source "${_PVE}/bin/activate"
-export PYTHONHOME=${VIRTUAL_ENV}
-
-# Configure system execution PATH
-_PathSystem=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-_PathProject=${HomeProject}/bin
-_PathPVE=${_PVE}/bin
-export PATH=${_PathProject}:${_PathPVE}:${_PathSystem}
-
-# Create the output directory
-[[ ! -d ${HomeProject}/out ]] && mkdir ${HomeProject}/out
+source $HomeProject/project.env
+source $HomeProject/configure_build_tools
+source $HomeProject/bin_shared/helper/configure_project

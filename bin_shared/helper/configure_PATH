@@ -1,0 +1,8 @@
+#!/bin/bash
+
+echo 'INFO:  Configure system execution PATH'
+
+_PathSystem=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+_PathProject=$HomeProject/bin
+_PathPve=$HomeProject/PVE/bin
+export PATH=${_PathProject}:${_PathPve}:${_PathSystem}
