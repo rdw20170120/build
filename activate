@@ -3,6 +3,9 @@
 
 echo 'WARN:  Should be executed as "source activate", was it?'
 
+# Dump incoming environment for troubleshooting
+env > ./env.out
+
 # Remember the current directory as our project home
 export HomeProject=${PWD}
 
