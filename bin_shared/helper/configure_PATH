@@ -2,7 +2,8 @@
 
 echo 'INFO:  Configure system execution PATH'
 
-_PathSystem=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+_PathBuild=$HomeBuildTools/bin_shared
 _PathProject=$HomeProject/bin
 _PathPve=$HomeProject/PVE/bin
-export PATH=${_PathProject}:${_PathPve}:${_PathSystem}
+_PathSystem=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+export PATH=${_PathProject}:${_PathBuild}:${_PathPve}:${_PathSystem}
