@@ -1,7 +1,0 @@
-#!/bin/bash
-# Run Coverage for this project
-# TODO:  FIX:  Does not seem to work, research...
-
-echo "run-coverage..."
-coverage debug data
-coverage debug sys

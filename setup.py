@@ -8,5 +8,5 @@ setup(
     url='http://bitbucket.org/robwilliams/build/',
     license='doc/LICENSE.txt',
     description='Illustrate a Python build environment.',
-    long_description=open('doc/README.txt').read(),
+    long_description=open('README.txt').read(),
 )
