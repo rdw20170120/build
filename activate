@@ -11,4 +11,4 @@ export HomeProject=${PWD}
 
 source $HomeProject/project.env
 source $HomeProject/configure_build_tools
-source $HomeProject/bin_shared/helper/configure_project
+source $HomeBuildTools/bin_shared/helper/configure_project
