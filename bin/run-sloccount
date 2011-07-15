@@ -2,7 +2,7 @@
 # Run sloccount to count lines-of-code (LOC) in this project
 # NOTE:  Do NOT include subdirectories "dist", "out", or "PVE"
 
-echo "run-sloccount..."
+echo "run-sloccount for the build project..."
 _Cmd=sloccount
 _Cmd="$_Cmd --addlangall --details --wide"
 _Cmd="$_Cmd ${HomeProject}/activate"
@@ -10,6 +10,7 @@ _Cmd="$_Cmd ${HomeProject}/configure_build_tools"
 _Cmd="$_Cmd ${HomeProject}/project.env"
 _Cmd="$_Cmd ${HomeProject}/setup.py"
 _Cmd="$_Cmd ${HomeProject}/bin"
+_Cmd="$_Cmd ${HomeProject}/bin_shared"
 _Cmd="$_Cmd ${HomeProject}/cfg"
 _Cmd="$_Cmd ${HomeProject}/doc"
 _Cmd="$_Cmd ${HomeProject}/src"
