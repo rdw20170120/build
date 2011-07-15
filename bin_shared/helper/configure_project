@@ -2,8 +2,8 @@
 
 echo 'INFO:  Configure project (general)'
 
-source $HomeProject/bin_shared/helper/configure_TMPDIR
-source $HomeProject/bin_shared/helper/configure_pip
-source $HomeProject/bin_shared/helper/configure_virtualenv
-source $HomeProject/bin_shared/helper/configure_PATH
-source $HomeProject/bin_shared/helper/configure_output
+source $HomeBuildTools/bin_shared/helper/configure_TMPDIR
+source $HomeBuildTools/bin_shared/helper/configure_pip
+source $HomeBuildTools/bin_shared/helper/configure_virtualenv
+source $HomeBuildTools/bin_shared/helper/configure_PATH
+source $HomeBuildTools/bin_shared/helper/configure_output
