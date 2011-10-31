@@ -2,10 +2,11 @@
 # Run Nose on this project
 
 echo "run-nose..."
-cd "${HomeProject}/src"
+cd "${BO_Project}/src"
 
 _Cmd=nosetests
-_Cmd="$_Cmd --config=${HomeProject}/cfg/nose.cfg"
-_Cmd="$_Cmd --id-file=${HomeProject}/.noseids"
+_Cmd="$_Cmd --config=${BO_Project}/cfg/nose.cfg"
+_Cmd="$_Cmd --id-file=${BO_Project}/.noseids"
 _Cmd="$_Cmd --cover-package=${HomePackage}"
 $_Cmd
+

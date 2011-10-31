@@ -2,5 +2,6 @@
 # Build a source distribution (sdist) of this Python project.
 
 echo "build-sdist..."
-cd "${HomeProject}"
+cd "${BO_Project}"
 python setup.py sdist
+

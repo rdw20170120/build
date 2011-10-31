@@ -1,6 +1,7 @@
 #!/bin/bash
 # Freeze the dependencies for this project using Pip
 
-_File=${HomeProject}/cfg/freeze.pip
+_File=${BO_Project}/cfg/freeze.pip
 
-pip freeze -r "${_File}" > "${_File}"
+pip freeze -r ${_File} > ${_File}
+

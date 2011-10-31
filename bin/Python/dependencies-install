@@ -1,10 +1,11 @@
 #!/bin/bash
 # Use Pip to install dependencies from a previous freeze
 
-_File=${HomeProject}/cfg/freeze.pip
+_File=${BO_Project}/cfg/freeze.pip
 
 # Install from the previously-frozen dependency list
-pip --quiet install -r "${_File}"
+pip --quiet install -r ${_File}
 
 # Report the installed dependencies
 pip freeze
+

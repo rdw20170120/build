@@ -2,9 +2,10 @@
 # Run pylint on this project
 
 echo "run-pylint..."
-cd "${HomeProject}/src"
+cd "${BO_Project}/src"
 
 _Cmd=pylint
-_Cmd="$_Cmd --rcfile=${HomeProject}/cfg/pylintrc"
+_Cmd="$_Cmd --rcfile=${BO_Project}/cfg/pylintrc"
 _Cmd="$_Cmd ${HomePackage}"
-$_Cmd | tee ${HomeProject}/out/pylint.out
+$_Cmd | tee ${BO_Project}/out/pylint.out
+

@@ -1,14 +1,15 @@
 #!/bin/bash
 # Clean the project directory of all output and temporary files
 
-rm ${HomeProject}/MANIFEST
+rm ${BO_Project}/MANIFEST
 
-rm -fr ${HomeProject}/dist
+rm -fr ${BO_Project}/dist
 
-find ${HomeProject} \( -type f -a -name "*.pyc"         \) -exec rm {} \;
-find ${HomeProject} \( -type f -a -name ".coverage"     \) -exec rm {} \;
-find ${HomeProject} \( -type f -a -name "coverage.xml"  \) -exec rm {} \;
-find ${HomeProject} \( -type f -a -name "env.out"       \) -exec rm {} \;
-find ${HomeProject} \( -type f -a -name "nosetests.xml" \) -exec rm {} \;
-find ${HomeProject} \( -type f -a -name "pylint.out"    \) -exec rm {} \;
-find ${HomeProject} \( -type f -a -name "sloccount.sc"  \) -exec rm {} \;
+find ${BO_Project} \( -type f -a -name "*.pyc"         \) -exec rm {} \;
+find ${BO_Project} \( -type f -a -name ".coverage"     \) -exec rm {} \;
+find ${BO_Project} \( -type f -a -name "coverage.xml"  \) -exec rm {} \;
+find ${BO_Project} \( -type f -a -name "env.out"       \) -exec rm {} \;
+find ${BO_Project} \( -type f -a -name "nosetests.xml" \) -exec rm {} \;
+find ${BO_Project} \( -type f -a -name "pylint.out"    \) -exec rm {} \;
+find ${BO_Project} \( -type f -a -name "sloccount.sc"  \) -exec rm {} \;
+
