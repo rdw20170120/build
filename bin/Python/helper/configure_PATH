@@ -2,8 +2,13 @@
 
 echo 'INFO:  Configure system execution PATH'
 
-_PathBuild=$HomeBuildTools/bin_shared
-_PathProject=$HomeProject/bin
-_PathPve=$HomeProject/PVE/bin
-_PathSystem=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-export PATH=${_PathProject}:${_PathBuild}:${_PathPve}:${_PathSystem}
+requireVariable BO_Home
+requireVariable BO_Project
+requireVariable BO_PathSystem
+
+_PathBuild=$BO_Home/bin/Python
+_PathProject=$BO_Project/bin
+_PathPve=$BO_Project/PVE/bin
+
+export PATH=${_PathProject}:${_PathBuild}:${_PathPve}:${BO_PathSystem}
+
