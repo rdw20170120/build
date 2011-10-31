@@ -2,9 +2,12 @@
 
 echo 'INFO:  Activating the Python project...'
 
-source $BO_Home/bin/Python/helper/configure_TMPDIR
-source $BO_Home/bin/Python/helper/configure_pip
-source $BO_Home/bin/Python/helper/configure_virtualenv
-source $BO_Home/bin/Python/helper/configure_PATH
-source $BO_Home/bin/Python/helper/configure_output
+requireVariable BO_Home
+requireDirectory $BO_Home
+_Dir=$BO_Home/bin/Python/helper
+source ${Dir}/configure_TMPDIR
+source ${Dir}/configure_pip
+source ${Dir}/configure_virtualenv
+source ${Dir}/configure_PATH
+source ${Dir}/configure_output
 
