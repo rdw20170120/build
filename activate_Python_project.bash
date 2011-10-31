@@ -6,6 +6,7 @@ requireVariable BO_Home
 requireDirectory $BO_Home
 
 _Dir=$BO_Home/bin/Python/helper
+requireDirectory ${_Dir}
 
 source ${_Dir}/configure_TMPDIR
 source ${_Dir}/configure_pip

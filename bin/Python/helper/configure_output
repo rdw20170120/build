@@ -2,10 +2,10 @@
 
 echo 'INFO:  Configure output directory'
 
-[[   -z "$HomeProject" ]] && \
-  echo 'FATAL:  Missing value for $HomeProject' && exit 1
-[[ ! -e "$HomeProject/out" ]] && \
-  echo "INFO:  Creating $HomeProject/out" && \
-  mkdir "$HomeProject/out"
-[[   -d "$HomeProject/out" ]] && \
-  echo "INFO:  Directory $HomeProject/out exists"
+requireVariable BO_Project
+_Dir=$BO_Project/out
+[[ ! -e "${_Dir}" ]] && \
+  echo "INFO:  Creating directory '${_Dir}'" && \
+  mkdir -p ${_Dir}
+requireDirectory ${_Dir}
+

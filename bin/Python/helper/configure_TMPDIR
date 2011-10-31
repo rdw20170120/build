@@ -2,10 +2,9 @@
 
 echo 'INFO:  Configure temporary directory (TMPDIR)'
 
-[[   -z "$TMPDIR" ]] && \
-  echo 'FATAL:  Missing value for $TMPDIR' && exit 1
+requireVariable TMPDIR
 [[ ! -e "$TMPDIR" ]] && \
-  echo "INFO:  Creating $TMPDIR" && \
-  mkdir -p "$TMPDIR"
-[[   -d "$TMPDIR" ]] && \
-  echo "INFO:  Directory $TMPDIR exists"
+  echo "INFO:  Creating directory '$TMPDIR'" && \
+  mkdir -p $TMPDIR
+requireDirectory $TMPDIR
+
