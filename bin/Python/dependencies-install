@@ -4,7 +4,10 @@
 _File=${BO_Project}/cfg/freeze.pip
 
 # Install from the previously-frozen dependency list
-pip --quiet install -r ${_File}
+_Cmd=pip
+# TODO:  _Cmd="${_Cmd} --quiet"
+_Cmd="${_Cmd} install -r ${_File}"
+${_Cmd}
 
 # Report the installed dependencies
 pip freeze
