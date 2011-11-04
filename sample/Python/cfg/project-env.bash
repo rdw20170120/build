@@ -2,14 +2,12 @@
 
 echo 'INFO:  Configure project (specific)'
 
+export BO_Version=0.1
+
 # Configure project home package (parent package of all project source)
 # NOTE:  All project source should be contained in
-#        ${HomeProject}/src/${HomePackage}
+#        ${BO_Project}/src/${HomePackage}
 export HomePackage=example
-
-# Configure build tools
-ParentBuildTools=~/tool/build
-RevisionBuildTools=tip
 
 # Configure PIP download cache
 [[   -z "$TMPDIR" ]] && \

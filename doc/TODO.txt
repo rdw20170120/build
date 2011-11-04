@@ -1,0 +1,11 @@
+Things TODO for this project
+
+* Within each project tree that uses BriteOnyx, consider creating a temporary
+  directory into which we assemble the complete contents from this BriteOnyx
+  that are needed by that project, then put that temporary directory on the
+  project's PATH so that there is no further reference back to BriteOnyx
+* Enhance the use of SLOCcount to include the relevant files from BriteOnyx
+* Refactor BriteOnyx so that it is bootstrapped into a using project, but
+  afterwards leaves no residual other than the relevant BriteOnyx files needed
+  to support that project
+
