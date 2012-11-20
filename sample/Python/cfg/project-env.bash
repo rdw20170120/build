@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo 'INFO:  Configure project (specific)'
+echo 'INFO: Configure project (specific)'
 
 export BO_Version=0.1
 
@@ -10,6 +10,5 @@ export BO_Version=0.1
 export HomePackage=example
 
 # Configure PIP download cache
-[[   -z "$TMPDIR" ]] && \
-  echo 'FATAL: Missing value for $TMPDIR' && exit 1
+[[   -z "$TMPDIR" ]] && echo 'FATAL: Missing value for $TMPDIR' && exit 1
 export PIP_DOWNLOAD_CACHE=$TMPDIR/pip
