@@ -15,6 +15,7 @@ abort () {
   if [[ "$SHLVL" -eq 1 ]] ; then
     logError "$1" "$2" 'At top level of BASH shell, NOT aborting!'
     dumpBash "$FUNCNAME" "$LINENO"
+    return ${_Status}
   else
     exit ${_Status}
   fi
