@@ -1,5 +1,4 @@
 #!/bin/bash
-_Self=$(basename $0)
 # ----------------------------------------------------------------------------
 # This is ansi-color 0.6 from http://code.google.com/p/ansi-color/
 # ----------------------------------------------------------------------------
@@ -30,6 +29,8 @@ _Self=$(basename $0)
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 # ----------------------------------------------------------------------------
+# TODO: Clean up with here documents
+_Self=$(basename $0)
 
 COLORS=( black red green yellow blue magenta cyan white );
 NUM_COLORS=${#COLORS[@]};

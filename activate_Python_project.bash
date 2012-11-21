@@ -13,6 +13,7 @@ echo 'INFO: Activating the Python project...'
 
 # Configure the Linux environment
 _Dir=$BO_Home/bin/Linux/helper
+[[ ! -d "${_Dir}" ]] && echo "FATAL: Missing directory '${_Dir}'" && return 1
 source ${_Dir}/declare.bash
 [[ $? -ne 0 ]] && echo 'FATAL: Aborting' && return 1
 
