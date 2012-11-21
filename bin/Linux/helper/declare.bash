@@ -2,10 +2,10 @@
 echo 'INFO: Declaring all scripting functionality for BriteOnyx...'
 
 _Dir=$BO_Home/bin/Linux/helper
-
-: <<'DisabledContent'
 source ${_Dir}/declare-logging.bash
 source ${_Dir}/declare-BASH.bash
+
+: <<'DisabledContent'
 source ${_Dir}/declare-POSIX.bash
 source ${_Dir}/declare-Hudson.bash
 source ${_Dir}/declare-Mercurial.bash
