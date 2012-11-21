@@ -33,5 +33,6 @@ source ${_Dir}/configure_output
 DisabledContent
 
 # Return, but do NOT exit, with a success code
+logInfo "$BASH_SOURCE" "$LINENO" "Python project activated."
 return 0
 
