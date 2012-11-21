@@ -11,3 +11,6 @@ _PathPve=$BO_Project/PVE/bin
 
 export PATH=${_PathProject}:${_PathBuild}:${_PathPve}:${BO_PathSystem}
 
+# Return, but do NOT exit, with a success code
+return 0
+

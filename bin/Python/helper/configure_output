@@ -8,3 +8,6 @@ _Dir=$BO_Project/out
   mkdir -p ${_Dir}
 requireDirectory ${_Dir}
 
+# Return, but do NOT exit, with a success code
+return 0
+

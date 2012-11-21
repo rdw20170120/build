@@ -7,3 +7,6 @@ requireVariable TMPDIR
   mkdir -p $TMPDIR
 requireDirectory $TMPDIR
 
+# Return, but do NOT exit, with a success code
+return 0
+

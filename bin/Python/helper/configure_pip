@@ -10,3 +10,6 @@ requireVariable PIP_DOWNLOAD_CACHE
   mkdir -p $PIP_DOWNLOAD_CACHE
 requireDirectory $PIP_DOWNLOAD_CACHE
 
+# Return, but do NOT exit, with a success code
+return 0
+

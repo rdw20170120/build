@@ -18,3 +18,6 @@ requireVariable VIRTUAL_ENV
 export PYTHONHOME=$VIRTUAL_ENV
 requireVariable PYTHONHOME
 
+# Return, but do NOT exit, with a success code
+return 0
+

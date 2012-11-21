@@ -1,17 +1,18 @@
 #!/bin/bash
-# Declare all BASH functionality for BriteOnyx
-
-requireVariable BO_Home
-requireDirectory $BO_Home
+# Declare all functionality for BriteOnyx
 
 # Configure the Linux environment
 _Dir=$BO_Home/bin/Linux/helper
-requireDirectory ${_Dir}
-# TODO:  Temporarily disabled for debugging...
-# source ${_Dir}/declare-logging.bash
-# source ${_Dir}/declare-BASH.bash
-# source ${_Dir}/declare-POSIX.bash
-# source ${_Dir}/declare-Hudson.bash
-# source ${_Dir}/declare-Mercurial.bash
-# source ${_Dir}/declare-Subversion.bash
+
+: <<'DisabledContent'
+source ${_Dir}/declare-logging.bash
+source ${_Dir}/declare-BASH.bash
+source ${_Dir}/declare-POSIX.bash
+source ${_Dir}/declare-Hudson.bash
+source ${_Dir}/declare-Mercurial.bash
+source ${_Dir}/declare-Subversion.bash
+DisabledContent
+
+# Return, but do NOT exit, with a success code
+return 0
 
