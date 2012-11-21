@@ -12,7 +12,6 @@ logDebug "$BASH_SOURCE" "$LINENO" "This is an example debugging message"
 logInfo  "$BASH_SOURCE" "$LINENO" "This is an example informational message"
 logWarn  "$BASH_SOURCE" "$LINENO" "This is an example warning message"
 logError "$BASH_SOURCE" "$LINENO" "This is an example error message"
-logFatal "$BASH_SOURCE" "$LINENO" "This is an example fatal message"
 
 : <<'DisabledContent'
 # Integrate later, preferably as optional components
