@@ -1,11 +1,8 @@
 #!/bin/bash
-echo 'INFO: Configuring temporary directory $TMPDIR...'
+logInfo 'Configuring temporary directory $TMPDIR...'
 
 requireVariable TMPDIR
-[[ ! -e "$TMPDIR" ]] && \
-  echo "INFO: Creating directory '$TMPDIR'" && \
-  mkdir -p $TMPDIR
-requireDirectory $TMPDIR
+createDirectory $TMPDIR
 
 # Return, but do NOT exit, with a success code
 return 0

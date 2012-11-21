@@ -1,19 +1,23 @@
 #!/bin/bash
-echo 'INFO: Configuring Python virtualenv...'
+logInfo 'Configuring Python virtualenv...'
 
 # Verify PIP integration
 requireVariable PIP_DOWNLOAD_CACHE
 requireVariable PIP_REQUIRE_VIRTUALENV
 requireVariable PIP_RESPECT_VIRTUALENV
 
-# If the virtual environment does not already exist, create it
 requireVariable BO_Project
-[[ ! -f "$BO_Project/PVE/bin/activate" ]] && \
-  echo "WARN: Creating PVE!" && \
+_Script=$BO_Project/PVE/bin/activate
+
+# If the virtual environment does not already exist, create it
+[[ ! -f "${_Script}" ]] && \
+  logWarn 'Creating Python virtual environment (PVE)' && \
   virtualenv --no-site-packages $BO_Project/PVE
 
 # Activate the Python virtual environment (PVE)
-source $BO_Project/PVE/bin/activate
+requireDirectory $BO_Project/PVE
+requireFile ${_Script}
+source ${_Script}
 requireVariable VIRTUAL_ENV
 export PYTHONHOME=$VIRTUAL_ENV
 requireVariable PYTHONHOME

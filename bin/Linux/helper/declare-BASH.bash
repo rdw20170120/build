@@ -1,5 +1,5 @@
 #!/bin/bash
-# Declare BASH functionality for BASH
+# Declare functionality for BASH
 
 abort () {
   # Abort BASH execution with message $3 and exit status $4

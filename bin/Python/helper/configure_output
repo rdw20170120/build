@@ -1,12 +1,8 @@
 #!/bin/bash
-echo 'INFO:  Configuring output directory...'
+logInfo 'Configuring output directory...'
 
 requireVariable BO_Project
-_Dir=$BO_Project/out
-[[ ! -e "${_Dir}" ]] && \
-  echo "INFO:  Creating directory '${_Dir}'" && \
-  mkdir -p ${_Dir}
-requireDirectory ${_Dir}
+createDirectory $BO_Project/out
 
 # Return, but do NOT exit, with a success code
 return 0

@@ -1,5 +1,5 @@
 #!/bin/bash
-# Declare BASH functionality for POSIX
+# Declare functionality for POSIX (mostly directory and file handling)
 
 changeFileGroup () {
   # Change ownership of file $2 to group $1
@@ -150,7 +150,7 @@ requireFile () {
   abort "$FUNCNAME" "$LINENO" "Required file '$1' must exist!"
 }
 
-: <<DISABLED
+: <<'DisabledContent'
   # NOTE:  Place content to be ignored in here.
 
   # TODO:  Refactor & redesign
@@ -207,5 +207,5 @@ pathnameNotExists () {
   [[ -e "$1" ]] && logError "Pathname $1 should not exist" && return 1
   return 0
 }
-DISABLED
+DisabledContent
 

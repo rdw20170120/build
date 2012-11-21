@@ -8,8 +8,9 @@ echo 'INFO: Activating the Python project...'
 #       continuing execution where possible.  Exiting the shell robs the user
 #       of useful feedback and interrupts their work, which is unacceptable.
 
-[[   -z "$BO_Home" ]] && echo 'FATAL: Missing $BO_Home'             && return 1
-[[ ! -d "$BO_Home" ]] && echo "FATAL: Missing directory '$BO_Home'" && return 1
+[[   -z "$BO_Home"    ]] && echo 'FATAL: Missing $BO_Home'             && return 1
+[[   -z "$BO_Project" ]] && echo 'FATAL: Missing $BO_Project'          && return 1
+[[ ! -d "$BO_Home"    ]] && echo "FATAL: Missing directory '$BO_Home'" && return 1
 
 # Configure the Linux environment
 _Dir=$BO_Home/bin/Linux/helper
@@ -23,17 +24,17 @@ logInfo "$BASH_SOURCE" "$LINENO" "BriteOnyx scripting support loaded!"
 
 # Configure the Python environment
 _Dir=$BO_Home/bin/Python/helper
-
-: <<'DisabledContent'
 requireDirectory ${_Dir}
 source ${_Dir}/configure_TMPDIR
 source ${_Dir}/configure_pip
-source ${_Dir}/configure_virtualenv
+# TODO: source ${_Dir}/configure_virtualenv
 source ${_Dir}/configure_PATH
 source ${_Dir}/configure_output
+
+: <<'DisabledContent'
 DisabledContent
 
 # Return, but do NOT exit, with a success code
-logInfo "$BASH_SOURCE" "$LINENO" "Python project activated."
+logInfo "$BASH_SOURCE" "$LINENO" "Python project '$BO_Project' activated."
 return 0
 
