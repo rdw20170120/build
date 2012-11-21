@@ -4,7 +4,7 @@ logInfo "$BASH_SOURCE" "$LINENO" 'Configuring PIP...'
 export PIP_REQUIRE_VIRTUALENV=true
 export PIP_RESPECT_VIRTUALENV=true
 
-requireVariable PIP_DOWNLOAD_CACHE
+requireVariable "$BASH_SOURCE" "$LINENO" PIP_DOWNLOAD_CACHE
 createDirectory $PIP_DOWNLOAD_CACHE
 
 # Return, but do NOT exit, with a success code

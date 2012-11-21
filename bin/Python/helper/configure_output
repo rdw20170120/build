@@ -1,7 +1,7 @@
 #!/bin/bash
 logInfo "$BASH_SOURCE" "$LINENO" 'Configuring output directory...'
 
-requireVariable BO_Project
+requireVariable "$BASH_SOURCE" "$LINENO" BO_Project
 createDirectory $BO_Project/out
 
 # Return, but do NOT exit, with a success code

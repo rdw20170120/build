@@ -1,7 +1,7 @@
 #!/bin/bash
 logInfo "$BASH_SOURCE" "$LINENO" 'Configuring temporary directory $TMPDIR...'
 
-requireVariable TMPDIR
+requireVariable "$BASH_SOURCE" "$LINENO" TMPDIR
 createDirectory $TMPDIR
 
 # Return, but do NOT exit, with a success code
