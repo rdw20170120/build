@@ -62,7 +62,7 @@ logDebug () {
   # $2 = line in script where call originated
   # $3 = message
 
-  _logWithPriority "$1" "$2" "$3" 'DEBUG: ' "$(${_Color} magenta black)"
+  _logWithPriority "$1" "$2" "$3" 'DEBUG: ' "$(${_Color} blue black)"
 }
 
 logError () {
@@ -82,7 +82,7 @@ logInfo () {
   # $2 = line in script where call originated
   # $3 = message
 
-  _logWithPriority "$1" "$2" "$3" 'INFO:  ' "$(${_Color} blue black)"
+  _logWithPriority "$1" "$2" "$3" 'INFO:  ' "$(${_Color} cyan black)"
 }
 
 logWarn () {
@@ -92,7 +92,7 @@ logWarn () {
   # $2 = line in script where call originated
   # $3 = message
 
-  _logWithPriority "$1" "$2" "$3" 'WARN:  ' "$(${_Color} cyan black)"
+  _logWithPriority "$1" "$2" "$3" 'WARN:  ' "$(${_Color} magenta black)"
 }
 
 Oops () {
