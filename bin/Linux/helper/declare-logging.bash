@@ -52,7 +52,7 @@ _logWithPriority () {
   # $4 = priority (short text prefix)
   # $5 = ANSI color specification
 
-  _log "$1" "$2" "$5$4$3$(color off)"
+  _log "$1" "$2" "$5$4$3$(${_Color} off)"
 }
 
 logDebug () {

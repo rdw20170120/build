@@ -1,4 +1,5 @@
 #!/bin/bash
+_Self=$(basename $0)
 # ----------------------------------------------------------------------------
 # This is ansi-color 0.6 from http://code.google.com/p/ansi-color/
 # ----------------------------------------------------------------------------
@@ -9,7 +10,7 @@
 # ----------------------------------------------------------------------------
 # This software is distributed under the MIT License.
 #
-# Copyright (c) 2008 Alister Lewis-Bowen
+# Copyright (C) 2008 Alister Lewis-Bowen
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -40,48 +41,48 @@ NUM_EFFECTS=${#EFFECTS[@]};
 
 function help {
 	echo;
-	echo "$(color bd)Color and format your shell script output with minimal effort.$(color)";
+	echo "$(${_Self} bd)Color and format your shell script output with minimal effort.$(${_Self})";
 	echo;
 	echo 'Usage:';
-	echo "$(color bd)color$(color) [ $(color ul)effect$(color) ] [ [lt]$(color ul)fgcolor$(color) ] [ $(color ul)bgcolor$(color) ]";
-	echo "$(color bd)color$(color) list";
-	echo "$(color bd)color$(color) [ -h | --help ]";
+	echo "$(${_Self} bd)${_Self}$(${_Self}) [ $(${_Self} ul)effect$(${_Self}) ] [ [lt]$(${_Self} ul)fg${_Self}$(${_Self}) ] [ $(${_Self} ul)bg${_Self}$(${_Self}) ]";
+	echo "$(${_Self} bd)${_Self}$(${_Self}) list";
+	echo "$(${_Self} bd)${_Self}$(${_Self}) [ -h | --help ]";
 	echo;
 	echo 'where:';
-	echo -n "$(color ul)fgcolor$(color) and $(color ul)bgcolor$(color) are one of ";
+	echo -n "$(${_Self} ul)fg${_Self}$(${_Self}) and $(${_Self} ul)bg${_Self}$(${_Self}) are one of ";
 	for ((i=0;i<${NUM_COLORS};i++)); do
-		echo -n "$(color ${COLORS[${i}]})${COLORS[${i}]}$(color) ";
+		echo -n "$(${_Self} ${COLORS[${i}]})${COLORS[${i}]}$(${_Self}) ";
 	done;
 	echo;
-	echo -n "$(color ul)effect$(color) can be any of ";
+	echo -n "$(${_Self} ul)effect$(${_Self}) can be any of ";
 	for ((i=0;i<${NUM_EFFECTS};i++)); do
-		echo -n "$(color ${EFFECTS[${i}]})${EFFECTS[${i}]}$(color) ";
+		echo -n "$(${_Self} ${EFFECTS[${i}]})${EFFECTS[${i}]}$(${_Self}) ";
 	done;
 	echo;
-	echo "Preceed the $(color ul)fgcolor$(color) with $(color bd)lt$(color) to use a light color."
-	echo "$(color bd)color off$(color) or $(color bd)color$(color) resets to default colors and text effect.";
-	echo "$(color bd)color list$(color) displays all possible color combinations.";
+	echo "Preceed the $(${_Self} ul)fg${_Self}$(${_Self}) with $(${_Self} bd)lt$(${_Self}) to use a light ${_Self}."
+	echo "$(${_Self} bd)${_Self} off$(${_Self}) or $(${_Self} bd)${_Self}$(${_Self}) resets to default ${_Self}s and text effect.";
+	echo "$(${_Self} bd)${_Self} list$(${_Self}) displays all possible ${_Self} combinations.";
 	echo;
 	echo 'Examples:';
-	echo '  echo "$(color ul)Underlined text$(color off)"';
+	echo '  echo "$(${_Self} ul)Underlined text$(${_Self} off)"';
 	echo 'results in:';
-	echo "  $(color ul)Underlined text$(color off)";
+	echo "  $(${_Self} ul)Underlined text$(${_Self} off)";
 	echo;
-	echo '  echo "Make $(color rv)this$(color nm) reverse video text$(color off)"';
+	echo '  echo "Make $(${_Self} rv)this$(${_Self} nm) reverse video text$(${_Self} off)"';
 	echo 'results in:';
-	echo "  Make $(color rv)this$(color nm) reverse video text$(color off)";
+	echo "  Make $(${_Self} rv)this$(${_Self} nm) reverse video text$(${_Self} off)";
 	echo;
-	echo '  echo "$(color white blue) White text on a blue background $(color)"';
+	echo '  echo "$(${_Self} white blue) White text on a blue background $(${_Self})"';
 	echo 'results in:';
-	echo "  $(color white blue) White text on a blue background $(color)";
+	echo "  $(${_Self} white blue) White text on a blue background $(${_Self})";
 	echo;
-	echo '  echo "$(color ltyellow green) lt prefix on the yellow text text $(color off)"';
+	echo '  echo "$(${_Self} ltyellow green) lt prefix on the yellow text text $(${_Self} off)"';
 	echo 'results in:';
-	echo "  $(color ltyellow green) lt prefix on the yellow text text $(color off)";
+	echo "  $(${_Self} ltyellow green) lt prefix on the yellow text text $(${_Self} off)";
 	echo;
-	echo '  echo "$(color bold blink red yellow) Blinking bold red text on a yellow background $(color)"';
+	echo '  echo "$(${_Self} bold blink red yellow) Blinking bold red text on a yellow background $(${_Self})"';
 	echo 'results in:';
-	echo "  $(color bold blink red yellow) Blinking bold red text on a yellow background $(color)";
+	echo "  $(${_Self} bold blink red yellow) Blinking bold red text on a yellow background $(${_Self})";
 	echo;
 	echo;
 	echo -n "Note that results may vary with these standard ANSI escape sequences because of the different configurations of terminal emulators. ";
@@ -89,20 +90,20 @@ function help {
 	exit 1;
 }
 
-# Function: List colors combinations
+# Function: List color combinations
 # ----------------------------------------------------------------------------
 
 function list {
 
 	echo;
-	echo "$(color bd)These are the possible combinations of colors I can generate. ";
-	echo "$(color nm)Since terminal color settings vary, $(color ul)the expected output may vary$(color).";
+	echo "$(${_Self} bd)These are the possible combinations of colors I can generate. ";
+	echo "$(${_Self} nm)Since terminal ${_Self} settings vary, $(${_Self} ul)the expected output may vary$(${_Self}).";
 	echo;
 	
 	for ((bg=0;bg<${NUM_COLORS};bg++)); do
 		echo "${COLORS[${bg}]}:";
 			for ((fg=0;fg<${NUM_COLORS};fg++)); do
-				echo -n "$(color ${COLORS[${fg}]} ${COLORS[${bg}]}) ${COLORS[${fg}]} $(color) ";
+				echo -n "$(${_Self} ${COLORS[${fg}]} ${COLORS[${bg}]}) ${COLORS[${fg}]} $(${_Self}) ";
 			done;
 			echo;
 		echo;
@@ -164,7 +165,7 @@ while (( "$#" )); do
 		  if [ "$BG" = '' ]; then
 		  	BG=$1;
 		  else
-		  	error="I see more than two colors. Type color -h for more information.";
+		  	error="I see more than two colors. Type ${_Self} -h for more information.";
 		  fi;
 		fi;
 	else
@@ -172,7 +173,7 @@ while (( "$#" )); do
 		if [ $? -eq 1 ]; then
 			TE=("${TE[@]}" $1);
 		else
-			error="I don't recognize '$1'. Type color -h for more information.";
+			error="I don't recognize '$1'. Type ${_Self} -h for more information.";
 		fi;
 	fi;
 	
@@ -181,7 +182,7 @@ while (( "$#" )); do
 done;
 
 if [ "$error" != '' ]; then
-	echo $(color bold red)color: $error$(color); exit 1;
+	echo $(${_Self} bold red)${_Self}: $error$(${_Self}); exit 1;
 fi;
 
 # Insert text effects into the escape sequence
@@ -244,3 +245,4 @@ done;
 echo -en '\033['${seq}m;
 
 exit 0;
+
