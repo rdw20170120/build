@@ -1,26 +1,28 @@
 #!/bin/bash
 logInfo "$BASH_SOURCE" "$LINENO" 'Configuring Python virtualenv...'
 
-# Verify PIP integration
-requireVariable "$BASH_SOURCE" "$LINENO" PIP_DOWNLOAD_CACHE
-requireVariable "$BASH_SOURCE" "$LINENO" PIP_REQUIRE_VIRTUALENV
-requireVariable "$BASH_SOURCE" "$LINENO" PIP_RESPECT_VIRTUALENV
-
-requireVariable "$BASH_SOURCE" "$LINENO" BO_Project
+requireVariable "$BASH_SOURCE" "$LINENO" BO_Project || return 1
 _Script=$BO_Project/PVE/bin/activate
 
+# Verify PIP integration
+requireVariable "$BASH_SOURCE" "$LINENO" PIP_DOWNLOAD_CACHE     || return 1
+requireVariable "$BASH_SOURCE" "$LINENO" PIP_REQUIRE_VIRTUALENV || return 1
+requireVariable "$BASH_SOURCE" "$LINENO" PIP_RESPECT_VIRTUALENV || return 1
+
 # If the virtual environment does not already exist, create it
-[[ ! -f "${_Script}" ]] && \
-  logWarn 'Creating Python virtual environment (PVE)' && \
+if [[ ! -f "${_Script}" ]]; then
+  logWarn "$BASH_SOURCE" "$LINENO" 'Creating Python virtual environment (PVE)'
   virtualenv --no-site-packages $BO_Project/PVE
+  abortOnFail "$BASH_SOURCE" "$LINENO" $?
+fi
 
 # Activate the Python virtual environment (PVE)
-requireDirectory $BO_Project/PVE
-requireFile ${_Script}
-source ${_Script}
-requireVariable "$BASH_SOURCE" "$LINENO" VIRTUAL_ENV
+requireDirectory $BO_Project/PVE                     || return 1
+requireFile ${_Script}                               || return 1
+source ${_Script}                                    || return 1
+requireVariable "$BASH_SOURCE" "$LINENO" VIRTUAL_ENV || return 1
 export PYTHONHOME=$VIRTUAL_ENV
-requireVariable "$BASH_SOURCE" "$LINENO" PYTHONHOME
+requireVariable "$BASH_SOURCE" "$LINENO" PYTHONHOME  || return 1
 
 # Return, but do NOT exit, with a success code
 return 0

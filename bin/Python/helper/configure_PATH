@@ -1,9 +1,9 @@
 #!/bin/bash
 logInfo "$BASH_SOURCE" "$LINENO" 'Configuring system execution $PATH...'
 
-requireVariable "$BASH_SOURCE" "$LINENO" BO_Home
-requireVariable "$BASH_SOURCE" "$LINENO" BO_Project
-requireVariable "$BASH_SOURCE" "$LINENO" BO_PathSystem
+requireVariable "$BASH_SOURCE" "$LINENO" BO_Home       || return 1
+requireVariable "$BASH_SOURCE" "$LINENO" BO_PathSystem || return 1
+requireVariable "$BASH_SOURCE" "$LINENO" BO_Project    || return 1
 
 _PathBuild=$BO_Home/bin/Python
 _PathProject=$BO_Project/bin

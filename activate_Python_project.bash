@@ -24,12 +24,12 @@ logInfo "$BASH_SOURCE" "$LINENO" "BriteOnyx scripting support loaded!"
 
 # Configure the Python environment
 _Dir=$BO_Home/bin/Python/helper
-requireDirectory ${_Dir}
-source ${_Dir}/configure_TMPDIR
-source ${_Dir}/configure_pip
-# TODO: source ${_Dir}/configure_virtualenv
-source ${_Dir}/configure_PATH
-source ${_Dir}/configure_output
+requireDirectory ${_Dir}        || return 1
+source ${_Dir}/configure_TMPDIR || return 1
+source ${_Dir}/configure_pip    || return 1
+# TODO: source ${_Dir}/configure_virtualenv || return 1
+source ${_Dir}/configure_PATH   || return 1
+source ${_Dir}/configure_output || return 1
 
 : <<'DisabledContent'
 DisabledContent
