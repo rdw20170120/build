@@ -7,7 +7,7 @@
 # Inspired by Moshe Jacobson <moshe@runslinux.net>
 # @author Alister Lewis-Bowen [alister@different.com]
 # ----------------------------------------------------------------------------
-# This software is distributed under the the MIT License.
+# This software is distributed under the MIT License.
 #
 # Copyright (c) 2008 Alister Lewis-Bowen
 #

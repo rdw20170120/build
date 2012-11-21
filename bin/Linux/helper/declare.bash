@@ -1,6 +1,7 @@
 #!/bin/bash
 echo 'INFO: Declaring all scripting functionality for BriteOnyx...'
 
+[[ -z "$BO_Home" ]] && echo 'FATAL: Missing $BO_Home' && return 1
 _Dir=$BO_Home/bin/Linux/helper
 source ${_Dir}/declare-logging.bash
 source ${_Dir}/declare-BASH.bash

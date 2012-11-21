@@ -12,6 +12,10 @@
 # For logging the source of calls below, pass $LINENO for the line and either
 # $FUNCNAME, $BASH_SOURCE, or $0 for the name.
 
+[[ -z "$BO_Home" ]] && echo 'FATAL: Missing $BO_Home' && return 1
+_Dir=$BO_Home/bin/Linux/helper
+_Color=${_Dir}/color.bash
+
 _log () {
   # Log to STDERR the message $3 that originated in line $2 of script $1
   # NOTE:  Should only be called from this script
@@ -34,7 +38,7 @@ _logFatal () {
   # $2 = line in script where call originated
   # $3 = message
 
-  _logWithPriority "$1" "$2" "$3" 'FATAL: ' "$(color red black)"
+  _logWithPriority "$1" "$2" "$3" 'FATAL: ' "$(${_Color} red black)"
 }
 
 _logWithPriority () {
@@ -58,7 +62,7 @@ logDebug () {
   # $2 = line in script where call originated
   # $3 = message
 
-  _logWithPriority "$1" "$2" "$3" 'DEBUG: ' "$(color magenta black)"
+  _logWithPriority "$1" "$2" "$3" 'DEBUG: ' "$(${_Color} magenta black)"
 }
 
 logError () {
@@ -68,7 +72,7 @@ logError () {
   # $2 = line in script where call originated
   # $3 = message
 
-  _logWithPriority "$1" "$2" "$3" 'ERROR: ' "$(color yellow black)"
+  _logWithPriority "$1" "$2" "$3" 'ERROR: ' "$(${_Color} yellow black)"
 }
 
 logInfo () {
@@ -78,7 +82,7 @@ logInfo () {
   # $2 = line in script where call originated
   # $3 = message
 
-  _logWithPriority "$1" "$2" "$3" 'INFO:  ' "$(color blue black)"
+  _logWithPriority "$1" "$2" "$3" 'INFO:  ' "$(${_Color} blue black)"
 }
 
 logWarn () {
@@ -88,7 +92,7 @@ logWarn () {
   # $2 = line in script where call originated
   # $3 = message
 
-  _logWithPriority "$1" "$2" "$3" 'WARN:  ' "$(color cyan black)"
+  _logWithPriority "$1" "$2" "$3" 'WARN:  ' "$(${_Color} cyan black)"
 }
 
 Oops () {
