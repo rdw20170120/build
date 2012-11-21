@@ -1,5 +1,5 @@
 #!/bin/bash
-# Bootstrap the BriteOnyx framework to support this project
+echo 'INFO: Bootstrapping the BriteOnyx framework to support this project...'
 # TODO: Selectively use a clone (for 'tip') or an archive (all others) from
 #       Mercurial based on version stability
 

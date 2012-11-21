@@ -1,5 +1,5 @@
 #!/bin/bash
-echo 'INFO:  Configure output directory'
+echo 'INFO:  Configuring output directory...'
 
 requireVariable BO_Project
 _Dir=$BO_Project/out

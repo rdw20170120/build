@@ -1,5 +1,5 @@
 #!/bin/bash
-# Activate this project using the BriteOnyx framework
+echo 'INFO: Activating this project using the BriteOnyx framework...'
 
 # NOTE: This script should be sourced into the shell environment
 # NOTE: This script, and EVERY script that it calls, must NOT invoke 'exit'!

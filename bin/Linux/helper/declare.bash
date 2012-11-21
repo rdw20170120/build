@@ -1,7 +1,6 @@
 #!/bin/bash
-# Declare all functionality for BriteOnyx
+echo 'INFO: Declaring all scripting functionality for BriteOnyx...'
 
-# Configure the Linux environment
 _Dir=$BO_Home/bin/Linux/helper
 
 : <<'DisabledContent'

@@ -1,5 +1,5 @@
 #!/bin/bash
-echo 'INFO: Configure Python virtualenv'
+echo 'INFO: Configuring Python virtualenv...'
 
 # Verify PIP integration
 requireVariable PIP_DOWNLOAD_CACHE
