@@ -1,5 +1,5 @@
 #!/bin/bash
-logInfo 'Configuring Python virtualenv...'
+logInfo "$BASH_SOURCE" "$LINENO" 'Configuring Python virtualenv...'
 
 # Verify PIP integration
 requireVariable PIP_DOWNLOAD_CACHE

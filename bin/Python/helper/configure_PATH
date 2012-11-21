@@ -1,5 +1,5 @@
 #!/bin/bash
-logInfo 'Configuring system execution $PATH...'
+logInfo "$BASH_SOURCE" "$LINENO" 'Configuring system execution $PATH...'
 
 requireVariable BO_Home
 requireVariable BO_Project

@@ -1,5 +1,5 @@
 #!/bin/bash
-logInfo 'Configuring output directory...'
+logInfo "$BASH_SOURCE" "$LINENO" 'Configuring output directory...'
 
 requireVariable BO_Project
 createDirectory $BO_Project/out

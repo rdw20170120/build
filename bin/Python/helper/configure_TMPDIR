@@ -1,5 +1,5 @@
 #!/bin/bash
-logInfo 'Configuring temporary directory $TMPDIR...'
+logInfo "$BASH_SOURCE" "$LINENO" 'Configuring temporary directory $TMPDIR...'
 
 requireVariable TMPDIR
 createDirectory $TMPDIR

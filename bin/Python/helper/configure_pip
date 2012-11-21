@@ -1,5 +1,5 @@
 #!/bin/bash
-logInfo 'Configuring PIP...'
+logInfo "$BASH_SOURCE" "$LINENO" 'Configuring PIP...'
 
 export PIP_REQUIRE_VIRTUALENV=true
 export PIP_RESPECT_VIRTUALENV=true
