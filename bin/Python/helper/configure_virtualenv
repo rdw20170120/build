@@ -1,6 +1,5 @@
 #!/bin/bash
-
-echo 'INFO:  Configure Python virtualenv'
+echo 'INFO: Configure Python virtualenv'
 
 # Verify PIP integration
 requireVariable PIP_DOWNLOAD_CACHE
@@ -10,7 +9,7 @@ requireVariable PIP_RESPECT_VIRTUALENV
 # If the virtual environment does not already exist, create it
 requireVariable BO_Project
 [[ ! -f "$BO_Project/PVE/bin/activate" ]] && \
-  echo "WARN:  Creating PVE!" && \
+  echo "WARN: Creating PVE!" && \
   virtualenv --no-site-packages $BO_Project/PVE
 
 # Activate the Python virtual environment (PVE)

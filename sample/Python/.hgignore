@@ -1,0 +1,21 @@
+syntax: glob
+.*.swp
+*~
+*.orig
+*.out
+*.pyc
+
+#.DS_Store
+#.installed.cfg
+
+.coverage
+coverage.xml
+nosetests.xml
+pylint.out
+sloccount.sc
+
+syntax: regexp
+^dist$
+^MANIFEST$
+^out$
+^PVE$

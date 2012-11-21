@@ -1,13 +1,12 @@
 #!/bin/bash
-
-echo 'INFO:  Configure PIP'
+echo 'INFO: Configure PIP'
 
 export PIP_REQUIRE_VIRTUALENV=true
 export PIP_RESPECT_VIRTUALENV=true
 
 requireVariable PIP_DOWNLOAD_CACHE
 [[ ! -e "$PIP_DOWNLOAD_CACHE" ]] && \
-  echo "INFO:  Creating directory '$PIP_DOWNLOAD_CACHE'" && \
+  echo "INFO: Creating directory '$PIP_DOWNLOAD_CACHE'" && \
   mkdir -p $PIP_DOWNLOAD_CACHE
 requireDirectory $PIP_DOWNLOAD_CACHE
 
