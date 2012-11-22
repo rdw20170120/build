@@ -18,7 +18,7 @@ _Dir=$BO_Home/bin/Linux/helper
 source ${_Dir}/declare.bash
 [[ $? -ne 0 ]] && echo 'FATAL: Aborting' && return 1
 
-logInfo "$BASH_SOURCE" "$LINENO" "BriteOnyx scripting support loaded!"
+logInfo "BriteOnyx scripting support loaded!"
 # NOTE: Now we have our special BriteOnyx scripting functionality loaded, so we
 #       can shift to using that rather than directly invoking BASH primitives.
 
@@ -35,6 +35,6 @@ source ${_Dir}/configure_output || return 1
 DisabledContent
 
 # Return, but do NOT exit, with a success code
-logInfo "$BASH_SOURCE" "$LINENO" "Python project '$BO_Project' activated."
+logInfo "Python project '$BO_Project' activated."
 return 0
 

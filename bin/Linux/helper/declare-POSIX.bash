@@ -3,151 +3,151 @@
 
 changeFileGroup () {
   # Change ownership of file $2 to group $1
-  requireParameters "$FUNCNAME" "$LINENO" 2 "$#"
-  requireParameter  "$FUNCNAME" "$LINENO" "$1" 1 'group'
-  requireParameter  "$FUNCNAME" "$LINENO" "$2" 2 'target file'
+  requireParameters 2 "$#"              || return 1
+  requireParameter "$1" 1 'group'       || return 1
+  requireParameter "$2" 2 'target file' || return 1
 
   # TODO:  Test existence of group $1
-  requireFile "$2"
-  logInfo "$FUNCNAME" "$LINENO" "Changing owner of file '$2' to group '$1'..."
+  requireFile "$2"                      || return 1
+  logInfo "Changing owner of file '$2' to group '$1'..."
   chgrp "$1" "$2"
-  abortOnFail "$FUNCNAME" "$LINENO" "$?"
+  abortOnFail "$?"
 }
 
 copyFile () {
   # Copy source file $1 to target file $2, but not if it exists
-  requireParameters "$FUNCNAME" "$LINENO" 2 "$#"
-  requireParameter  "$FUNCNAME" "$LINENO" "$1" 1 'source file'
-  requireParameter  "$FUNCNAME" "$LINENO" "$2" 2 'target file'
+  requireParameters 2 "$#"              || return 1
+  requireParameter "$1" 1 'source file' || return 1
+  requireParameter "$2" 2 'target file' || return 1
 
-  requireFile "$1"
+  requireFile "$1"                      || return 1
   if fileExists "$2" ; then
-    logWarn "$FUNCNAME" "$LINENO" "File '$2' exists, skipping copy of file '$1'!"
+    logWarn "File '$2' exists, skipping copy of file '$1'!"
   else
-    logInfo "$FUNCNAME" "$LINENO" "Copying file '$2' from file '$1'..."
+    logInfo "Copying file '$2' from file '$1'..."
     cp "$1" "$2"
-    abortOnFail "$FUNCNAME" "$LINENO" "$?"
+    abortOnFail "$?"                    || return 1
   fi
-  requireFile "$2"
+  requireFile "$2"                      || return 1
 }
 
 copyFileForce () {
   # Copy source file $1 to target file $2, EVEN if it exists
-  requireParameters "$FUNCNAME" "$LINENO" 2 "$#"
-  requireParameter  "$FUNCNAME" "$LINENO" "$1" 1 'source file'
-  requireParameter  "$FUNCNAME" "$LINENO" "$2" 2 'target file'
+  requireParameters 2 "$#"              || return 1
+  requireParameter "$1" 1 'source file' || return 1
+  requireParameter "$2" 2 'target file' || return 1
 
-  requireFile "$1"
+  requireFile "$1"                      || return 1
   if fileExists "$2" ; then
-    logWarn "$FUNCNAME" "$LINENO" "File '$2' exists, overwriting!"
+    logWarn "File '$2' exists, overwriting!"
   fi
-  logInfo "$FUNCNAME" "$LINENO" "Copying file '$2' from file '$1'..."
+  logInfo "Copying file '$2' from file '$1'..."
   cp "$1" "$2"
-  abortOnFail "$FUNCNAME" "$LINENO" "$?"
-  requireFile "$2"
+  abortOnFail "$?"                      || return 1
+  requireFile "$2"                      || return 1
 }
 
 copyFiles () {
   # Copy all files in source directory $1 to target directory $2
-  requireParameters "$FUNCNAME" "$LINENO" 2 "$#"
-  requireParameter  "$FUNCNAME" "$LINENO" "$1" 1 'source directory'
-  requireParameter  "$FUNCNAME" "$LINENO" "$2" 2 'target directory'
+  requireParameters 2 "$#"                   || return 1
+  requireParameter "$1" 1 'source directory' || return 1
+  requireParameter "$2" 2 'target directory' || return 1
 
-  requireDirectory "$1"
+  requireDirectory "$1"                      || return 1
   # if directoryExists "$2" ; then
-    logInfo "$FUNCNAME" "$LINENO" "Copying directory '$2' from directory '$1'..."
+    logInfo "Copying directory '$2' from directory '$1'..."
     cp -R $1/* $2/
-    abortOnFail "$FUNCNAME" "$LINENO" "$?"
+    abortOnFail "$?"                         || return 1
   # fi
-  requireDirectory "$2"
+  requireDirectory "$2"                      || return 1
 }
 
 createDirectory () {
   # Create directory $1, but not if it exists
-  requireParameters "$FUNCNAME" "$LINENO" 1 "$#"
-  requireParameter  "$FUNCNAME" "$LINENO" "$1" 1 'target directory'
+  requireParameters 1 "$#"                   || return 1
+  requireParameter "$1" 1 'target directory' || return 1
 
   if directoryExists "$1" ; then
-    logWarn "$FUNCNAME" "$LINENO" "Directory '$1' exists, skipping creation!"
+    logWarn "Directory '$1' exists, skipping creation!"
   else
-    logInfo "$FUNCNAME" "$LINENO" "Creating directory '$1'..."
+    logInfo "Creating directory '$1'..."
     mkdir -p "$1"
-    abortOnFail "$FUNCNAME" "$LINENO" "$?"
+    abortOnFail "$?"                         || return 1
   fi
-  requireDirectory "$1"
+  requireDirectory "$1"                      || return 1
 }
 
 directoryExists () {
   # Return whether directory $1 exists, abort if it is not creatable
-  requireParameters "$FUNCNAME" "$LINENO" 1 "$#"
-  requireParameter  "$FUNCNAME" "$LINENO" "$1" 1 'target directory'
+  requireParameters 1 "$#"                   || return 1
+  requireParameter "$1" 1 'target directory' || return 1
 
   [[   -d "$1" ]] && \
-    logDebug "$FUNCNAME" "$LINENO" "Found directory '$1'" && \
+    logDebug "Found directory '$1'" && \
     return 0
   [[   -e "$1" ]] && \
-    abort "$FUNCNAME" "$LINENO" "Found non-directory '$1'"
+    abort "Found non-directory '$1'"         || return 1
   return 1 # $1 does not exist, but appears to be creatable
 }
 
 fileExists () {
   # Return whether file $1 exists, abort if it is not creatable
-  requireParameters "$FUNCNAME" "$LINENO" 1 "$#"
-  requireParameter  "$FUNCNAME" "$LINENO" "$1" 1 'target file'
+  requireParameters 1 "$#"              || return 1
+  requireParameter "$1" 1 'target file' || return 1
 
   [[   -f "$1" ]] && \
-    logDebug "$FUNCNAME" "$LINENO" "Found file '$1'" && \
+    logDebug "Found file '$1'" && \
     return 0
   [[   -e "$1" ]] && \
-    abort "$FUNCNAME" "$LINENO" "Found non-file '$1'"
+    abort "Found non-file '$1'"         || return 1
   return 1 # $1 does not exist, but appears to be creatable
 }
 
 makeFilesExecutable () {
   # Make the files executable within directory $1
-  requireParameters "$FUNCNAME" "$LINENO" 1 "$#"
-  requireParameter  "$FUNCNAME" "$LINENO" "$1" 1 'target directory'
+  requireParameters 1 "$#"                   || return 1
+  requireParameter "$1" 1 'target directory' || return 1
 
-  requireDirectory "$1"
-  logInfo "$FUNCNAME" "$LINENO" "Making files executable in directory '$1'..."
+  requireDirectory "$1"                      || return 1
+  logInfo "Making files executable in directory '$1'..."
   chmod -R u+x "$1"
-  abortOnFail "$FUNCNAME" "$LINENO" "$?"
+  abortOnFail "$?"
 }
 
 moveFile () {
   # Move source file $1 to target file $2, but not if it exists
-  requireParameters "$FUNCNAME" "$LINENO" 2 "$#"
-  requireParameter  "$FUNCNAME" "$LINENO" "$1" 1 'source file'
-  requireParameter  "$FUNCNAME" "$LINENO" "$2" 2 'target file'
+  requireParameters 2 "$#"              || return 1
+  requireParameter "$1" 1 'source file' || return 1
+  requireParameter "$2" 2 'target file' || return 1
 
-  requireFile "$1"
+  requireFile "$1"                      || return 1
   if fileExists "$2" ; then
-    logWarn "$FUNCNAME" "$LINENO" "File '$2' exists, skipping move of file '$1'!"
+    logWarn "File '$2' exists, skipping move of file '$1'!"
   else
-    logInfo "$FUNCNAME" "$LINENO" "Moving file '$2' from file '$1'..."
+    logInfo "Moving file '$2' from file '$1'..."
     mv "$1" "$2"
-    abortOnFail "$FUNCNAME" "$LINENO" "$?"
+    abortOnFail "$?"                    || return 1
   fi
   # TODO:  Check that file $1 is gone?
-  requireFile "$2"
+  requireFile "$2"                      || return 1
 }
 
 requireDirectory () {
   # Require that directory $1 exists, abort if not
-  requireParameters "$FUNCNAME" "$LINENO" 1 "$#"
-  requireParameter  "$FUNCNAME" "$LINENO" "$1" 1 'target directory'
+  requireParameters 1 "$#"                   || return 1
+  requireParameter "$1" 1 'target directory' || return 1
 
   directoryExists "$1" && return 0
-  abort "$FUNCNAME" "$LINENO" "Required directory '$1' must exist!"
+  abort "Required directory '$1' must exist!"
 }
 
 requireFile () {
   # Require that file $1 exists, abort if not
-  requireParameters "$FUNCNAME" "$LINENO" 1 "$#"
-  requireParameter  "$FUNCNAME" "$LINENO" "$1" 1 'target file'
+  requireParameters 1 "$#"              || return 1
+  requireParameter "$1" 1 'target file' || return 1
 
   fileExists "$1" && return 0
-  abort "$FUNCNAME" "$LINENO" "Required file '$1' must exist!"
+  abort "Required file '$1' must exist!"
 }
 
 : <<'DisabledContent'
