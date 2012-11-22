@@ -107,7 +107,7 @@ requireParameters () {
   # Require exactly $1 parameters to calling function/script
   [[ "$#" -ne 2 ]] && Oops                                              && return 1
   requireValue "$1" 'required parameter count'                          || return 1
-  requireValue "$2" 'actual parameter count (from $#)'                  || return 1
+  requireValue "$2" 'actual parameter count'                            || return 1
 
   [[ "$2" -ne "$1" ]] && \
     abort "'$2' parameters were passed when exactly '$1' are required!" || return 1
@@ -117,7 +117,7 @@ requireParametersAtLeast () {
   # Require at least $1 parameters to calling function/script
   requireParameters 2 "$#"                                               || return 1
   requireValue "$1" 'required parameter count'                           || return 1
-  requireValue "$2" 'actual parameter count (from $#)'                   || return 1
+  requireValue "$2" 'actual parameter count'                             || return 1
 
   [[ "$2" -lt "$1" ]] && \
     abort "'$2' parameters were passed when at least '$1' are required!" || return 1
