@@ -11,7 +11,7 @@ changeFileGroup () {
   requireFile "$2"                      || return 1
   logInfo "Changing owner of file '$2' to group '$1'..."
   chgrp "$1" "$2"
-  abortOnFail "$?"
+  abortOnFail "$?"                      || return 1
 }
 
 copyFile () {
@@ -83,8 +83,7 @@ directoryExists () {
   requireParameter "$1" 1 'target directory' || return 1
 
   [[   -d "$1" ]] && \
-    logDebug "Found directory '$1'" && \
-    return 0
+    logDebug "Found directory '$1'"          && return 0
   [[   -e "$1" ]] && \
     abort "Found non-directory '$1'"         || return 1
   return 1 # $1 does not exist, but appears to be creatable
@@ -96,8 +95,7 @@ fileExists () {
   requireParameter "$1" 1 'target file' || return 1
 
   [[   -f "$1" ]] && \
-    logDebug "Found file '$1'" && \
-    return 0
+    logDebug "Found file '$1'"          && return 0
   [[   -e "$1" ]] && \
     abort "Found non-file '$1'"         || return 1
   return 1 # $1 does not exist, but appears to be creatable
@@ -111,7 +109,7 @@ makeFilesExecutable () {
   requireDirectory "$1"                      || return 1
   logInfo "Making files executable in directory '$1'..."
   chmod -R u+x "$1"
-  abortOnFail "$?"
+  abortOnFail "$?"                           || return 1
 }
 
 moveFile () {
@@ -134,20 +132,20 @@ moveFile () {
 
 requireDirectory () {
   # Require that directory $1 exists, abort if not
-  requireParameters 1 "$#"                   || return 1
-  requireParameter "$1" 1 'target directory' || return 1
+  requireParameters 1 "$#"                    || return 1
+  requireParameter "$1" 1 'target directory'  || return 1
 
-  directoryExists "$1" && return 0
-  abort "Required directory '$1' must exist!"
+  directoryExists "$1"                        && return 0
+  abort "Required directory '$1' must exist!" || return 1
 }
 
 requireFile () {
   # Require that file $1 exists, abort if not
-  requireParameters 1 "$#"              || return 1
-  requireParameter "$1" 1 'target file' || return 1
+  requireParameters 1 "$#"               || return 1
+  requireParameter "$1" 1 'target file'  || return 1
 
-  fileExists "$1" && return 0
-  abort "Required file '$1' must exist!"
+  fileExists "$1"                        && return 0
+  abort "Required file '$1' must exist!" || return 1
 }
 
 : <<'DisabledContent'

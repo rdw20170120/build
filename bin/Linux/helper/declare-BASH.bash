@@ -18,20 +18,21 @@ abort () {
 
 abortIfMissing () {
   # Abort with message $2 if value $1 is missing (resolves to null)
-  [[ "$#" -ne 2 ]] && Oops && return 1
+  [[ "$#" -ne 2 ]] && Oops    && return 1
   # $1 = value that is required
   # $2 = message
 
-  [[ -z "$1" ]] && abort "$2"
+  [[ -z "$1" ]] && abort "$2" || return 1
+  return 0
 }
 
 abortOnFail () {
   # Abort on failure of previous command reported as exit status $1
-  requireParameters 1 "$#"                               || return 1
-  requireParameter "$1" 1 'previous command exit status' || return 1
+  requireParameters 1 "$#"                                          || return 1
+  requireParameter "$1" 1 'previous command exit status'            || return 1
 
   logError "Last command exited with status '$1'"
-  [[ "$1" -gt 0 ]] && abort "Command failed with exit status '$1'!"
+  [[ "$1" -gt 0 ]] && abort "Command failed with exit status '$1'!" || return 1
 }
 
 dumpBash () {
@@ -94,41 +95,41 @@ dumpBash () {
 requireParameter () {
   # Require parameter passed as $1, indexed as $2, and described as $3;
   # abort if missing
-  requireParameters 3 "$#"            || return 1
+  requireParameters 3 "$#"                        || return 1
   # $1 = actual parameter value (may be null)
-  requireValue "$2" 'parameter index' || return 1
-  requireValue "$3" 'description'     || return 1
+  requireValue "$2" 'parameter index'             || return 1
+  requireValue "$3" 'description'                 || return 1
 
-  abortIfMissing "$1" "Missing parameter $2: $3!"
+  abortIfMissing "$1" "Missing parameter $2: $3!" || return 1
 }
 
 requireParameters () {
   # Require exactly $1 parameters to calling function/script
-  [[ "$#" -ne 2 ]] && Oops                             && return 1
-  requireValue "$1" 'required parameter count'         || return 1
-  requireValue "$2" 'actual parameter count (from $#)' || return 1
+  [[ "$#" -ne 2 ]] && Oops                                              && return 1
+  requireValue "$1" 'required parameter count'                          || return 1
+  requireValue "$2" 'actual parameter count (from $#)'                  || return 1
 
   [[ "$2" -ne "$1" ]] && \
-    abort "'$2' parameters were passed when exactly '$1' are required!"
+    abort "'$2' parameters were passed when exactly '$1' are required!" || return 1
 }
 
 requireParametersAtLeast () {
   # Require at least $1 parameters to calling function/script
-  requireParameters 2 "$#"                             || return 1
-  requireValue "$1" 'required parameter count'         || return 1
-  requireValue "$2" 'actual parameter count (from $#)' || return 1
+  requireParameters 2 "$#"                                               || return 1
+  requireValue "$1" 'required parameter count'                           || return 1
+  requireValue "$2" 'actual parameter count (from $#)'                   || return 1
 
   [[ "$2" -lt "$1" ]] && \
-    abort "'$2' parameters were passed when at least '$1' are required!"
+    abort "'$2' parameters were passed when at least '$1' are required!" || return 1
 }
 
 requireValue () {
   # Require value $1 described as $2, abort if missing (resolves to null)
-  [[ "$#" -ne 2 ]] && Oops && return 1
+  [[ "$#" -ne 2 ]] && Oops                                    && return 1
   # $1 = value that is required
   # $2 = description for value
 
-  abortIfMissing "$1" "Value for '$2' is missing (non-null)!"
+  abortIfMissing "$1" "Value for '$2' is missing (non-null)!" || return 1
 }
 
 requireVariable () {
@@ -139,6 +140,6 @@ requireVariable () {
   declare _Name=$1
   declare _Value="${!_Name}"
   [[ -n "${_Value}" ]] && return 0
-  abort "Variable '$1' is required (defined and non-null)!"
+  abort "Variable '$1' is required (defined and non-null)!"    || return 1
 }
 
