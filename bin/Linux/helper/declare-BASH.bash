@@ -28,11 +28,11 @@ abortIfMissing () {
 
 abortOnFail () {
   # Abort on failure of previous command reported as exit status $1
-  requireParameters 1 "$#"                                          || return 1
-  requireParameter "$1" 1 'previous command exit status'            || return 1
+  requireParameters 1 "$#"                               || return 1
+  requireParameter "$1" 1 'previous command exit status' || return 1
 
-  logError "Last command exited with status '$1'"
-  [[ "$1" -gt 0 ]] && abort "Command failed with exit status '$1'!" || return 1
+  [[ "$1" -eq 0 ]]                                       && return 0
+  abort "Last command failed with exit status '$1'!"     || return 1
 }
 
 dumpBash () {
@@ -115,12 +115,12 @@ requireParameters () {
 
 requireParametersAtLeast () {
   # Require at least $1 parameters to calling function/script
-  requireParameters 2 "$#"                                               || return 1
-  requireValue "$1" 'required parameter count'                           || return 1
-  requireValue "$2" 'actual parameter count'                             || return 1
+  requireParameters 2 "$#"                                             || return 1
+  requireValue "$1" 'required parameter count'                         || return 1
+  requireValue "$2" 'actual parameter count'                           || return 1
 
-  [[ "$2" -lt "$1" ]] && \
-    abort "'$2' parameters were passed when at least '$1' are required!" || return 1
+  [[ "$2" -ge "$1" ]]                                                  && return 0
+  abort "'$2' parameters were passed when at least '$1' are required!" || return 1
 }
 
 requireValue () {
