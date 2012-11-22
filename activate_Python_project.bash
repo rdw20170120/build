@@ -24,12 +24,12 @@ logInfo "BriteOnyx scripting support loaded!"
 
 # Configure the Python environment
 _Dir=$BO_Home/bin/Python/helper
-requireDirectory ${_Dir}        || return 1
-source ${_Dir}/configure_TMPDIR || return 1
-source ${_Dir}/configure_pip    || return 1
-# TODO: source ${_Dir}/configure_virtualenv || return 1
-source ${_Dir}/configure_PATH   || return 1
-source ${_Dir}/configure_output || return 1
+requireDirectory ${_Dir}            || return 1
+source ${_Dir}/configure_TMPDIR     || return 1
+source ${_Dir}/configure_output     || return 1
+source ${_Dir}/configure_pip        || return 1
+source ${_Dir}/configure_virtualenv || return 1
+source ${_Dir}/configure_PATH       || return 1
 
 : <<'DisabledContent'
 DisabledContent

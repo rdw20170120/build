@@ -17,12 +17,12 @@ if [[ ! -f "${_Script}" ]]; then
 fi
 
 # Activate the Python virtual environment (PVE)
-requireDirectory $BO_Project/PVE                     || return 1
-requireFile ${_Script}                               || return 1
-source ${_Script}                                    || return 1
-requireVariable VIRTUAL_ENV || return 1
+requireDirectory $BO_Project/PVE || return 1
+requireFile ${_Script}           || return 1
+source ${_Script}                || return 1
+requireVariable VIRTUAL_ENV      || return 1
 export PYTHONHOME=$VIRTUAL_ENV
-requireVariable PYTHONHOME  || return 1
+requireVariable PYTHONHOME       || return 1
 
 # Return, but do NOT exit, with a success code
 return 0
