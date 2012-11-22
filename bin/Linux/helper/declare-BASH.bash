@@ -18,12 +18,12 @@ abort () {
 
 abortIfMissing () {
   # Abort with message $2 if value $1 is missing (resolves to null)
-  [[ "$#" -ne 2 ]] && Oops    && return 1
+  [[ "$#" -ne 2 ]] && Oops && return 1
   # $1 = value that is required
   # $2 = message
 
-  [[ -z "$1" ]] && abort "$2" || return 1
-  return 0
+  [[ -n "$1" ]]            && return 0
+  abort "$2"               || return 1
 }
 
 abortOnFail () {
