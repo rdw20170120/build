@@ -10,7 +10,7 @@ abort () {
   declare -i _Status="${2:-1}"
   _logFatal "Aborting with status ${_Status}:  ${_Message}"
   if [[ "$SHLVL" -eq 1 ]] ; then
-    logError 'At top level of BASH shell, NOT aborting!'
+    logError 'At top level of BASH shell, NOT exiting!'
     # dumpBash
   fi
   return ${_Status}
