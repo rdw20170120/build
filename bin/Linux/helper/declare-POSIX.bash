@@ -22,7 +22,7 @@ copyFile () {
 
   requireFile "$1"                      || return 1
   if fileExists "$2" ; then
-    logWarn "File '$2' exists, skipping copy of file '$1'!"
+    logDebug "File '$2' exists, skipping copy of file '$1'!"
   else
     logInfo "Copying file '$2' from file '$1'..."
     cp "$1" "$2"
@@ -68,7 +68,7 @@ createDirectory () {
   requireParameter "$1" 1 'target directory' || return 1
 
   if directoryExists "$1" ; then
-    logWarn "Directory '$1' exists, skipping creation!"
+    logDebug "Directory '$1' exists, skipping creation!"
   else
     logInfo "Creating directory '$1'..."
     mkdir -p "$1"
@@ -120,7 +120,7 @@ moveFile () {
 
   requireFile "$1"                      || return 1
   if fileExists "$2" ; then
-    logWarn "File '$2' exists, skipping move of file '$1'!"
+    logError "File '$2' exists, skipping move of file '$1'!"
   else
     logInfo "Moving file '$2' from file '$1'..."
     mv "$1" "$2"

@@ -1,5 +1,5 @@
 #!/bin/bash
-logInfo 'Configuring temporary directory $TMPDIR...'
+logDebug 'Configuring temporary directory $TMPDIR...'
 
 requireVariable TMPDIR  || return 1
 createDirectory $TMPDIR || return 1

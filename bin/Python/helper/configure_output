@@ -1,5 +1,5 @@
 #!/bin/bash
-logInfo 'Configuring output directory...'
+logDebug 'Configuring output directory...'
 
 requireVariable BO_Project      || return 1
 createDirectory $BO_Project/out || return 1

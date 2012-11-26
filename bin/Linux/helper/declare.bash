@@ -8,10 +8,10 @@ source ${_Dir}/declare-logging.bash
 source ${_Dir}/declare-BASH.bash
 source ${_Dir}/declare-POSIX.bash
 
-logDebug "This is an example debugging message"
-logInfo  "This is an example informational message"
-logWarn  "This is an example warning message"
-logError "This is an example error message"
+logDebug "EXAMPLE: This is a debugging message"
+logInfo  "EXAMPLE: This is an informational message"
+logWarn  "EXAMPLE: This is a warning message"
+logError "EXAMPLE: This is an error message"
 
 : <<'DisabledContent'
 # Integrate later, preferably as optional components

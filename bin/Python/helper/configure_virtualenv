@@ -1,5 +1,5 @@
 #!/bin/bash
-logInfo 'Configuring Python virtualenv...'
+logDebug 'Configuring Python virtualenv...'
 
 requireVariable BO_Project || return 1
 _Script=$BO_Project/PVE/bin/activate

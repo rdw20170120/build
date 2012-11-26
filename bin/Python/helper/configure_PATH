@@ -1,5 +1,5 @@
 #!/bin/bash
-logInfo 'Configuring system execution $PATH...'
+logDebug 'Configuring system execution $PATH...'
 
 # TODO: Move this elsewhere?
 export BO_PathSystem=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin

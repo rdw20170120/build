@@ -48,7 +48,7 @@ logDebug () {
   [[ "$#" -ne 1 ]] && Oops && return 1
   # $1 = message
 
-  _logWithPriority "$1" 'DEBUG: ' "$(${_Color} blue black)"
+  _logWithPriority "$1" 'DEBUG: ' "$(${_Color} gray black)"
 }
 
 logError () {
