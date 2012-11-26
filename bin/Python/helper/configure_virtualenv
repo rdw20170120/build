@@ -28,6 +28,7 @@ source ${_Script}              || return 1
 requireVariable VIRTUAL_ENV    || return 1
 export PYTHONHOME=$VIRTUAL_ENV
 requireVariable PYTHONHOME     || return 1
+logInfo "Activated Python virtual environment (PVE) in '${_PVE}'"
 
 # Verify PVE
 logInfo "Found '$(python --version 2>&1)' at '$(which python)'"
