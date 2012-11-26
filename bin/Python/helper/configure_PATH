@@ -8,7 +8,7 @@ requireVariable BO_Home       || return 1
 requireVariable BO_PathSystem || return 1
 requireVariable BO_Project    || return 1
 
-_PathBuild=$BO_Home/bin/Python
+_PathBuild=$BO_Home/bin/Python:$BO_Home/bin/Linux
 _PathProject=$BO_Project/bin
 _PathPve=$BO_Project/PVE/bin
 
