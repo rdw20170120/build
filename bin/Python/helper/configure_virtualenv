@@ -28,6 +28,10 @@ requireVariable VIRTUAL_ENV      || return 1
 export PYTHONHOME=$VIRTUAL_ENV
 requireVariable PYTHONHOME       || return 1
 
+# Verify PVE
+which python
+python --version
+
 # Return, but do NOT exit, with a success code
 return 0
 
