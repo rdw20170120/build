@@ -10,8 +10,12 @@ requireVariable PIP_REQUIRE_VIRTUALENV || return 1
 requireVariable PIP_RESPECT_VIRTUALENV || return 1
 
 # If the virtual environment does not already exist, create it
+# TODO: This code assumes that the Python virtual environment package is
+# already installed, but it may not be.  Eventually we should handle that, one
+# either with a more-specific message or by actually installing it.
 if [[ ! -f "${_Script}" ]]; then
   logWarn 'Creating Python virtual environment (PVE)'
+  logWarn "This requires the 'python-virtualenv' package to have been installed"
   virtualenv --no-site-packages $BO_Project/PVE
   abortOnFail $? || return 1
 fi

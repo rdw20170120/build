@@ -1,5 +1,6 @@
 #!/bin/bash
 # Declare BASH functionality for Hudson
+# TODO: Integrate with latest framework
 
 Hudson_findBuild() {
   # Return whether found Hudson build for job $2, and save to file $1 if found

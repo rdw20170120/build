@@ -1,5 +1,6 @@
 #!/bin/bash
 # Declare BASH functionality for Subversion
+# TODO: Integrate with latest framework
 
 checkoutSubversion () {
   # Checkout repository $1 to directory $2, but not if $2 exists

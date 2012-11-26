@@ -1,5 +1,6 @@
 #!/bin/bash
 # Declare BASH functionality for Mercurial
+# TODO: Integrate with latest framework
 
 cloneMercurial () {
   # Clone repository $1 to directory $2, but not if $2 exists
