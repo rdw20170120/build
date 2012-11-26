@@ -1,5 +1,7 @@
 #!/bin/bash
-# Use Pip to install dependencies from a previous freeze
+logDebug 'Installing the dependencies for this project using PIP...'
+
+requireVariable BO_Project
 
 _File=${BO_Project}/cfg/freeze.pip
 

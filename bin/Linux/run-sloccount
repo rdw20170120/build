@@ -1,13 +1,15 @@
 #!/bin/bash
-# Run sloccount to count lines-of-code (LOC) in this project
-# NOTE:  Do NOT include subdirectories "dist", "out", or "PVE"
+logDebug 'Counting the lines of source code (SLOC) in this project...'
 
-echo "run-sloccount..."
+requireVariable BO_Project
+
+# NOTE:  Do NOT include subdirectories "dist", "out", or "PVE"
 _Cmd=sloccount
 _Cmd="$_Cmd --addlangall --details --wide"
 _Cmd="$_Cmd ${BO_Project}/activate.bash"
-_Cmd="$_Cmd ${BO_Project}/activate_build_tools.bash"
-_Cmd="$_Cmd ${BO_Project}/README.txt"
+_Cmd="$_Cmd ${BO_Project}/bootstrap.bash"
+_Cmd="$_Cmd ${BO_Project}/MANIFEST.in"
+_Cmd="$_Cmd ${BO_Project}/README.rst"
 _Cmd="$_Cmd ${BO_Project}/setup.py"
 _Cmd="$_Cmd ${BO_Project}/bin"
 _Cmd="$_Cmd ${BO_Project}/cfg"

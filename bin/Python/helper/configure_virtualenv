@@ -10,23 +10,24 @@ requireVariable PIP_REQUIRE_VIRTUALENV || return 1
 requireVariable PIP_RESPECT_VIRTUALENV || return 1
 
 # If the virtual environment does not already exist, create it
-# TODO: This code assumes that the Python virtual environment package is
-# already installed, but it may not be.  Eventually we should handle that, one
-# either with a more-specific message or by actually installing it.
+_Dir=$BO_Project/PVE
 if [[ ! -f "${_Script}" ]]; then
-  logWarn 'Creating Python virtual environment (PVE)'
+  # TODO: This code assumes that the Python virtual environment package is
+  # already installed, but it may not be.  Eventually we should handle that,
+  # either with a more-specific message or by actually installing it.
+  logWarn "Creating Python virtual environment (PVE) in '${_Dir}'"
   logWarn "This requires the 'python-virtualenv' package to have been installed"
-  virtualenv --no-site-packages $BO_Project/PVE
+  virtualenv ${_Dir}
   abortOnFail $? || return 1
 fi
 
 # Activate the Python virtual environment (PVE)
-requireDirectory $BO_Project/PVE || return 1
-requireFile ${_Script}           || return 1
-source ${_Script}                || return 1
-requireVariable VIRTUAL_ENV      || return 1
+requireDirectory ${_Dir}       || return 1
+requireFile ${_Script}         || return 1
+source ${_Script}              || return 1
+requireVariable VIRTUAL_ENV    || return 1
 export PYTHONHOME=$VIRTUAL_ENV
-requireVariable PYTHONHOME       || return 1
+requireVariable PYTHONHOME     || return 1
 
 # Verify PVE
 logInfo "Found '$(python --version 2>&1)' at '$(which python)'"

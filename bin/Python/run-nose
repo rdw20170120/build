@@ -1,12 +1,14 @@
 #!/bin/bash
-# Run Nose on this project
+logDebug 'Running Nose-based tests on this project...'
 
-echo "run-nose..."
+requireVariable BO_Package
+requireVariable BO_Project
+
 cd "${BO_Project}/src"
 
 _Cmd=nosetests
 _Cmd="$_Cmd --config=${BO_Project}/cfg/nose.cfg"
 _Cmd="$_Cmd --id-file=${BO_Project}/.noseids"
-_Cmd="$_Cmd --cover-package=${HomePackage}"
+_Cmd="$_Cmd --cover-package=${BO_Package}"
 $_Cmd
 

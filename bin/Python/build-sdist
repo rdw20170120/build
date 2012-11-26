@@ -1,7 +1,8 @@
 #!/bin/bash
-# Build a source distribution (sdist) of this Python project.
+logDebug 'Building a source distribution (sdist) of this project...'
 
-echo "build-sdist..."
+requireVariable BO_Project
+
 cd "${BO_Project}"
 python setup.py sdist
 

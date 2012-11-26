@@ -1,11 +1,13 @@
 #!/bin/bash
-# Run pylint on this project
+logDebug 'Running pylint on this project...'
 
-echo "run-pylint..."
+requireVariable BO_Package
+requireVariable BO_Project
+
 cd "${BO_Project}/src"
 
 _Cmd=pylint
 _Cmd="$_Cmd --rcfile=${BO_Project}/cfg/pylintrc"
-_Cmd="$_Cmd ${HomePackage}"
+_Cmd="$_Cmd ${BO_Package}"
 $_Cmd | tee ${BO_Project}/out/pylint.out
 

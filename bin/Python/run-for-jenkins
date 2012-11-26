@@ -1,7 +1,6 @@
 #!/bin/bash
-# Run build steps for Jenkins continuous integration server
+logDebug 'Running continuous integration (Jenkins) build on this project...'
 
-echo "run-for-jenkins..."
 run-sloccount
 run-nose
 run-pylint

@@ -1,5 +1,7 @@
 #!/bin/bash
-# Clean the project directory of all output and temporary files
+logDebug 'Cleaning this project of all output and temporary files...'
+
+requireVariable BO_Project
 
 rm ${BO_Project}/MANIFEST
 
