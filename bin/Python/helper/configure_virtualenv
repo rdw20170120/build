@@ -29,7 +29,7 @@ export PYTHONHOME=$VIRTUAL_ENV
 requireVariable PYTHONHOME       || return 1
 
 # Verify PVE
-logInfo "Found $(python --version) at $(which python)"
+logInfo "Found $(python --version 2>&1) at $(which python)"
 
 # Return, but do NOT exit, with a success code
 return 0
