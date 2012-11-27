@@ -13,7 +13,7 @@
 _Dir=$BO_Home/bin/Linux/helper
 _Color=${_Dir}/color.bash
 
-export _log () {
+_log () {
   # Log to STDERR the message $1
   # NOTE:  Should only be called from this script
   [[ "$#" -ne 1 ]] && Oops && return 1
@@ -22,8 +22,9 @@ export _log () {
   declare -r _Message="${1:-No message provided.}"
   echo -e "${_Message}" >&2
 }
+export -f _log
 
-export _logFatal () {
+_logFatal () {
   # Log a fatal message $1
   # NOTE:  Should only be called from abort()
   [[ "$#" -ne 1 ]] && Oops && return 1
@@ -31,8 +32,9 @@ export _logFatal () {
 
   _logWithPriority "$1" 'FATAL: ' "$(${_Color} red black)"
 }
+export -f _logFatal
 
-export _logWithPriority () {
+_logWithPriority () {
   # Log with priority $2 colorized as $3 the message $1
   # NOTE:  Should only be called from this script
   [[ "$#" -ne 3 ]] && Oops && return 1
@@ -42,40 +44,45 @@ export _logWithPriority () {
 
   _log "$3$2$1$(${_Color} off)"
 }
+export -f _logWithPriority
 
-export logDebug () {
+logDebug () {
   # Log a debugging message $1
   [[ "$#" -ne 1 ]] && Oops && return 1
   # $1 = message
 
   _logWithPriority "$1" 'DEBUG: ' "$(${_Color} white black)"
 }
+export -f logDebug
 
-export logError () {
+logError () {
   # Log an error message $1
   [[ "$#" -ne 1 ]] && Oops && return 1
   # $1 = message
 
   _logWithPriority "$1" 'ERROR: ' "$(${_Color} yellow black)"
 }
+export -f logError
 
-export logInfo () {
+logInfo () {
   # Log an informational message $1
   [[ "$#" -ne 1 ]] && Oops && return 1
   # $1 = message
 
   _logWithPriority "$1" 'INFO:  ' "$(${_Color} cyan black)"
 }
+export -f logInfo
 
-export logWarn () {
+logWarn () {
   # Log a warning message $1
   [[ "$#" -ne 1 ]] && Oops && return 1
   # $1 = message
 
   _logWithPriority "$1" 'WARN:  ' "$(${_Color} magenta black)"
 }
+export -f logWarn
 
-export Oops () {
+Oops () {
   # Echo to STDERR that an Oops occurred
   # NOTE:  This is usable to indicate an error in low-level code such as this
   # logging infrastructure that is then used to support error handling in
@@ -83,8 +90,9 @@ export Oops () {
 
   echo "Oops!" >&2
 }
+export -f Oops
 
-export trace () {
+trace () {
   # Trace variable $1
   [[ "$#" -ne 1 ]] && Oops && return 1
   # $1 = name of variable to trace
@@ -93,4 +101,5 @@ export trace () {
   declare -r _Value="${!_Name}"
   logDebug "${_Name}='${_Value}'"
 }
+export -f trace
 

@@ -13,6 +13,7 @@ changeFileGroup () {
   chgrp "$1" "$2"
   abortOnFail "$?"                      || return 1
 }
+export -f changeFileGroup
 
 copyFile () {
   # Copy source file $1 to target file $2, but not if it exists
@@ -30,6 +31,7 @@ copyFile () {
   fi
   requireFile "$2"                      || return 1
 }
+export -f copyFile
 
 copyFileForce () {
   # Copy source file $1 to target file $2, EVEN if it exists
@@ -46,6 +48,7 @@ copyFileForce () {
   abortOnFail "$?"                      || return 1
   requireFile "$2"                      || return 1
 }
+export -f copyFileForce
 
 copyFiles () {
   # Copy all files in source directory $1 to target directory $2
@@ -61,6 +64,7 @@ copyFiles () {
   # fi
   requireDirectory "$2"                      || return 1
 }
+export -f copyFiles
 
 createDirectory () {
   # Create directory $1, but not if it exists
@@ -76,6 +80,7 @@ createDirectory () {
   fi
   requireDirectory "$1"                      || return 1
 }
+export -f createDirectory
 
 directoryExists () {
   # Return whether directory $1 exists, abort if it is not creatable
@@ -88,6 +93,7 @@ directoryExists () {
     abort "Found non-directory '$1'"         || return 1
   return 1 # $1 does not exist, but appears to be creatable
 }
+export -f directoryExists
 
 fileExists () {
   # Return whether file $1 exists, abort if it is not creatable
@@ -100,6 +106,7 @@ fileExists () {
     abort "Found non-file '$1'"         || return 1
   return 1 # $1 does not exist, but appears to be creatable
 }
+export -f fileExists
 
 makeFilesExecutable () {
   # Make the files executable within directory $1
@@ -111,6 +118,7 @@ makeFilesExecutable () {
   chmod -R u+x "$1"
   abortOnFail "$?"                           || return 1
 }
+export -f makeFilesExecutable
 
 moveFile () {
   # Move source file $1 to target file $2, but not if it exists
@@ -129,6 +137,7 @@ moveFile () {
   # TODO:  Check that file $1 is gone?
   requireFile "$2"                      || return 1
 }
+export -f moveFile
 
 requireDirectory () {
   # Require that directory $1 exists, abort if not
@@ -138,6 +147,7 @@ requireDirectory () {
   directoryExists "$1"                        && return 0
   abort "Required directory '$1' must exist!" || return 1
 }
+export -f requireDirectory
 
 requireFile () {
   # Require that file $1 exists, abort if not
@@ -147,6 +157,7 @@ requireFile () {
   fileExists "$1"                        && return 0
   abort "Required file '$1' must exist!" || return 1
 }
+export -f requireFile
 
 : <<'DisabledContent'
   # NOTE:  Place content to be ignored in here.
