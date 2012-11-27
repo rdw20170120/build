@@ -13,7 +13,7 @@
 _Dir=$BO_Home/bin/Linux/helper
 _Color=${_Dir}/color.bash
 
-_log () {
+export _log () {
   # Log to STDERR the message $1
   # NOTE:  Should only be called from this script
   [[ "$#" -ne 1 ]] && Oops && return 1
@@ -23,7 +23,7 @@ _log () {
   echo -e "${_Message}" >&2
 }
 
-_logFatal () {
+export _logFatal () {
   # Log a fatal message $1
   # NOTE:  Should only be called from abort()
   [[ "$#" -ne 1 ]] && Oops && return 1
@@ -32,7 +32,7 @@ _logFatal () {
   _logWithPriority "$1" 'FATAL: ' "$(${_Color} red black)"
 }
 
-_logWithPriority () {
+export _logWithPriority () {
   # Log with priority $2 colorized as $3 the message $1
   # NOTE:  Should only be called from this script
   [[ "$#" -ne 3 ]] && Oops && return 1
@@ -43,7 +43,7 @@ _logWithPriority () {
   _log "$3$2$1$(${_Color} off)"
 }
 
-logDebug () {
+export logDebug () {
   # Log a debugging message $1
   [[ "$#" -ne 1 ]] && Oops && return 1
   # $1 = message
@@ -51,7 +51,7 @@ logDebug () {
   _logWithPriority "$1" 'DEBUG: ' "$(${_Color} white black)"
 }
 
-logError () {
+export logError () {
   # Log an error message $1
   [[ "$#" -ne 1 ]] && Oops && return 1
   # $1 = message
@@ -59,7 +59,7 @@ logError () {
   _logWithPriority "$1" 'ERROR: ' "$(${_Color} yellow black)"
 }
 
-logInfo () {
+export logInfo () {
   # Log an informational message $1
   [[ "$#" -ne 1 ]] && Oops && return 1
   # $1 = message
@@ -67,7 +67,7 @@ logInfo () {
   _logWithPriority "$1" 'INFO:  ' "$(${_Color} cyan black)"
 }
 
-logWarn () {
+export logWarn () {
   # Log a warning message $1
   [[ "$#" -ne 1 ]] && Oops && return 1
   # $1 = message
@@ -75,7 +75,7 @@ logWarn () {
   _logWithPriority "$1" 'WARN:  ' "$(${_Color} magenta black)"
 }
 
-Oops () {
+export Oops () {
   # Echo to STDERR that an Oops occurred
   # NOTE:  This is usable to indicate an error in low-level code such as this
   # logging infrastructure that is then used to support error handling in
@@ -84,7 +84,7 @@ Oops () {
   echo "Oops!" >&2
 }
 
-trace () {
+export trace () {
   # Trace variable $1
   [[ "$#" -ne 1 ]] && Oops && return 1
   # $1 = name of variable to trace
