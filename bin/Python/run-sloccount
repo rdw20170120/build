@@ -1,5 +1,6 @@
 #!/bin/bash
 logDebug 'Counting the lines of source code (SLOC) in this project...'
+# TODO: This script requires the 'sloccount' package to have been installed
 
 requireVariable BO_Project
 
