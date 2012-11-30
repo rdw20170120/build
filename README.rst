@@ -1,7 +1,8 @@
 =========
 BriteOnyx
 =========
-
+Overview
+--------
 BriteOnyx provides a reusable infrastructure for building software on various
 development platforms.  Ultimately, the intent is to establish a continuous
 delivery environment with minimal overhead in each project's directory tree.
@@ -36,6 +37,8 @@ without Gradle for languages that do not really benefit as much from it,
 meaning Python and CoffeeScript.  Since Gradle does not (yet) provide
 dependency management for those languages, there is less to be gained by
 involving Gradle in the first place.
+
+----
 
 NOTE: This file is designed for the hosting of this project at BitBucket_, so
 it is formatted using reStructuredText_ syntax.
