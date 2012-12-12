@@ -39,7 +39,7 @@ requireVariable BO_Project    || return 1
 _PathBuild=$BO_Home/bin/Linux
 _PathGradle=$GRADLE_HOME/bin
 _PathJava=$JAVA_HOME/bin
-_PathProject=$BO_Project/bin
+_PathProject=$BO_Project/bin/Linux
 export PATH=${_PathProject}:${_PathBuild}:${_PathGradle}:${_PathJava}:${BO_PathSystem}
 
 : <<'DisabledContent'
