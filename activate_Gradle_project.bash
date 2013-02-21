@@ -31,7 +31,8 @@ requireVariable BO_Project      || return 1
 createDirectory $BO_Project/out || return 1
 logDebug 'Configuring system execution $PATH...'
 export BO_PathSystem=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-requireVariable GRADLE_HOME   || return 1
+# TODO: Do we still require GRADLE_HOME, or can we drop in favor of Gradle wrapper?
+# requireVariable GRADLE_HOME   || return 1
 requireVariable JAVA_HOME     || return 1
 requireVariable BO_Home       || return 1
 requireVariable BO_PathSystem || return 1
