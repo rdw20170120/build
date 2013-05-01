@@ -7,19 +7,22 @@ BriteOnyx provides a reusable infrastructure for building software on various
 development platforms.  Ultimately, the intent is to establish a continuous
 delivery environment with minimal overhead in each project's directory tree.
 
-Target platforms
-----------------
+Target platforms (in order)
+---------------------------
+#. Java on Linux
+#. Groovy on Linux
 #. Python on Linux
 #. CoffeeScript on Linux
-#. Java on Linux
-#. Python on Windows
 #. Java on Windows
+#. Groovy on Windows
+#. Python on Windows
+#. CoffeeScript on Windows
 #. .NET on Windows
 
-So far Linux means Ubuntu (probably Lucid Lynx 10.04+) and Windows means
-Windows 7 and Windows 2008 R2.  Python means 2.6+, Java means 1.6+, while
+So far Linux means Ubuntu (Lucid Lynx 10.04+) and Windows means Windows 7 and
+Windows 2008 R2.  Groovy means 2.1+, Python means 2.6+, Java means 1.6+, while
 CoffeeScript and .NET will be recent versions but are not yet precisely
-defined.
+defined.  I will probably mix in Max OS X soon, after Linux but before Windows.
 
 I don't like the implementation at the moment, which is constrained by the
 design decision to 'source' the activate.bash script.  Doing so means that I
