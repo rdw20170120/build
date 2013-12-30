@@ -18,7 +18,7 @@ logInfo "BriteOnyx scripting support loaded!"
 # NOTE: Now we have our special BriteOnyx scripting functionality loaded, so we
 #       can shift to using that rather than directly invoking BASH primitives.
 
-# Configure the Gradle environment
+# Configure environment for Gradle on Linux
 requireVariable BO_Home
 requireVariable BO_Project
 
@@ -55,26 +55,5 @@ logInfo "BriteOnyx has activated Gradle for project '$BO_Project'."
 return 0
 
 : <<'DisabledContent'
-# Configure the Gradle environment
-logDebug 'Configuring temporary directory $TMPDIR...'
-requireVariable TMPDIR
-createDirectory $TMPDIR
-logDebug 'Configuring output directory...'
-requireVariable BO_Project
-createDirectory $BO_Project/out
-logDebug 'Configuring system execution $PATH...'
-export BO_PathSystem=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-# TODO: Do we still require GRADLE_HOME, or drop in favor of Gradle wrapper?
-# requireVariable GRADLE_HOME
-requireVariable JAVA_HOME
-requireVariable BO_Home
-requireVariable BO_PathSystem
-requireVariable BO_Project
-_PathBuild=$BO_Home/bin/Linux
-_PathGradle=$GRADLE_HOME/bin
-_PathJava=$JAVA_HOME/bin
-_PathProject=$BO_Project/bin/Linux
-export PATH=${_PathProject}:${_PathBuild}:${_PathGradle}:${_PathJava}:${BO_PathSystem}
-
 DisabledContent
 

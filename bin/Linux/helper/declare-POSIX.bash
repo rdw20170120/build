@@ -160,8 +160,6 @@ requireFile () {
 export -f requireFile
 
 : <<'DisabledContent'
-  # NOTE:  Place content to be ignored in here.
-
   # TODO:  Refactor & redesign
 
 directoryExists () {
