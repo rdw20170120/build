@@ -10,10 +10,10 @@ abort () {
   declare -i _Status="${2:-1}"
   _logFatal "Aborting with status ${_Status}:  ${_Message}"
   if [[ "$SHLVL" -eq 1 ]] ; then
-    logError 'At top level of BASH shell, NOT exiting!'
+    logWarn 'At top level of BASH shell'
     # dumpBash
   fi
-  return ${_Status}
+  exit ${_Status}
 }
 export -f abort
 
@@ -23,8 +23,8 @@ abortIfMissing () {
   # $1 = value that is required
   # $2 = message
 
-  [[ -n "$1" ]]            && return 0
-  abort "$2"               || return 1
+  [[ -n "$1" ]] && return 0
+  abort "$2"
 }
 export -f abortIfMissing
 
@@ -34,7 +34,7 @@ abortOnFail () {
   requireParameter "$1" 1 'previous command exit status' || return 1
 
   [[ "$1" -eq 0 ]]                                       && return 0
-  abort "Last command failed with exit status '$1'!"     || return 1
+  abort "Last command failed with exit status '$1'!"
 }
 export -f abortOnFail
 
@@ -104,7 +104,7 @@ requireParameter () {
   requireValue "$2" 'parameter index'             || return 1
   requireValue "$3" 'description'                 || return 1
 
-  abortIfMissing "$1" "Missing parameter $2: $3!" || return 1
+  abortIfMissing "$1" "Missing parameter $2: $3!"
 }
 export -f requireParameter
 
@@ -115,7 +115,7 @@ requireParameters () {
   requireValue "$2" 'actual parameter count'                          || return 1
 
   [[ "$2" -eq "$1" ]]                                                 && return 0
-  abort "'$2' parameters were passed when exactly '$1' are required!" || return 1
+  abort "'$2' parameters were passed when exactly '$1' are required!"
 }
 export -f requireParameters
 
@@ -126,7 +126,7 @@ requireParametersAtLeast () {
   requireValue "$2" 'actual parameter count'                           || return 1
 
   [[ "$2" -ge "$1" ]]                                                  && return 0
-  abort "'$2' parameters were passed when at least '$1' are required!" || return 1
+  abort "'$2' parameters were passed when at least '$1' are required!"
 }
 export -f requireParametersAtLeast
 
@@ -136,7 +136,7 @@ requireValue () {
   # $1 = value that is required
   # $2 = description for value
 
-  abortIfMissing "$1" "Value for '$2' is missing (non-null)!" || return 1
+  abortIfMissing "$1" "Value for '$2' is missing (non-null)!"
 }
 export -f requireValue
 
@@ -148,7 +148,7 @@ requireVariable () {
   declare _Name=$1
   declare _Value="${!_Name}"
   [[ -n "${_Value}" ]] && return 0
-  abort "Variable '$1' is required (defined and non-null)!"    || return 1
+  abort "Variable '$1' is required (defined and non-null)!"
 }
 export -f requireVariable
 
