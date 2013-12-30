@@ -52,7 +52,7 @@ logDebug () {
   # $1 = message
 
   declare -r _Color=$BO_Home/bin/Linux/color.bash
-  _logWithPriority "$1" 'DEBUG: ' "$(${_Color} yellow black)"
+  _logWithPriority "$1" 'DEBUG: ' "$(${_Color} magenta black)"
 }
 export -f logDebug
 
@@ -82,7 +82,7 @@ logWarn () {
   # $1 = message
 
   declare -r _Color=$BO_Home/bin/Linux/color.bash
-  _logWithPriority "$1" 'WARN:  ' "$(${_Color} magenta black)"
+  _logWithPriority "$1" 'WARN:  ' "$(${_Color} yellow black)"
 }
 export -f logWarn
 
