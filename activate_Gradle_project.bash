@@ -18,6 +18,38 @@ logInfo "BriteOnyx scripting support loaded!"
 # NOTE: Now we have our special BriteOnyx scripting functionality loaded, so we
 #       can shift to using that rather than directly invoking BASH primitives.
 
+# Configure the Gradle environment
+requireVariable BO_Home
+requireVariable BO_Project
+
+createDirectory $BO_Project/out
+
+requireVariable TMPDIR
+createDirectory $TMPDIR
+
+# Must be first in PATH
+_PathProject=$BO_Project/bin/Linux
+PATH=${_PathProject}
+
+_PathBuild=$BO_Home/bin/Linux
+PATH=$PATH:${_PathBuild}
+
+# TODO: Do we still require GRADLE_HOME, or drop in favor of Gradle wrapper?
+# requireVariable GRADLE_HOME
+# _PathGradle=$GRADLE_HOME/bin
+# PATH=$PATH:${_PathGradle}
+
+requireVariable JAVA_HOME
+_PathJava=$JAVA_HOME/bin
+PATH=$PATH:${_PathJava}
+
+# TODO: Move to user-specific configuration file?
+export BO_PathSystem=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+requireVariable BO_PathSystem
+PATH=$PATH:${BO_PathSystem}
+
+export PATH
+
 # Return, but do NOT exit, with a success code
 logInfo "BriteOnyx has activated Gradle for project '$BO_Project'."
 return 0
@@ -25,19 +57,19 @@ return 0
 : <<'DisabledContent'
 # Configure the Gradle environment
 logDebug 'Configuring temporary directory $TMPDIR...'
-requireVariable TMPDIR  || return 1
-createDirectory $TMPDIR || return 1
+requireVariable TMPDIR
+createDirectory $TMPDIR
 logDebug 'Configuring output directory...'
-requireVariable BO_Project      || return 1
-createDirectory $BO_Project/out || return 1
+requireVariable BO_Project
+createDirectory $BO_Project/out
 logDebug 'Configuring system execution $PATH...'
 export BO_PathSystem=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-# TODO: Do we still require GRADLE_HOME, or can we drop in favor of Gradle wrapper?
-# requireVariable GRADLE_HOME   || return 1
-requireVariable JAVA_HOME     || return 1
-requireVariable BO_Home       || return 1
-requireVariable BO_PathSystem || return 1
-requireVariable BO_Project    || return 1
+# TODO: Do we still require GRADLE_HOME, or drop in favor of Gradle wrapper?
+# requireVariable GRADLE_HOME
+requireVariable JAVA_HOME
+requireVariable BO_Home
+requireVariable BO_PathSystem
+requireVariable BO_Project
 _PathBuild=$BO_Home/bin/Linux
 _PathGradle=$GRADLE_HOME/bin
 _PathJava=$JAVA_HOME/bin
