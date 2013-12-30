@@ -1,5 +1,22 @@
 #!/bin/bash
+# NOTE: This script must NOT be 'source'd into a user shell since it might 'exit'
+# NOTE: This script MUST be 'source'd from other scripts
 echo 'INFO: BriteOnyx is activating this Gradle-based project...'
+
+[[   -z "$BO_Home"    ]] && echo 'FATAL: Missing $BO_Home'                && exit 1
+[[ ! -d "$BO_Home"    ]] && echo "FATAL: Missing directory '$BO_Home'"    && exit 1
+[[   -z "$BO_Project" ]] && echo 'FATAL: Missing $BO_Project'             && exit 1
+[[ ! -d "$BO_Project" ]] && echo "FATAL: Missing directory '$BO_Project'" && exit 1
+
+# Configure the Linux environment
+_Dir=$BO_Home/bin/Linux/helper
+[[ ! -d "${_Dir}" ]] && echo "FATAL: Missing directory '${_Dir}'" && exit 1
+# source ${_Dir}/declare.bash
+[[ $? -ne 0 ]] && echo 'FATAL: Aborting' && exit 1
+
+logInfo "BriteOnyx scripting support loaded!"
+# NOTE: Now we have our special BriteOnyx scripting functionality loaded, so we
+#       can shift to using that rather than directly invoking BASH primitives.
 
 : <<'DisabledContent'
 # NOTE: This script should be sourced into the shell environment
