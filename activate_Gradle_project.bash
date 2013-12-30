@@ -1,5 +1,5 @@
 #!/bin/bash
-echo 'INFO: Activating the Gradle project...'
+echo 'INFO: Activating this Gradle-based project...'
 
 # NOTE: This script should be sourced into the shell environment
 # NOTE: This script, and EVERY script that it calls, must NOT invoke 'exit'!
@@ -8,9 +8,10 @@ echo 'INFO: Activating the Gradle project...'
 #       continuing execution where possible.  Exiting the shell robs the user
 #       of useful feedback and interrupts their work, which is unacceptable.
 
-[[   -z "$BO_Home"    ]] && echo 'FATAL: Missing $BO_Home'             && return 1
-[[   -z "$BO_Project" ]] && echo 'FATAL: Missing $BO_Project'          && return 1
-[[ ! -d "$BO_Home"    ]] && echo "FATAL: Missing directory '$BO_Home'" && return 1
+[[   -z "$BO_Home"    ]] && echo 'FATAL: Missing $BO_Home'                && return 1
+[[ ! -d "$BO_Home"    ]] && echo "FATAL: Missing directory '$BO_Home'"    && return 1
+[[   -z "$BO_Project" ]] && echo 'FATAL: Missing $BO_Project'             && return 1
+[[ ! -d "$BO_Project" ]] && echo "FATAL: Missing directory '$BO_Project'" && return 1
 
 # Configure the Linux environment
 _Dir=$BO_Home/bin/Linux/helper
