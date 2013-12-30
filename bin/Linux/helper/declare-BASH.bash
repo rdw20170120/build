@@ -77,7 +77,7 @@ dumpBash () {
   trace MACHTYPE
   trace OLDPWD
   trace OSTYPE
-  # trace PATH
+  trace PATH
   trace PIPESTATUS
   trace PPID
   trace PROMPT_COMMAND
