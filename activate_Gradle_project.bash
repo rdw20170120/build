@@ -1,7 +1,7 @@
 #!/bin/bash
 # NOTE: This script must NOT be 'source'd into a user shell since it might 'exit'
 # NOTE: This script MUST be 'source'd from other scripts
-echo 'INFO: BriteOnyx is activating this Gradle-based project...'
+echo 'INFO: BriteOnyx is activating Gradle for this project...'
 
 [[   -z "$BO_Home"    ]] && echo 'FATAL: Missing $BO_Home'                && exit 1
 [[ ! -d "$BO_Home"    ]] && echo "FATAL: Missing directory '$BO_Home'"    && exit 1
@@ -11,7 +11,7 @@ echo 'INFO: BriteOnyx is activating this Gradle-based project...'
 # Configure the Linux environment
 _Dir=$BO_Home/bin/Linux/helper
 [[ ! -d "${_Dir}" ]] && echo "FATAL: Missing directory '${_Dir}'" && exit 1
-# source ${_Dir}/declare.bash
+source ${_Dir}/declare.bash
 [[ $? -ne 0 ]] && echo 'FATAL: Aborting' && exit 1
 
 logInfo "BriteOnyx scripting support loaded!"

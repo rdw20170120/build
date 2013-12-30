@@ -9,12 +9,12 @@
 # NOTE:  Logging priorities are implicitly ordered as:
 #        Debug < Info < Warn < Error < Fatal
 
-[[ -z "$BO_Home" ]] && echo 'FATAL: Missing $BO_Home' && return 1
+[[ -z "$BO_Home" ]] && echo 'FATAL: Missing $BO_Home' && exit 1
 
 _log () {
   # Log to STDERR the message $1
   # NOTE:  Should only be called from this script
-  [[ "$#" -ne 1 ]] && Oops && return 1
+  [[ "$#" -ne 1 ]] && Oops && exit 1
   # $1 = message
 
   declare -r _Message="${1:-No message provided.}"
@@ -25,7 +25,7 @@ export -f _log
 _logFatal () {
   # Log a fatal message $1
   # NOTE:  Should only be called from abort()
-  [[ "$#" -ne 1 ]] && Oops && return 1
+  [[ "$#" -ne 1 ]] && Oops && exit 1
   # $1 = message
 
   declare -r _Color=$BO_Home/bin/Linux/color.bash
@@ -36,7 +36,7 @@ export -f _logFatal
 _logWithPriority () {
   # Log with priority $2 colorized as $3 the message $1
   # NOTE:  Should only be called from this script
-  [[ "$#" -ne 3 ]] && Oops && return 1
+  [[ "$#" -ne 3 ]] && Oops && exit 1
   # $1 = message
   # $2 = priority (short text prefix)
   # $3 = ANSI color specification
@@ -48,37 +48,37 @@ export -f _logWithPriority
 
 logDebug () {
   # Log a debugging message $1
-  [[ "$#" -ne 1 ]] && Oops && return 1
+  [[ "$#" -ne 1 ]] && Oops && exit 1
   # $1 = message
 
   declare -r _Color=$BO_Home/bin/Linux/color.bash
-  _logWithPriority "$1" 'DEBUG: ' "$(${_Color} white black)"
+  _logWithPriority "$1" 'DEBUG: ' "$(${_Color} yellow black)"
 }
 export -f logDebug
 
 logError () {
   # Log an error message $1
-  [[ "$#" -ne 1 ]] && Oops && return 1
+  [[ "$#" -ne 1 ]] && Oops && exit 1
   # $1 = message
 
   declare -r _Color=$BO_Home/bin/Linux/color.bash
-  _logWithPriority "$1" 'ERROR: ' "$(${_Color} yellow black)"
+  _logWithPriority "$1" 'ERROR: ' "$(${_Color} red black)"
 }
 export -f logError
 
 logInfo () {
   # Log an informational message $1
-  [[ "$#" -ne 1 ]] && Oops && return 1
+  [[ "$#" -ne 1 ]] && Oops && exit 1
   # $1 = message
 
   declare -r _Color=$BO_Home/bin/Linux/color.bash
-  _logWithPriority "$1" 'INFO:  ' "$(${_Color} cyan black)"
+  _logWithPriority "$1" 'INFO:  ' "$(${_Color} green black)"
 }
 export -f logInfo
 
 logWarn () {
   # Log a warning message $1
-  [[ "$#" -ne 1 ]] && Oops && return 1
+  [[ "$#" -ne 1 ]] && Oops && exit 1
   # $1 = message
 
   declare -r _Color=$BO_Home/bin/Linux/color.bash
@@ -98,7 +98,7 @@ export -f Oops
 
 trace () {
   # Trace variable $1
-  [[ "$#" -ne 1 ]] && Oops && return 1
+  [[ "$#" -ne 1 ]] && Oops && exit 1
   # $1 = name of variable to trace
 
   declare -r _Name=$1
@@ -106,4 +106,7 @@ trace () {
   logDebug "${_Name}='${_Value}'"
 }
 export -f trace
+
+: <<'DisabledContent'
+DisabledContent
 
