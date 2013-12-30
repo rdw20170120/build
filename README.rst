@@ -39,7 +39,7 @@ it into the realm of Gradle's ample functionality.
 
 Beyond that, I am thinking that I want to support significant functionality
 without Gradle for languages that do not really benefit as much from it,
-meaning Python and CoffeeScript.  Since Gradle does not (yet) provide
+meaning .NET, CoffeeScript, and Python.  Since Gradle does not (yet) provide
 dependency management for those languages, there is less to be gained by
 involving Gradle in the first place.
 

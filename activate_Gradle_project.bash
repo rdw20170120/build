@@ -1,6 +1,7 @@
 #!/bin/bash
-echo 'INFO: Activating this Gradle-based project...'
+echo 'INFO: BriteOnyx is activating this Gradle-based project...'
 
+: <<'DisabledContent'
 # NOTE: This script should be sourced into the shell environment
 # NOTE: This script, and EVERY script that it calls, must NOT invoke 'exit'!
 #       The user calling this script must be allowed to preserve their shell
@@ -44,10 +45,9 @@ _PathJava=$JAVA_HOME/bin
 _PathProject=$BO_Project/bin/Linux
 export PATH=${_PathProject}:${_PathBuild}:${_PathGradle}:${_PathJava}:${BO_PathSystem}
 
-: <<'DisabledContent'
-DisabledContent
-
 # Return, but do NOT exit, with a success code
 logInfo "Gradle project '$BO_Project' activated."
 return 0
+
+DisabledContent
 
