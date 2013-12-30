@@ -62,7 +62,7 @@ logError () {
   # $1 = message
 
   declare -r _Color=$BO_Home/bin/Linux/color.bash
-  _logWithPriority "$1" 'ERROR: ' "$(${_Color} red black)"
+  _logWithPriority "$1" 'ERROR: ' "$(${_Color} yellow black)"
 }
 export -f logError
 
@@ -82,7 +82,7 @@ logWarn () {
   # $1 = message
 
   declare -r _Color=$BO_Home/bin/Linux/color.bash
-  _logWithPriority "$1" 'WARN:  ' "$(${_Color} yellow black)"
+  _logWithPriority "$1" 'WARN:  ' "$(${_Color} cyan black)"
 }
 export -f logWarn
 
@@ -106,6 +106,12 @@ trace () {
   logDebug "${_Name}='${_Value}'"
 }
 export -f trace
+
+logDebug  "EXAMPLE: This is a debugging message"
+logInfo   "EXAMPLE: This is an informational message"
+logWarn   "EXAMPLE: This is a warning message"
+logError  "EXAMPLE: This is an error message"
+_logFatal "EXAMPLE: This is a fatal message"
 
 : <<'DisabledContent'
 DisabledContent

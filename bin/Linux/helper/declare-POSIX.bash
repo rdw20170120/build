@@ -3,159 +3,159 @@
 
 changeFileGroup () {
   # Change ownership of file $2 to group $1
-  requireParameters 2 "$#"              || return 1
-  requireParameter "$1" 1 'group'       || return 1
-  requireParameter "$2" 2 'target file' || return 1
+  requireParameters 2 "$#"
+  requireParameter "$1" 1 'group'
+  requireParameter "$2" 2 'target file'
 
   # TODO:  Test existence of group $1
-  requireFile "$2"                      || return 1
+  requireFile "$2"
   logInfo "Changing owner of file '$2' to group '$1'..."
   chgrp "$1" "$2"
-  abortOnFail "$?"                      || return 1
+  abortOnFail "$?"
 }
 export -f changeFileGroup
 
 copyFile () {
   # Copy source file $1 to target file $2, but not if it exists
-  requireParameters 2 "$#"              || return 1
-  requireParameter "$1" 1 'source file' || return 1
-  requireParameter "$2" 2 'target file' || return 1
+  requireParameters 2 "$#"
+  requireParameter "$1" 1 'source file'
+  requireParameter "$2" 2 'target file'
 
-  requireFile "$1"                      || return 1
+  requireFile "$1"
   if fileExists "$2" ; then
     logDebug "File '$2' exists, skipping copy of file '$1'!"
   else
     logInfo "Copying file '$2' from file '$1'..."
     cp "$1" "$2"
-    abortOnFail "$?"                    || return 1
+    abortOnFail "$?"
   fi
-  requireFile "$2"                      || return 1
+  requireFile "$2"
 }
 export -f copyFile
 
 copyFileForce () {
   # Copy source file $1 to target file $2, EVEN if it exists
-  requireParameters 2 "$#"              || return 1
-  requireParameter "$1" 1 'source file' || return 1
-  requireParameter "$2" 2 'target file' || return 1
+  requireParameters 2 "$#"
+  requireParameter "$1" 1 'source file'
+  requireParameter "$2" 2 'target file'
 
-  requireFile "$1"                      || return 1
+  requireFile "$1"
   if fileExists "$2" ; then
     logWarn "File '$2' exists, overwriting!"
   fi
   logInfo "Copying file '$2' from file '$1'..."
   cp "$1" "$2"
-  abortOnFail "$?"                      || return 1
-  requireFile "$2"                      || return 1
+  abortOnFail "$?"
+  requireFile "$2"
 }
 export -f copyFileForce
 
 copyFiles () {
   # Copy all files in source directory $1 to target directory $2
-  requireParameters 2 "$#"                   || return 1
-  requireParameter "$1" 1 'source directory' || return 1
-  requireParameter "$2" 2 'target directory' || return 1
+  requireParameters 2 "$#"
+  requireParameter "$1" 1 'source directory'
+  requireParameter "$2" 2 'target directory'
 
-  requireDirectory "$1"                      || return 1
+  requireDirectory "$1"
   # if directoryExists "$2" ; then
     logInfo "Copying directory '$2' from directory '$1'..."
     cp -R $1/* $2/
-    abortOnFail "$?"                         || return 1
+    abortOnFail "$?"
   # fi
-  requireDirectory "$2"                      || return 1
+  requireDirectory "$2"
 }
 export -f copyFiles
 
 createDirectory () {
   # Create directory $1, but not if it exists
-  requireParameters 1 "$#"                   || return 1
-  requireParameter "$1" 1 'target directory' || return 1
+  requireParameters 1 "$#"
+  requireParameter "$1" 1 'target directory'
 
   if directoryExists "$1" ; then
     logDebug "Directory '$1' exists, skipping creation!"
   else
     logInfo "Creating directory '$1'..."
     mkdir -p "$1"
-    abortOnFail "$?"                         || return 1
+    abortOnFail "$?"
   fi
-  requireDirectory "$1"                      || return 1
+  requireDirectory "$1"
 }
 export -f createDirectory
 
 directoryExists () {
   # Return whether directory $1 exists, abort if it is not creatable
-  requireParameters 1 "$#"                   || return 1
-  requireParameter "$1" 1 'target directory' || return 1
+  requireParameters 1 "$#"
+  requireParameter "$1" 1 'target directory'
 
   [[   -d "$1" ]] && \
-    logDebug "Found directory '$1'"          && return 0
+    logDebug "Found directory '$1'" && return 0
   [[   -e "$1" ]] && \
-    abort "Found non-directory '$1'"         || return 1
+    abort "Found non-directory '$1'"
   return 1 # $1 does not exist, but appears to be creatable
 }
 export -f directoryExists
 
 fileExists () {
   # Return whether file $1 exists, abort if it is not creatable
-  requireParameters 1 "$#"              || return 1
-  requireParameter "$1" 1 'target file' || return 1
+  requireParameters 1 "$#"
+  requireParameter "$1" 1 'target file'
 
   [[   -f "$1" ]] && \
-    logDebug "Found file '$1'"          && return 0
+    logDebug "Found file '$1'" && return 0
   [[   -e "$1" ]] && \
-    abort "Found non-file '$1'"         || return 1
+    abort "Found non-file '$1'"
   return 1 # $1 does not exist, but appears to be creatable
 }
 export -f fileExists
 
 makeFilesExecutable () {
   # Make the files executable within directory $1
-  requireParameters 1 "$#"                   || return 1
-  requireParameter "$1" 1 'target directory' || return 1
+  requireParameters 1 "$#"
+  requireParameter "$1" 1 'target directory'
 
-  requireDirectory "$1"                      || return 1
+  requireDirectory "$1"
   logInfo "Making files executable in directory '$1'..."
   chmod -R u+x "$1"
-  abortOnFail "$?"                           || return 1
+  abortOnFail "$?"
 }
 export -f makeFilesExecutable
 
 moveFile () {
   # Move source file $1 to target file $2, but not if it exists
-  requireParameters 2 "$#"              || return 1
-  requireParameter "$1" 1 'source file' || return 1
-  requireParameter "$2" 2 'target file' || return 1
+  requireParameters 2 "$#"
+  requireParameter "$1" 1 'source file'
+  requireParameter "$2" 2 'target file'
 
-  requireFile "$1"                      || return 1
+  requireFile "$1"
   if fileExists "$2" ; then
     logError "File '$2' exists, skipping move of file '$1'!"
   else
     logInfo "Moving file '$2' from file '$1'..."
     mv "$1" "$2"
-    abortOnFail "$?"                    || return 1
+    abortOnFail "$?"
   fi
   # TODO:  Check that file $1 is gone?
-  requireFile "$2"                      || return 1
+  requireFile "$2"
 }
 export -f moveFile
 
 requireDirectory () {
   # Require that directory $1 exists, abort if not
-  requireParameters 1 "$#"                    || return 1
-  requireParameter "$1" 1 'target directory'  || return 1
+  requireParameters 1 "$#"
+  requireParameter "$1" 1 'target directory'
 
-  directoryExists "$1"                        && return 0
-  abort "Required directory '$1' must exist!" || return 1
+  directoryExists "$1" && return 0
+  abort "Required directory '$1' must exist!"
 }
 export -f requireDirectory
 
 requireFile () {
   # Require that file $1 exists, abort if not
-  requireParameters 1 "$#"               || return 1
-  requireParameter "$1" 1 'target file'  || return 1
+  requireParameters 1 "$#"
+  requireParameter "$1" 1 'target file'
 
-  fileExists "$1"                        && return 0
-  abort "Required file '$1' must exist!" || return 1
+  fileExists "$1" && return 0
+  abort "Required file '$1' must exist!"
 }
 export -f requireFile
 
