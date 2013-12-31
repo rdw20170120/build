@@ -8,23 +8,15 @@ echo 'INFO: BriteOnyx is activating Gradle for this project...'
 [[   -z "$BO_Project" ]] && echo 'FATAL: Missing $BO_Project'             && exit 1
 [[ ! -d "$BO_Project" ]] && echo "FATAL: Missing directory '$BO_Project'" && exit 1
 
-# Configure the Linux environment
-_Dir=$BO_Home/bin/Linux/helper
+# Configure environment for Linux
+_Dir=$BO_Home/activation/Linux
 [[ ! -d "${_Dir}" ]] && echo "FATAL: Missing directory '${_Dir}'" && exit 1
-source ${_Dir}/declare.bash
+source ${_Dir}/activate.bash
 [[ $? -ne 0 ]] && echo 'FATAL: Aborting' && exit 1
-
-logInfo "BriteOnyx scripting support loaded!"
-# NOTE: Now we have our special BriteOnyx scripting functionality loaded, so we
-#       can shift to using that rather than directly invoking BASH primitives.
 
 # Configure environment for Gradle on Linux
 requireVariable BO_Home
 requireVariable BO_Project
-
-# Must be first in PATH
-_PathProject=$BO_Project/bin/Linux
-PATH=${_PathProject}
 
 _PathBuild=$BO_Home/bin/Linux
 PATH=$PATH:${_PathBuild}
@@ -50,8 +42,6 @@ logInfo "BriteOnyx has activated Gradle for project '$BO_Project'."
 return 0
 
 : <<'DisabledContent'
-createDirectory $BO_Project/out
-
 requireVariable TMPDIR
 createDirectory $TMPDIR
 DisabledContent
