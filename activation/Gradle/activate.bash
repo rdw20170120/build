@@ -22,11 +22,6 @@ logInfo "BriteOnyx scripting support loaded!"
 requireVariable BO_Home
 requireVariable BO_Project
 
-createDirectory $BO_Project/out
-
-requireVariable TMPDIR
-createDirectory $TMPDIR
-
 # Must be first in PATH
 _PathProject=$BO_Project/bin/Linux
 PATH=${_PathProject}
@@ -55,5 +50,9 @@ logInfo "BriteOnyx has activated Gradle for project '$BO_Project'."
 return 0
 
 : <<'DisabledContent'
+createDirectory $BO_Project/out
+
+requireVariable TMPDIR
+createDirectory $TMPDIR
 DisabledContent
 
