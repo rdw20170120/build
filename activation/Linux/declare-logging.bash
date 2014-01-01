@@ -11,6 +11,8 @@
 
 [[ -z "$BO_Home" ]] && echo 'FATAL: Missing $BO_Home' && return 1
 
+declare -r _Color=$BO_Home/activation/Linux/color.bash
+
 _log () {
   # Log to STDERR the message $1
   # NOTE:  Should only be called from this script
@@ -28,7 +30,6 @@ _logFatal () {
   [[ "$#" -ne 1 ]] && Oops && exit 1
   # $1 = message
 
-  declare -r _Color=$BO_Home/bin/Linux/color.bash
   _logWithPriority "$1" 'FATAL: ' "$(${_Color} red black)"
 }
 export -f _logFatal
@@ -41,7 +42,6 @@ _logWithPriority () {
   # $2 = priority (short text prefix)
   # $3 = ANSI color specification
 
-  declare -r _Color=$BO_Home/bin/Linux/color.bash
   _log "$3$2$1$(${_Color} off)"
 }
 export -f _logWithPriority
@@ -51,7 +51,6 @@ logDebug () {
   [[ "$#" -ne 1 ]] && Oops && exit 1
   # $1 = message
 
-  declare -r _Color=$BO_Home/bin/Linux/color.bash
   _logWithPriority "$1" 'DEBUG: ' "$(${_Color} magenta black)"
 }
 export -f logDebug
@@ -61,7 +60,6 @@ logError () {
   [[ "$#" -ne 1 ]] && Oops && exit 1
   # $1 = message
 
-  declare -r _Color=$BO_Home/bin/Linux/color.bash
   _logWithPriority "$1" 'ERROR: ' "$(${_Color} yellow black)"
 }
 export -f logError
@@ -71,7 +69,6 @@ logInfo () {
   [[ "$#" -ne 1 ]] && Oops && exit 1
   # $1 = message
 
-  declare -r _Color=$BO_Home/bin/Linux/color.bash
   _logWithPriority "$1" 'INFO:  ' "$(${_Color} green black)"
 }
 export -f logInfo
@@ -81,7 +78,6 @@ logWarn () {
   [[ "$#" -ne 1 ]] && Oops && exit 1
   # $1 = message
 
-  declare -r _Color=$BO_Home/activation/Linux/color.bash
   _logWithPriority "$1" 'WARN:  ' "$(${_Color} cyan black)"
 }
 export -f logWarn
