@@ -41,7 +41,8 @@ export -f abortOnFail
 dumpBash () {
   # Dump BASH variables
   logDebug 'Dumping BASH variables...'
-  trace 0
+  logDebug "0='$0'"
+
   trace BASH
   trace BASH_ARGC
   trace BASH_ARGV
