@@ -19,8 +19,6 @@ _ExitCode=$?
   echo "FATAL: Exit code ${_ExitCode} at '$BASH_SOURCE':$LINENO" && \
   return ${_ExitCode}
 
-# Configure environment for Gradle on Linux
-
 # Must be first in PATH
 _PathProject=$BO_Project/bin/Linux
 PATH=${_PathProject}

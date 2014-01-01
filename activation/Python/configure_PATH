@@ -1,5 +1,5 @@
 #!/bin/bash
-logDebug 'Configuring system execution $PATH...'
+echo "TRACE: Executing '$BASH_SOURCE'"
 
 # TODO: Move this elsewhere?
 export BO_PathSystem=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin

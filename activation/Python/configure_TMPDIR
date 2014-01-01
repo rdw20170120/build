@@ -1,5 +1,5 @@
 #!/bin/bash
-logDebug 'Configuring temporary directory $TMPDIR...'
+echo "TRACE: Executing '$BASH_SOURCE'"
 
 requireVariable TMPDIR  || return 1
 createDirectory $TMPDIR || return 1

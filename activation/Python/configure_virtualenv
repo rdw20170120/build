@@ -1,5 +1,5 @@
 #!/bin/bash
-logDebug 'Configuring Python virtualenv...'
+echo "TRACE: Executing '$BASH_SOURCE'"
 
 requireVariable BO_Project || return 1
 _Script=$BO_Project/PVE/bin/activate
