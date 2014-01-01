@@ -2,10 +2,6 @@
 echo "TRACE: Executing '$BASH_SOURCE'"
 
 # NOTE:  Uses ANSI coloring
-
-# NOTE:  This is a very low-level script used by practically all other scripts,
-#        so it MUST NOT depend on any other scripts (beyond color)!
-
 # NOTE:  Logging priorities are implicitly ordered as:
 #        Debug < Info < Warn < Error < Fatal
 
