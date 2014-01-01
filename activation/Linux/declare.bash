@@ -5,9 +5,26 @@ echo 'INFO: Declaring all BASH scripting functionality for BriteOnyx...'
 
 _Dir=$BO_Home/activation/Linux
 [[ ! -d "${_Dir}" ]] && echo "FATAL: Missing directory '${_Dir}'" && return 1
-source ${_Dir}/declare-logging.bash
-source ${_Dir}/declare-BASH.bash
-# source ${_Dir}/declare-POSIX.bash
+
+_Script=${_Dir}/declare-logging.bash
+[[ ! -f "${_Script}" ]] && \
+  echo "FATAL: Missing script '${_Script}'" && \
+  return 1
+source ${_Script}
+
+dumpBash
+
+_Script=${_Dir}/declare-BASH.bash
+[[ ! -f "${_Script}" ]] && \
+  echo "FATAL: Missing script '${_Script}'" && \
+  return 1
+source ${_Script}
+
+_Script=${_Dir}/declare-POSIX.bash
+[[ ! -f "${_Script}" ]] && \
+  echo "FATAL: Missing script '${_Script}'" && \
+  return 1
+source ${_Script}
 
 # Return, but do NOT exit, with a success code
 return 0
