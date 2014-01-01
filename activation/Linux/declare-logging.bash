@@ -81,7 +81,7 @@ logWarn () {
   [[ "$#" -ne 1 ]] && Oops && exit 1
   # $1 = message
 
-  declare -r _Color=$BO_Home/bin/Linux/color.bash
+  declare -r _Color=$BO_Home/activation/Linux/color.bash
   _logWithPriority "$1" 'WARN:  ' "$(${_Color} cyan black)"
 }
 export -f logWarn
