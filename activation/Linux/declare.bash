@@ -12,13 +12,13 @@ _Script=${_Dir}/declare-logging.bash
   return 1
 source ${_Script}
 
-dumpBash | grep declare.bash
-
 _Script=${_Dir}/declare-BASH.bash
 [[ ! -f "${_Script}" ]] && \
   echo "FATAL: Missing script '${_Script}'" && \
   return 1
 source ${_Script}
+
+dumpBash | grep declare.bash
 
 _Script=${_Dir}/declare-POSIX.bash
 [[ ! -f "${_Script}" ]] && \
