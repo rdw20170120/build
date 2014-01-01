@@ -11,7 +11,7 @@ echo 'INFO: Declaring BASH logging functionality for BriteOnyx...'
 
 [[ -z "$BO_Home" ]] && echo 'FATAL: Missing $BO_Home' && return 1
 
-declare -r _Color=$BO_Home/activation/Linux/color.bash
+_Color=$BO_Home/activation/Linux/color.bash
 
 _log () {
   # Log to STDERR the message $1
