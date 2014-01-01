@@ -6,8 +6,9 @@ echo "TRACE: Executing '$BASH_SOURCE'"
 [[   -z "$BO_Project" ]] && echo 'FATAL: Missing $BO_Project'             && return 1
 [[ ! -d "$BO_Project" ]] && echo "FATAL: Missing directory '$BO_Project'" && return 1
 
-[[ -z "$BO_PathSystem" ]] && echo 'FATAL: Missing $BO_PathSystem' && return 1
-[[ -z "$JAVA_HOME"     ]] && echo 'FATAL: Missing $JAVA_HOME'     && return 1
+[[ -z "$BO_GradleVersion" ]] && echo 'FATAL: Missing $BO_GradleVersion' && return 1
+[[ -z "$BO_PathSystem"    ]] && echo 'FATAL: Missing $BO_PathSystem'    && return 1
+[[ -z "$JAVA_HOME"        ]] && echo 'FATAL: Missing $JAVA_HOME'        && return 1
 
 # Configure environment for Linux
 
