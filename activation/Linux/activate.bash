@@ -3,16 +3,20 @@
 # NOTE: This script MUST be 'source'd from other scripts
 echo 'INFO: BriteOnyx is activating Linux for this project...'
 
-[[   -z "$BO_Home"    ]] && echo 'FATAL: Missing $BO_Home'                && exit 1
-[[ ! -d "$BO_Home"    ]] && echo "FATAL: Missing directory '$BO_Home'"    && exit 1
-[[   -z "$BO_Project" ]] && echo 'FATAL: Missing $BO_Project'             && exit 1
-[[ ! -d "$BO_Project" ]] && echo "FATAL: Missing directory '$BO_Project'" && exit 1
+[[   -z "$BO_Home"    ]] && echo 'FATAL: Missing $BO_Home'                && return 1
+[[ ! -d "$BO_Home"    ]] && echo "FATAL: Missing directory '$BO_Home'"    && return 1
+[[   -z "$BO_Project" ]] && echo 'FATAL: Missing $BO_Project'             && return 1
+[[ ! -d "$BO_Project" ]] && echo "FATAL: Missing directory '$BO_Project'" && return 1
 
 # Configure the Linux environment
 _Dir=$BO_Home/activation/Linux
-[[ ! -d "${_Dir}" ]] && echo "FATAL: Missing directory '${_Dir}'" && exit 1
-source ${_Dir}/declare.bash
-[[ $? -ne 0 ]] && echo 'FATAL: Aborting' && exit 1
+[[ ! -d "${_Dir}" ]] && echo "FATAL: Missing directory '${_Dir}'" && return 1
+_Script=${_Dir}/declare.bash
+[[ ! -f "${_Script}" ]] && \
+  echo "FATAL: Missing script '${_Script}'" && \
+  return 1
+source ${_Script}
+[[ $? -ne 0 ]] && echo 'FATAL: Aborting' && return 1
 
 logInfo "BriteOnyx scripting support loaded!"
 # NOTE: Now we have our special BriteOnyx scripting functionality loaded, so we
