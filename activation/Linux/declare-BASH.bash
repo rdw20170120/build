@@ -41,12 +41,13 @@ export -f abortOnFail
 dumpBash () {
   # Dump BASH variables
   logDebug 'Dumping BASH variables...'
-  logDebug "0='$0'"
-
   trace BASH
+  trace BASH_ALIASES
   trace BASH_ARGC
   trace BASH_ARGV
+  trace BASH_CMDS
   trace BASH_COMMAND
+  trace BASH_COMPLETION_COMPAT_DIR
   trace BASH_ENV
   trace BASH_EXECUTION_STRING
   trace BASH_LINENO
@@ -60,15 +61,14 @@ dumpBash () {
   trace BASH_VERSINFO[4]
   trace BASH_VERSINFO[5]
   trace BASH_VERSION
+  trace BASHOPTS
   trace BASHPID
   trace CDPATH
   trace DIRSTACK
-  # trace EDITOR
   trace EUID
   trace FUNCNAME
   trace GLOBIGNORE
   trace GROUPS
-  # trace HOME
   trace HOSTNAME
   trace HOSTTYPE
   trace IFS
@@ -95,6 +95,40 @@ dumpBash () {
   trace SHLVL
   trace TMOUT
   trace UID
+
+  # Others
+  trace COLORTERM
+  trace COLUMNS
+  trace DEFAULTS_PATH
+  trace DISPLAY
+  trace EDITOR
+  trace GROUPS
+  trace HISTCMD
+  trace HISTCONTROL
+  trace HISTFILE
+  trace HISTFILESIZE
+  trace HISTSIZE
+  trace HOME
+  trace LANG
+  trace LESSCLOSE
+  trace LESSOPEN
+  trace LINES
+  trace LOGNAME
+  trace LS_COLORS
+  trace MAILCHECK
+  trace MANDATORY_PATH
+  trace OPTERR
+  trace OPTIND
+  trace RANDOM
+  trace SECONDS
+  trace SSH_AGENT_PID
+  trace SSH_AUTH_SOCK
+  trace TERM
+  trace TMPDIR
+  trace USER
+  trace USERNAME
+  trace WINDOWID
+  trace WINDOWPATH
 }
 export -f dumpBash
 
