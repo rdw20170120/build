@@ -25,7 +25,7 @@ _Script=${_Dir}/declare-POSIX.bash
 source ${_Script}
 
 # Return, but do NOT exit, with a success code
-return 0
+return 1
 
 : <<'DisabledContent'
 DisabledContent

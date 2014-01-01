@@ -160,7 +160,7 @@ requireFile () {
 export -f requireFile
 
 # Return, but do NOT exit, with a success code
-return 0
+return 1
 
 : <<'DisabledContent'
   # TODO:  Refactor & redesign
