@@ -1,5 +1,6 @@
 #!/bin/bash
-echo 'INFO: Declaring all BASH scripting functionality for BriteOnyx...'
+echo "TRACE: Executing '$BASH_SOURCE'"
+echo "INFO: Declaring all BASH scripting functionality in '$BASH_SOURCE'"
 
 [[ -z "$BO_Home" ]] && echo 'FATAL: Missing $BO_Home' && return 1
 
@@ -17,8 +18,6 @@ _Script=${_Dir}/declare-BASH.bash
   echo "FATAL: Missing script '${_Script}'" && \
   return 1
 source ${_Script}
-
-dumpBash | grep declare.bash
 
 _Script=${_Dir}/declare-POSIX.bash
 [[ ! -f "${_Script}" ]] && \

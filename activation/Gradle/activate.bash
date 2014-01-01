@@ -1,4 +1,5 @@
 #!/bin/bash
+echo "TRACE: Executing '$BASH_SOURCE'"
 echo 'INFO: BriteOnyx is activating Gradle for this project...'
 
 [[   -z "$BO_Home"    ]] && echo 'FATAL: Missing $BO_Home'                && return 1
