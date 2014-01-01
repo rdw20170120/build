@@ -25,7 +25,7 @@ _ExitCode=$?
 _PathProject=$BO_Project/bin/Linux
 PATH=${_PathProject}
 
-_PathBuild=$BO_Home/bin/Linux
+_PathBuild=$BO_Home/invocation/Linux
 PATH=$PATH:${_PathBuild}
 
 [[ -z "$BO_PathSystem" ]] && echo 'FATAL: Missing $BO_PathSystem' && return 1
