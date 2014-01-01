@@ -27,6 +27,7 @@ _ExitCode=$?
   return ${_ExitCode}
 
 # Configure environment for Gradle on Linux
+[[ -z "$BO_PathLinux" ]] && echo 'FATAL: Missing $BO_PathLinux' && return 1
 
 export BO_PathGradle=$JAVA_HOME/bin
 

@@ -6,7 +6,6 @@ echo "TRACE: Executing '$BASH_SOURCE'"
 [[   -z "$BO_Project" ]] && echo 'FATAL: Missing $BO_Project'             && return 1
 [[ ! -d "$BO_Project" ]] && echo "FATAL: Missing directory '$BO_Project'" && return 1
 
-[[ -z "$BO_PathLinux"       ]] && echo 'FATAL: Missing $BO_PathLinux'       && return 1
 [[ -z "$BO_PathSystem"      ]] && echo 'FATAL: Missing $BO_PathSystem'      && return 1
 [[ -z "$PIP_DOWNLOAD_CACHE" ]] && echo 'FATAL: Missing $PIP_DOWNLOAD_CACHE' && return 1
 
@@ -28,6 +27,7 @@ _ExitCode=$?
   return ${_ExitCode}
 
 # Configure environment for Python on Linux
+[[ -z "$BO_PathLinux" ]] && echo 'FATAL: Missing $BO_PathLinux' && return 1
 
 _Dir=$BO_Home/activation/Python
 [[ ! -d "${_Dir}" ]] && echo "FATAL: Missing directory '${_Dir}'" && return 1
