@@ -6,8 +6,8 @@ _Script=$BO_Project/PVE/bin/activate
 
 # Verify PIP integration
 requireVariable PIP_DOWNLOAD_CACHE     || return 1
-requireVariable PIP_REQUIRE_VIRTUALENV || return 1
-requireVariable PIP_RESPECT_VIRTUALENV || return 1
+export PIP_REQUIRE_VIRTUALENV=true
+export PIP_RESPECT_VIRTUALENV=true
 
 # If the virtual environment does not already exist, create it
 _PVE=$BO_Project/PVE
