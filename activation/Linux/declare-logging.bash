@@ -9,12 +9,12 @@ echo "TRACE: Executing '$BASH_SOURCE'"
 
 # Remember ANSI color escape sequences for our logging priorities
 _Script=$(dirname $BASH_SOURCE)/../../invocation/Linux/color.bash
-BO_ColorOff="$(${_Script} off)"
-BO_ColorDebug="$(${_Script} magenta black)"
-BO_ColorInfo="$(${_Script} green black)"
-BO_ColorWarn="$(${_Script} cyan black)"
-BO_ColorError="$(${_Script} yellow black)"
-BO_ColorFatal="$(${_Script} red black)"
+export BO_ColorOff="$(${_Script} off)"
+export BO_ColorDebug="$(${_Script} magenta black)"
+export BO_ColorInfo="$(${_Script} green black)"
+export BO_ColorWarn="$(${_Script} cyan black)"
+export BO_ColorError="$(${_Script} yellow black)"
+export BO_ColorFatal="$(${_Script} red black)"
 
 _log () {
   # Log to STDERR the message $1
