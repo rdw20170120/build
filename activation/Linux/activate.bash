@@ -31,6 +31,10 @@ PATH=$PATH:${BO_PathSystem}
 
 export PATH
 
+# Configure TMPDIR
+[[ -z "$TMPDIR" ]] && echo 'FATAL: Missing $TMPDIR' && return 1
+
+# Demonstrate logging
 logDebug  "EXAMPLE: This is a debugging message"
 logInfo   "EXAMPLE: This is an informational message"
 logWarn   "EXAMPLE: This is a warning message"
