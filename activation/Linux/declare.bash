@@ -1,7 +1,8 @@
 #!/bin/bash
-echo 'INFO: Declaring all scripting functionality for BriteOnyx...'
+echo 'INFO: Declaring all BASH scripting functionality for BriteOnyx...'
 
 [[ -z "$BO_Home" ]] && echo 'FATAL: Missing $BO_Home' && return 1
+
 _Dir=$BO_Home/activation/Linux
 [[ ! -d "${_Dir}" ]] && echo "FATAL: Missing directory '${_Dir}'" && return 1
 source ${_Dir}/declare-logging.bash
@@ -12,9 +13,5 @@ source ${_Dir}/declare-logging.bash
 return 0
 
 : <<'DisabledContent'
-# Integrate later, preferably as optional components
-source ${_Dir}/declare-Hudson.bash
-source ${_Dir}/declare-Mercurial.bash
-source ${_Dir}/declare-Subversion.bash
 DisabledContent
 

@@ -1,5 +1,5 @@
 #!/bin/bash
-# Declare BASH functionality for logging
+echo 'INFO: Declaring BASH logging functionality for BriteOnyx...'
 
 # NOTE:  Uses ANSI coloring
 

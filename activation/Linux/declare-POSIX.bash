@@ -1,5 +1,5 @@
 #!/bin/bash
-# Declare functionality for POSIX (mostly directory and file handling)
+echo 'INFO: Declaring BASH POSIX functionality for BriteOnyx...'
 
 changeFileGroup () {
   # Change ownership of file $2 to group $1

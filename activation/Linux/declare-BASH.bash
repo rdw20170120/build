@@ -1,5 +1,5 @@
 #!/bin/bash
-# Declare functionality for BASH
+echo 'INFO: Declaring BASH general functionality for BriteOnyx...'
 
 abort () {
   # Abort BASH execution with message $3 and exit status $4
