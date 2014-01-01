@@ -36,7 +36,7 @@ _logWithPriority () {
   # $2 = priority (short text prefix)
   # $3 = ANSI color specification
 
-  _log "$3$2$1$(${_Color} off)"
+  _log "$3$2$1$(color.bash off)"
 }
 export -f _logWithPriority
 
