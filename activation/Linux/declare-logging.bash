@@ -9,7 +9,7 @@
 # NOTE:  Logging priorities are implicitly ordered as:
 #        Debug < Info < Warn < Error < Fatal
 
-[[ -z "$BO_Home" ]] && echo 'FATAL: Missing $BO_Home' && exit 1
+[[ -z "$BO_Home" ]] && echo 'FATAL: Missing $BO_Home' && return 1
 
 _log () {
   # Log to STDERR the message $1
