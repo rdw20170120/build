@@ -28,11 +28,18 @@ PATH=${_PathProject}
 _PathBuild=$BO_Home/bin/Linux
 PATH=$PATH:${_PathBuild}
 
-[[   -z "$BO_PathSystem" ]] && echo 'FATAL: Missing $BO_PathSystem' && return 1
+[[ -z "$BO_PathSystem" ]] && echo 'FATAL: Missing $BO_PathSystem' && return 1
 PATH=$PATH:${BO_PathSystem}
 
 export PATH
 
+logDebug  "EXAMPLE: This is a debugging message"
+logInfo   "EXAMPLE: This is an informational message"
+logWarn   "EXAMPLE: This is a warning message"
+logError  "EXAMPLE: This is an error message"
+_logFatal "EXAMPLE: This is a fatal message"
+
+# Return, but do NOT exit, with a success code
 # Return, but do NOT exit, with a success code
 return 0
 
