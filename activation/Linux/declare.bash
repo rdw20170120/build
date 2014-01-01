@@ -1,6 +1,5 @@
 #!/bin/bash
 echo "TRACE: Executing '$BASH_SOURCE'"
-echo "INFO: Declaring all BASH scripting functionality in '$BASH_SOURCE'"
 
 [[ -z "$BO_Home" ]] && echo 'FATAL: Missing $BO_Home' && return 1
 

@@ -1,6 +1,5 @@
 #!/bin/bash
 echo "TRACE: Executing '$BASH_SOURCE'"
-echo "INFO: Declaring BASH logging functionality in '$BASH_SOURCE'"
 
 # NOTE:  Uses ANSI coloring
 

@@ -1,6 +1,5 @@
 #!/bin/bash
 echo "TRACE: Executing '$BASH_SOURCE'"
-echo "INFO: Declaring BASH POSIX functionality in '$BASH_SOURCE'"
 
 changeFileGroup () {
   # Change ownership of file $2 to group $1

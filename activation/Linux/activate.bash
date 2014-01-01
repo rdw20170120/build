@@ -1,6 +1,5 @@
 #!/bin/bash
 echo "TRACE: Executing '$BASH_SOURCE'"
-echo 'INFO: BriteOnyx is activating Linux for this project...'
 
 [[   -z "$BO_Home"    ]] && echo 'FATAL: Missing $BO_Home'                && return 1
 [[ ! -d "$BO_Home"    ]] && echo "FATAL: Missing directory '$BO_Home'"    && return 1

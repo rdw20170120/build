@@ -1,6 +1,5 @@
 #!/bin/bash
 echo "TRACE: Executing '$BASH_SOURCE'"
-echo "INFO: Declaring BASH general functionality in '$BASH_SOURCE'"
 
 abort () {
   # Abort BASH execution with message $3 and exit status $4
