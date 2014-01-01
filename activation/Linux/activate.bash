@@ -14,7 +14,10 @@ _Script=${_Dir}/declare.bash
   echo "FATAL: Missing script '${_Script}'" && \
   return 1
 source ${_Script}
-[[ $? -ne 0 ]] && echo 'FATAL: Aborting' && return 1
+_ExitCode=$?
+[[ ${_ExitCode} -ne 0 ]] && \
+  echo "FATAL: Script '${_Script}' exited with ${_ExitCode}, aborting!" && \
+  return ${_ExitCode}
 
 # Configure environment for Gradle on Linux
 

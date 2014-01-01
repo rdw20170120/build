@@ -11,18 +11,30 @@ _Script=${_Dir}/declare-logging.bash
   echo "FATAL: Missing script '${_Script}'" && \
   return 1
 source ${_Script}
+_ExitCode=$?
+[[ ${_ExitCode} -ne 0 ]] && \
+  echo "FATAL: Script '${_Script}' exited with ${_ExitCode}, aborting!" && \
+  return ${_ExitCode}
 
 _Script=${_Dir}/declare-BASH.bash
 [[ ! -f "${_Script}" ]] && \
   echo "FATAL: Missing script '${_Script}'" && \
   return 1
 source ${_Script}
+_ExitCode=$?
+[[ ${_ExitCode} -ne 0 ]] && \
+  echo "FATAL: Script '${_Script}' exited with ${_ExitCode}, aborting!" && \
+  return ${_ExitCode}
 
 _Script=${_Dir}/declare-POSIX.bash
 [[ ! -f "${_Script}" ]] && \
   echo "FATAL: Missing script '${_Script}'" && \
   return 1
 source ${_Script}
+_ExitCode=$?
+[[ ${_ExitCode} -ne 0 ]] && \
+  echo "FATAL: Script '${_Script}' exited with ${_ExitCode}, aborting!" && \
+  return ${_ExitCode}
 
 # Return, but do NOT exit, with a success code
 return 1
