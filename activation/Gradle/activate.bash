@@ -17,9 +17,6 @@ source ${_Script}
 [[ $? -ne 0 ]] && echo 'FATAL: Aborting' && return 1
 
 # Configure environment for Gradle on Linux
-requireVariable BO_Home
-requireVariable BO_Project
-
 _PathBuild=$BO_Home/bin/Linux
 PATH=$PATH:${_PathBuild}
 
@@ -28,17 +25,17 @@ PATH=$PATH:${_PathBuild}
 # _PathGradle=$GRADLE_HOME/bin
 # PATH=$PATH:${_PathGradle}
 
-requireVariable JAVA_HOME
+[[   -z "$JAVA_HOME" ]] && echo 'FATAL: Missing $JAVA_HOME' && return 1
 _PathJava=$JAVA_HOME/bin
 PATH=$PATH:${_PathJava}
 
-requireVariable BO_PathSystem
+[[   -z "$BO_PathSystem" ]] && echo 'FATAL: Missing $BO_PathSystem' && return 1
 PATH=$PATH:${BO_PathSystem}
 
 export PATH
 
 # Return, but do NOT exit, with a success code
-logInfo "BriteOnyx has activated Gradle for project '$BO_Project'."
+echo "INFO: BriteOnyx has activated Gradle for project '$BO_Project'."
 return 0
 
 : <<'DisabledContent'

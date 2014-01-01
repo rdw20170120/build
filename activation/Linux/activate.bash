@@ -18,7 +18,7 @@ _Script=${_Dir}/declare.bash
 source ${_Script}
 [[ $? -ne 0 ]] && echo 'FATAL: Aborting' && return 1
 
-logInfo "BriteOnyx scripting support loaded!"
+echo 'INFO: BriteOnyx scripting support loaded!'
 # NOTE: Now we have our special BriteOnyx scripting functionality loaded, so we
 #       can shift to using that rather than directly invoking BASH primitives.
 
@@ -31,15 +31,13 @@ PATH=${_PathProject}
 _PathBuild=$BO_Home/bin/Linux
 PATH=$PATH:${_PathBuild}
 
-# TODO: Move to user-specific configuration file?
-export BO_PathSystem=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 [[   -z "$BO_PathSystem" ]] && echo 'FATAL: Missing $BO_PathSystem' && return 1
 PATH=$PATH:${BO_PathSystem}
 
 export PATH
 
 # Return, but do NOT exit, with a success code
-logInfo "BriteOnyx has activated Linux for project '$BO_Project'."
+echo "INFO: BriteOnyx has activated Linux for project '$BO_Project'."
 return 0
 
 : <<'DisabledContent'
