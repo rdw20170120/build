@@ -7,6 +7,15 @@ echo "TRACE: Executing '$BASH_SOURCE'"
 
 [[ -z "$BO_Home" ]] && echo 'FATAL: Missing $BO_Home' && return 1
 
+# Remember ANSI color escape sequences for our logging priorities
+_Script=$(dirname $BASH_SOURCE)/../../invocation/Linux/color.bash
+BO_ColorOff="$(${_Script} off)"
+BO_ColorDebug="$(${_Script} magenta black)"
+BO_ColorInfo="$(${_Script} green black)"
+BO_ColorWarn="$(${_Script} cyan black)"
+BO_ColorError="$(${_Script} yellow black)"
+BO_ColorFatal="$(${_Script} red black)"
+
 _log () {
   # Log to STDERR the message $1
   # NOTE:  Should only be called from this script
@@ -24,7 +33,7 @@ _logFatal () {
   [[ "$#" -ne 1 ]] && Oops && exit 1
   # $1 = message
 
-  _logWithPriority "$1" 'FATAL: ' "$(color.bash red black)"
+  _logWithPriority "$1" 'FATAL: ' "$BO_ColorFatal"
 }
 export -f _logFatal
 
@@ -36,7 +45,7 @@ _logWithPriority () {
   # $2 = priority (short text prefix)
   # $3 = ANSI color specification
 
-  _log "$3$2$1$(color.bash off)"
+  _log "$3$2$1$BO_ColorOff"
 }
 export -f _logWithPriority
 
@@ -45,7 +54,7 @@ logDebug () {
   [[ "$#" -ne 1 ]] && Oops && exit 1
   # $1 = message
 
-  _logWithPriority "$1" 'DEBUG: ' "$(color.bash magenta black)"
+  _logWithPriority "$1" 'DEBUG: ' "$BO_ColorDebug"
 }
 export -f logDebug
 
@@ -54,7 +63,7 @@ logError () {
   [[ "$#" -ne 1 ]] && Oops && exit 1
   # $1 = message
 
-  _logWithPriority "$1" 'ERROR: ' "$(color.bash yellow black)"
+  _logWithPriority "$1" 'ERROR: ' "$BO_ColorError"
 }
 export -f logError
 
@@ -63,7 +72,7 @@ logInfo () {
   [[ "$#" -ne 1 ]] && Oops && exit 1
   # $1 = message
 
-  _logWithPriority "$1" 'INFO:  ' "$(color.bash green black)"
+  _logWithPriority "$1" 'INFO:  ' "$BO_ColorInfo"
 }
 export -f logInfo
 
@@ -72,7 +81,7 @@ logWarn () {
   [[ "$#" -ne 1 ]] && Oops && exit 1
   # $1 = message
 
-  _logWithPriority "$1" 'WARN:  ' "$(color.bash cyan black)"
+  _logWithPriority "$1" 'WARN:  ' "$BO_ColorWarn"
 }
 export -f logWarn
 
