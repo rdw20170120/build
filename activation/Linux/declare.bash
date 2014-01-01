@@ -12,7 +12,7 @@ _Script=${_Dir}/declare-logging.bash
   return 1
 source ${_Script}
 
-dumpBash
+dumpBash | grep declare.bash
 
 _Script=${_Dir}/declare-BASH.bash
 [[ ! -f "${_Script}" ]] && \

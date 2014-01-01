@@ -1,6 +1,8 @@
 #!/bin/bash
 echo 'INFO: Declaring BASH POSIX functionality for BriteOnyx...'
 
+dumpBash | grep declare-POSIX.bash
+
 changeFileGroup () {
   # Change ownership of file $2 to group $1
   requireParameters 2 "$#"

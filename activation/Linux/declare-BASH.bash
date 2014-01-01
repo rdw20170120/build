@@ -1,6 +1,8 @@
 #!/bin/bash
 echo 'INFO: Declaring BASH general functionality for BriteOnyx...'
 
+dumpBash | grep declare-BASH.bash
+
 abort () {
   # Abort BASH execution with message $3 and exit status $4
   # $1 = optional message
