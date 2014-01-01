@@ -16,10 +16,6 @@ _Script=${_Dir}/declare.bash
 source ${_Script}
 [[ $? -ne 0 ]] && echo 'FATAL: Aborting' && return 1
 
-echo 'INFO: BriteOnyx scripting support loaded!'
-# NOTE: Now we have our special BriteOnyx scripting functionality loaded, so we
-#       can shift to using that rather than directly invoking BASH primitives.
-
 # Configure environment for Gradle on Linux
 
 # Must be first in PATH
@@ -35,7 +31,6 @@ PATH=$PATH:${BO_PathSystem}
 export PATH
 
 # Return, but do NOT exit, with a success code
-echo "INFO: BriteOnyx has activated Linux for project '$BO_Project'."
 return 0
 
 : <<'DisabledContent'

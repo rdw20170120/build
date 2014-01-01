@@ -35,11 +35,8 @@ PATH=$PATH:${BO_PathSystem}
 export PATH
 
 # Return, but do NOT exit, with a success code
-echo "INFO: BriteOnyx has activated Gradle for project '$BO_Project'."
 return 0
 
 : <<'DisabledContent'
-requireVariable TMPDIR
-createDirectory $TMPDIR
 DisabledContent
 
