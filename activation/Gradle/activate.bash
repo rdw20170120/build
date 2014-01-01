@@ -1,18 +1,20 @@
 #!/bin/bash
-# NOTE: This script must NOT be 'source'd into a user shell since it might 'exit'
-# NOTE: This script MUST be 'source'd from other scripts
 echo 'INFO: BriteOnyx is activating Gradle for this project...'
 
-[[   -z "$BO_Home"    ]] && echo 'FATAL: Missing $BO_Home'                && exit 1
-[[ ! -d "$BO_Home"    ]] && echo "FATAL: Missing directory '$BO_Home'"    && exit 1
-[[   -z "$BO_Project" ]] && echo 'FATAL: Missing $BO_Project'             && exit 1
-[[ ! -d "$BO_Project" ]] && echo "FATAL: Missing directory '$BO_Project'" && exit 1
+[[   -z "$BO_Home"    ]] && echo 'FATAL: Missing $BO_Home'                && return 1
+[[ ! -d "$BO_Home"    ]] && echo "FATAL: Missing directory '$BO_Home'"    && return 1
+[[   -z "$BO_Project" ]] && echo 'FATAL: Missing $BO_Project'             && return 1
+[[ ! -d "$BO_Project" ]] && echo "FATAL: Missing directory '$BO_Project'" && return 1
 
 # Configure environment for Linux
 _Dir=$BO_Home/activation/Linux
-[[ ! -d "${_Dir}" ]] && echo "FATAL: Missing directory '${_Dir}'" && exit 1
-source ${_Dir}/activate.bash
-[[ $? -ne 0 ]] && echo 'FATAL: Aborting' && exit 1
+[[ ! -d "${_Dir}" ]] && echo "FATAL: Missing directory '${_Dir}'" && return 1
+_Script=${_Dir}/activate.bash
+[[ ! -f "${_Script}" ]] && \
+  echo "FATAL: Missing script '${_Script}'" && \
+  return 1
+source ${_Script}
+[[ $? -ne 0 ]] && echo 'FATAL: Aborting' && return 1
 
 # Configure environment for Gradle on Linux
 requireVariable BO_Home
@@ -30,8 +32,6 @@ requireVariable JAVA_HOME
 _PathJava=$JAVA_HOME/bin
 PATH=$PATH:${_PathJava}
 
-# TODO: Move to user-specific configuration file?
-export BO_PathSystem=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 requireVariable BO_PathSystem
 PATH=$PATH:${BO_PathSystem}
 
