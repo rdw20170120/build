@@ -1,8 +1,6 @@
 #!/bin/bash
 echo 'INFO: Declaring BASH POSIX functionality for BriteOnyx...'
 
-dumpBash | grep declare-POSIX.bash
-
 changeFileGroup () {
   # Change ownership of file $2 to group $1
   requireParameters 2 "$#"
@@ -160,6 +158,11 @@ requireFile () {
   abort "Required file '$1' must exist!"
 }
 export -f requireFile
+
+dumpBash | grep declare-POSIX.bash
+
+# Return, but do NOT exit, with a success code
+return 0
 
 : <<'DisabledContent'
   # TODO:  Refactor & redesign

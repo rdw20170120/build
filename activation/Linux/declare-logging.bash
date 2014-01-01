@@ -109,6 +109,9 @@ logWarn   "EXAMPLE: This is a warning message"
 logError  "EXAMPLE: This is an error message"
 _logFatal "EXAMPLE: This is a fatal message"
 
+# Return, but do NOT exit, with a success code
+return 0
+
 : <<'DisabledContent'
 DisabledContent
 

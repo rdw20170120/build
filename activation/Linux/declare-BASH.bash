@@ -1,8 +1,6 @@
 #!/bin/bash
 echo 'INFO: Declaring BASH general functionality for BriteOnyx...'
 
-dumpBash | grep declare-BASH.bash
-
 abort () {
   # Abort BASH execution with message $3 and exit status $4
   # $1 = optional message
@@ -153,6 +151,11 @@ requireVariable () {
   abort "Variable '$1' is required (defined and non-null)!"
 }
 export -f requireVariable
+
+dumpBash | grep declare-BASH.bash
+
+# Return, but do NOT exit, with a success code
+return 0
 
 : <<'DisabledContent'
 DisabledContent
