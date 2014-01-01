@@ -8,5 +8,5 @@ requireVariable PIP_DOWNLOAD_CACHE  || return 1
 createDirectory $PIP_DOWNLOAD_CACHE || return 1
 
 # Return, but do NOT exit, with a success code
-return 0
+return 1
 

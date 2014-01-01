@@ -5,5 +5,5 @@ requireVariable BO_Project      || return 1
 createDirectory $BO_Project/out || return 1
 
 # Return, but do NOT exit, with a success code
-return 0
+return 1
 

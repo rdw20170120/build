@@ -5,5 +5,5 @@ requireVariable TMPDIR  || return 1
 createDirectory $TMPDIR || return 1
 
 # Return, but do NOT exit, with a success code
-return 0
+return 1
 

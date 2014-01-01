@@ -34,5 +34,5 @@ logInfo "Activated Python virtual environment (PVE) in '${_PVE}'"
 logInfo "Found '$(python --version 2>&1)' at '$(which python)'"
 
 # Return, but do NOT exit, with a success code
-return 0
+return 1
 
