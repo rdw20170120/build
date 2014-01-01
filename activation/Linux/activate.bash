@@ -23,8 +23,6 @@ logInfo "BriteOnyx scripting support loaded!"
 #       can shift to using that rather than directly invoking BASH primitives.
 
 # Configure environment for Gradle on Linux
-requireVariable BO_Home
-requireVariable BO_Project
 
 # Must be first in PATH
 _PathProject=$BO_Project/bin/Linux
@@ -35,7 +33,7 @@ PATH=$PATH:${_PathBuild}
 
 # TODO: Move to user-specific configuration file?
 export BO_PathSystem=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-requireVariable BO_PathSystem
+[[   -z "$BO_PathSystem" ]] && echo 'FATAL: Missing $BO_PathSystem' && return 1
 PATH=$PATH:${BO_PathSystem}
 
 export PATH
