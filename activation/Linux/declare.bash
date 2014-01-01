@@ -6,7 +6,7 @@ echo 'INFO: Declaring all BASH scripting functionality for BriteOnyx...'
 _Dir=$BO_Home/activation/Linux
 [[ ! -d "${_Dir}" ]] && echo "FATAL: Missing directory '${_Dir}'" && return 1
 source ${_Dir}/declare-logging.bash
-# source ${_Dir}/declare-BASH.bash
+source ${_Dir}/declare-BASH.bash
 # source ${_Dir}/declare-POSIX.bash
 
 # Return, but do NOT exit, with a success code
