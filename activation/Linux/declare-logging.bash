@@ -7,8 +7,6 @@ echo "TRACE: Executing '$BASH_SOURCE'"
 
 [[ -z "$BO_Home" ]] && echo 'FATAL: Missing $BO_Home' && return 1
 
-_Color=$BO_Home/activation/Linux/color.bash
-
 _log () {
   # Log to STDERR the message $1
   # NOTE:  Should only be called from this script
@@ -26,7 +24,7 @@ _logFatal () {
   [[ "$#" -ne 1 ]] && Oops && exit 1
   # $1 = message
 
-  _logWithPriority "$1" 'FATAL: ' "$(${_Color} red black)"
+  _logWithPriority "$1" 'FATAL: ' "$(color.bash red black)"
 }
 export -f _logFatal
 
@@ -47,7 +45,7 @@ logDebug () {
   [[ "$#" -ne 1 ]] && Oops && exit 1
   # $1 = message
 
-  _logWithPriority "$1" 'DEBUG: ' "$(${_Color} magenta black)"
+  _logWithPriority "$1" 'DEBUG: ' "$(color.bash magenta black)"
 }
 export -f logDebug
 
@@ -56,7 +54,7 @@ logError () {
   [[ "$#" -ne 1 ]] && Oops && exit 1
   # $1 = message
 
-  _logWithPriority "$1" 'ERROR: ' "$(${_Color} yellow black)"
+  _logWithPriority "$1" 'ERROR: ' "$(color.bash yellow black)"
 }
 export -f logError
 
@@ -65,7 +63,7 @@ logInfo () {
   [[ "$#" -ne 1 ]] && Oops && exit 1
   # $1 = message
 
-  _logWithPriority "$1" 'INFO:  ' "$(${_Color} green black)"
+  _logWithPriority "$1" 'INFO:  ' "$(color.bash green black)"
 }
 export -f logInfo
 
@@ -74,7 +72,7 @@ logWarn () {
   [[ "$#" -ne 1 ]] && Oops && exit 1
   # $1 = message
 
-  _logWithPriority "$1" 'WARN:  ' "$(${_Color} cyan black)"
+  _logWithPriority "$1" 'WARN:  ' "$(color.bash cyan black)"
 }
 export -f logWarn
 
