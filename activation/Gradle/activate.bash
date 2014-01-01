@@ -28,7 +28,7 @@ _ExitCode=$?
 
 # Configure environment for Gradle on Linux
 
-BO_PathGradle=$JAVA_HOME/bin
+export BO_PathGradle=$JAVA_HOME/bin
 
 PATH=${BO_PathProject}
 PATH=$PATH:${BO_PathGradle}

@@ -46,8 +46,8 @@ _Script=${_Dir}/configure_virtualenv
   return 1
 # source ${_Script}
 
-BO_PathProject=$BO_Project/bin/Linux:$BO_Project/PVE/bin
-BO_PathPython=$BO_Home/invocation/Python
+export BO_PathProject=$BO_Project/bin/Linux:$BO_Project/PVE/bin
+export BO_PathPython=$BO_Home/invocation/Python
 
 PATH=${BO_PathProject}
 PATH=$PATH:${BO_PathPython}

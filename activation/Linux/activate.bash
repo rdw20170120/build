@@ -25,8 +25,8 @@ _ExitCode=$?
   echo "FATAL: Exit code ${_ExitCode} at '$BASH_SOURCE':$LINENO" && \
   return ${_ExitCode}
 
-BO_PathProject=$BO_Project/bin/Linux
-BO_PathLinux=$BO_Home/invocation/Linux
+export BO_PathProject=$BO_Project/bin/Linux
+export BO_PathLinux=$BO_Home/invocation/Linux
 
 PATH=${BO_PathProject}
 PATH=$PATH:${BO_PathLinux}
