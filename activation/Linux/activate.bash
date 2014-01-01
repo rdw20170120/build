@@ -34,7 +34,15 @@ PATH=$PATH:${BO_PathSystem}
 export PATH
 
 # Configure TMPDIR
-[[ -z "$TMPDIR" ]] && echo 'FATAL: Missing $TMPDIR' && return 1
+if [[ -z "$TMPDIR" ]]; then
+  echo 'WARN: Missing $TMPDIR'
+  [[ -z "$TMPDIR" ]] && [[ -n "$USER"     ]] && export TMPDIR="/tmp/$USER"
+  [[ -z "$TMPDIR" ]] && [[ -n "$USERNAME" ]] && export TMPDIR="/tmp/$USERNAME"
+  [[ -z "$TMPDIR" ]] && echo 'FATAL: Missing $TMPDIR' && return 1
+  echo "INFO: Remembering TMPDIR='$TMPDIR'"
+fi
+[[ ! -d "$TMPDIR" ]] && mkdir -p "$TMPDIR"
+[[ ! -d "$TMPDIR" ]] && echo "FATAL: Missing directory '$TMPDIR'" && return 1
 
 # Demonstrate logging
 logDebug  "EXAMPLE: This is a debugging message"
