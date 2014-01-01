@@ -189,7 +189,7 @@ requireVariable () {
 export -f requireVariable
 
 # Return, but do NOT exit, with a success code
-return 1
+return 0
 
 : <<'DisabledContent'
 DisabledContent
