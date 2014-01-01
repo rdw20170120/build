@@ -1,39 +1,82 @@
 #!/bin/bash
-# NOTE: This script must NOT be 'source'd into a user shell since it might 'exit'
-# NOTE: This script MUST be 'source'd from other scripts
-echo 'INFO: BriteOnyx is activating Python for this project...'
+echo "TRACE: Executing '$BASH_SOURCE'"
 
-[[   -z "$BO_Home"    ]] && echo 'FATAL: Missing $BO_Home'                && exit 1
-[[ ! -d "$BO_Home"    ]] && echo "FATAL: Missing directory '$BO_Home'"    && exit 1
-[[   -z "$BO_Project" ]] && echo 'FATAL: Missing $BO_Project'             && exit 1
-[[ ! -d "$BO_Project" ]] && echo "FATAL: Missing directory '$BO_Project'" && exit 1
+[[   -z "$BO_Home"    ]] && echo 'FATAL: Missing $BO_Home'                && return 1
+[[ ! -d "$BO_Home"    ]] && echo "FATAL: Missing directory '$BO_Home'"    && return 1
+[[   -z "$BO_Project" ]] && echo 'FATAL: Missing $BO_Project'             && return 1
+[[ ! -d "$BO_Project" ]] && echo "FATAL: Missing directory '$BO_Project'" && return 1
 
 # Configure environment for Linux
+
 _Dir=$BO_Home/activation/Linux
-[[ ! -d "${_Dir}" ]] && echo "FATAL: Missing directory '${_Dir}'" && exit 1
-source ${_Dir}/activate.bash
-[[ $? -ne 0 ]] && echo 'FATAL: Aborting' && exit 1
+[[ ! -d "${_Dir}" ]] && echo "FATAL: Missing directory '${_Dir}'" && return 1
+
+_Script=${_Dir}/activate.bash
+[[ ! -f "${_Script}" ]] && \
+  echo "FATAL: Missing script '${_Script}'" && \
+  return 1
+source ${_Script}
+_ExitCode=$?
+[[ ${_ExitCode} -ne 0 ]] && \
+  echo "FATAL: Exit code ${_ExitCode} at '$BASH_SOURCE':$LINENO" && \
+  return ${_ExitCode}
 
 # Configure environment for Python on Linux
-requireVariable BO_Home
-requireVariable BO_Project
 
 _Dir=$BO_Home/activation/Python
-requireDirectory ${_Dir}
+[[ ! -d "${_Dir}" ]] && echo "FATAL: Missing directory '${_Dir}'" && return 1
 
-source ${_Dir}/configure_TMPDIR
-abortOnFail "$?"
-source ${_Dir}/configure_output
-abortOnFail "$?"
-source ${_Dir}/configure_pip
-abortOnFail "$?"
-source ${_Dir}/configure_virtualenv
-abortOnFail "$?"
-source ${_Dir}/configure_PATH
-abortOnFail "$?"
+_Script=${_Dir}/configure_TMPDIR
+[[ ! -f "${_Script}" ]] && \
+  echo "FATAL: Missing script '${_Script}'" && \
+  return 1
+source ${_Script}
+_ExitCode=$?
+[[ ${_ExitCode} -ne 0 ]] && \
+  echo "FATAL: Exit code ${_ExitCode} at '$BASH_SOURCE':$LINENO" && \
+  return ${_ExitCode}
+
+_Script=${_Dir}/configure_output
+[[ ! -f "${_Script}" ]] && \
+  echo "FATAL: Missing script '${_Script}'" && \
+  return 1
+source ${_Script}
+_ExitCode=$?
+[[ ${_ExitCode} -ne 0 ]] && \
+  echo "FATAL: Exit code ${_ExitCode} at '$BASH_SOURCE':$LINENO" && \
+  return ${_ExitCode}
+
+_Script=${_Dir}/configure_pip
+[[ ! -f "${_Script}" ]] && \
+  echo "FATAL: Missing script '${_Script}'" && \
+  return 1
+source ${_Script}
+_ExitCode=$?
+[[ ${_ExitCode} -ne 0 ]] && \
+  echo "FATAL: Exit code ${_ExitCode} at '$BASH_SOURCE':$LINENO" && \
+  return ${_ExitCode}
+
+_Script=${_Dir}/configure_virtualenv
+[[ ! -f "${_Script}" ]] && \
+  echo "FATAL: Missing script '${_Script}'" && \
+  return 1
+source ${_Script}
+_ExitCode=$?
+[[ ${_ExitCode} -ne 0 ]] && \
+  echo "FATAL: Exit code ${_ExitCode} at '$BASH_SOURCE':$LINENO" && \
+  return ${_ExitCode}
+
+_Script=${_Dir}/configure_PATH
+[[ ! -f "${_Script}" ]] && \
+  echo "FATAL: Missing script '${_Script}'" && \
+  return 1
+source ${_Script}
+_ExitCode=$?
+[[ ${_ExitCode} -ne 0 ]] && \
+  echo "FATAL: Exit code ${_ExitCode} at '$BASH_SOURCE':$LINENO" && \
+  return ${_ExitCode}
 
 # Return, but do NOT exit, with a success code
-logInfo "BriteOnyx has activated Python for project '$BO_Project'."
 return 0
 
 : <<'DisabledContent'
@@ -51,4 +94,3 @@ PATH=$PATH:${BO_PathSystem}
 
 export PATH
 DisabledContent
-
