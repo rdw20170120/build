@@ -13,7 +13,7 @@ _Script=${_Dir}/declare-logging.bash
 source ${_Script}
 _ExitCode=$?
 [[ ${_ExitCode} -ne 0 ]] && \
-  echo "FATAL: Script exited with ${_ExitCode}, aborting!" && \
+  echo "FATAL: Exit code ${_ExitCode} at '$BASH_SOURCE':$LINENO" && \
   return ${_ExitCode}
 
 _Script=${_Dir}/declare-BASH.bash
@@ -23,7 +23,7 @@ _Script=${_Dir}/declare-BASH.bash
 source ${_Script}
 _ExitCode=$?
 [[ ${_ExitCode} -ne 0 ]] && \
-  echo "FATAL: Script exited with ${_ExitCode}, aborting!" && \
+  echo "FATAL: Exit code ${_ExitCode} at '$BASH_SOURCE':$LINENO" && \
   return ${_ExitCode}
 
 _Script=${_Dir}/declare-POSIX.bash
@@ -33,7 +33,7 @@ _Script=${_Dir}/declare-POSIX.bash
 source ${_Script}
 _ExitCode=$?
 [[ ${_ExitCode} -ne 0 ]] && \
-  echo "FATAL: Script exited with ${_ExitCode}, aborting!" && \
+  echo "FATAL: Exit code ${_ExitCode} at '$BASH_SOURCE':$LINENO" && \
   return ${_ExitCode}
 
 # Return, but do NOT exit, with a success code
