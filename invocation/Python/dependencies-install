@@ -1,4 +1,5 @@
 #!/bin/bash
+echo "TRACE: Executing '$BASH_SOURCE'"
 logDebug 'Installing the dependencies for this project using PIP...'
 
 requireVariable BO_Project

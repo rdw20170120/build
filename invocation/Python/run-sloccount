@@ -1,4 +1,5 @@
 #!/bin/bash
+echo "TRACE: Executing '$BASH_SOURCE'"
 logDebug 'Counting the lines of source code (SLOC) in this project...'
 # TODO: This script requires the 'sloccount' package to have been installed
 

@@ -1,4 +1,5 @@
 #!/bin/bash
+echo "TRACE: Executing '$BASH_SOURCE'"
 logDebug 'Cleaning this project of all output and temporary files...'
 
 requireVariable BO_Project

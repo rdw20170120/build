@@ -1,4 +1,5 @@
 #!/bin/bash
+echo "TRACE: Executing '$BASH_SOURCE'"
 logDebug 'Running Nose-based tests on this project...'
 
 requireVariable BO_Package
