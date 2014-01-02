@@ -5,10 +5,17 @@ echo "TRACE: Executing '$BASH_SOURCE'"
 # NOTE:  Logging priorities are implicitly ordered as:
 #        Debug < Info < Warn < Error < Fatal
 
-[[ -z "$BO_Home" ]] && echo 'FATAL: Missing $BO_Home' && return 1
+[[ -z "$BO_E_Config"      ]] && echo 'FATAL: Missing $BO_E_Config'      && return 64
+[[ -z "$BO_E_Ok"          ]] && echo 'FATAL: Missing $BO_E_Ok'          && return "$BO_E_Config"
+[[ -z "$BO_E_Usage"       ]] && echo 'FATAL: Missing $BO_E_Usage'       && return "$BO_E_Config"
+[[ -z "$BO_E_Unavailable" ]] && echo 'FATAL: Missing $BO_E_Unavailable' && return "$BO_E_Config"
+[[ -z "$BO_Home"          ]] && echo 'FATAL: Missing $BO_Home'          && return "$BO_E_Config"
 
 # Remember ANSI color escape sequences for our logging priorities
-_Script=$(dirname $BASH_SOURCE)/../../invocation/Linux/color.bash
+_Script="$(dirname $BASH_SOURCE)/../../invocation/Linux/color.bash"
+[[ ! -f "${_Script}" ]] && \
+  echo "FATAL: Missing script '${_Script}'" && \
+  return "$BO_E_Unavailable"
 export BO_ColorOff="$(${_Script} off)"
 export BO_ColorDebug="$(${_Script} magenta black)"
 export BO_ColorInfo="$(${_Script} green black)"
@@ -17,9 +24,9 @@ export BO_ColorError="$(${_Script} yellow black)"
 export BO_ColorFatal="$(${_Script} red black)"
 
 _log () {
-  # Log to STDERR the message $1
+  # Log the message $1 to STDERR
   # NOTE:  Should only be called from this script
-  [[ "$#" -ne 1 ]] && Oops && exit 1
+  [[ "$#" -ne 1 ]] && Oops && exit "$BO_E_Usage"
   # $1 = message
 
   declare -r _Message="${1:-No message provided.}"
@@ -30,7 +37,7 @@ export -f _log
 _logFatal () {
   # Log a fatal message $1
   # NOTE:  Should only be called from abort()
-  [[ "$#" -ne 1 ]] && Oops && exit 1
+  [[ "$#" -ne 1 ]] && Oops && exit "$BO_E_Usage"
   # $1 = message
 
   _logWithPriority "$1" 'FATAL: ' "$BO_ColorFatal"
@@ -40,7 +47,7 @@ export -f _logFatal
 _logWithPriority () {
   # Log with priority $2 colorized as $3 the message $1
   # NOTE:  Should only be called from this script
-  [[ "$#" -ne 3 ]] && Oops && exit 1
+  [[ "$#" -ne 3 ]] && Oops && exit "$BO_E_Usage"
   # $1 = message
   # $2 = priority (short text prefix)
   # $3 = ANSI color specification
@@ -49,9 +56,103 @@ _logWithPriority () {
 }
 export -f _logWithPriority
 
+dumpBash () {
+  # Dump BASH variables
+  logDebug 'Dumping BASH variables...'
+  trace BASH
+  trace BASH_ALIASES
+  trace BASH_ARGC
+  trace BASH_ARGV
+  trace BASH_CMDS
+  trace BASH_COMMAND
+  trace BASH_COMPLETION_COMPAT_DIR
+  trace BASH_ENV
+  trace BASH_EXECUTION_STRING
+  trace BASH_LINENO
+  trace BASH_REMATCH
+  trace BASH_SOURCE
+  trace BASH_SUBSHELL
+  trace BASH_VERSINFO[0]
+  trace BASH_VERSINFO[1]
+  trace BASH_VERSINFO[2]
+  trace BASH_VERSINFO[3]
+  trace BASH_VERSINFO[4]
+  trace BASH_VERSINFO[5]
+  trace BASH_VERSION
+  trace BASHOPTS
+  trace BASHPID
+  trace CDPATH
+  trace DIRSTACK
+  trace EUID
+  trace FUNCNAME
+  trace GLOBIGNORE
+  trace GROUPS
+  trace HOSTNAME
+  trace HOSTTYPE
+  trace IFS
+  trace IGNOREEOF
+  trace LC_COLLATE
+  trace LC_CTYPE
+  trace LINENO
+  trace MACHTYPE
+  trace OLDPWD
+  trace OSTYPE
+  trace PATH
+  trace PIPESTATUS
+  trace PPID
+  trace PROMPT_COMMAND
+  trace PS1
+  trace PS2
+  trace PS3
+  trace PS4
+  trace PWD
+  trace REPLY
+  trace SECONDS
+  trace SHELL
+  trace SHELLOPTS
+  trace SHLVL
+  trace TMOUT
+  trace UID
+
+  # Others
+  trace COLORTERM
+  trace COLUMNS
+  trace DEFAULTS_PATH
+  trace DISPLAY
+  trace EDITOR
+  trace GROUPS
+  trace HISTCMD
+  trace HISTCONTROL
+  trace HISTFILE
+  trace HISTFILESIZE
+  trace HISTSIZE
+  trace HOME
+  trace LANG
+  trace LESSCLOSE
+  trace LESSOPEN
+  trace LINES
+  trace LOGNAME
+  trace LS_COLORS
+  trace MAILCHECK
+  trace MANDATORY_PATH
+  trace OPTERR
+  trace OPTIND
+  trace RANDOM
+  trace SECONDS
+  trace SSH_AGENT_PID
+  trace SSH_AUTH_SOCK
+  trace TERM
+  trace TMPDIR
+  trace USER
+  trace USERNAME
+  trace WINDOWID
+  trace WINDOWPATH
+}
+export -f dumpBash
+
 logDebug () {
   # Log a debugging message $1
-  [[ "$#" -ne 1 ]] && Oops && exit 1
+  [[ "$#" -ne 1 ]] && Oops && exit "$BO_E_Usage"
   # $1 = message
 
   _logWithPriority "$1" 'DEBUG: ' "$BO_ColorDebug"
@@ -60,7 +161,7 @@ export -f logDebug
 
 logError () {
   # Log an error message $1
-  [[ "$#" -ne 1 ]] && Oops && exit 1
+  [[ "$#" -ne 1 ]] && Oops && exit "$BO_E_Usage"
   # $1 = message
 
   _logWithPriority "$1" 'ERROR: ' "$BO_ColorError"
@@ -69,7 +170,7 @@ export -f logError
 
 logInfo () {
   # Log an informational message $1
-  [[ "$#" -ne 1 ]] && Oops && exit 1
+  [[ "$#" -ne 1 ]] && Oops && exit "$BO_E_Usage"
   # $1 = message
 
   _logWithPriority "$1" 'INFO:  ' "$BO_ColorInfo"
@@ -78,7 +179,7 @@ export -f logInfo
 
 logWarn () {
   # Log a warning message $1
-  [[ "$#" -ne 1 ]] && Oops && exit 1
+  [[ "$#" -ne 1 ]] && Oops && exit "$BO_E_Usage"
   # $1 = message
 
   _logWithPriority "$1" 'WARN:  ' "$BO_ColorWarn"
@@ -97,7 +198,7 @@ export -f Oops
 
 trace () {
   # Trace variable $1
-  [[ "$#" -ne 1 ]] && Oops && exit 1
+  [[ "$#" -ne 1 ]] && Oops && exit "$BO_E_Usage"
   # $1 = name of variable to trace
 
   declare -r _Name=$1
@@ -106,7 +207,8 @@ trace () {
 }
 export -f trace
 
-return 0
+# Return, but do NOT exit, with a success code
+return "$BO_E_Ok"
 
 : <<'DisabledContent'
 DisabledContent

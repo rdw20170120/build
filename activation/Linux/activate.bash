@@ -10,27 +10,30 @@ echo "TRACE: Executing '$BASH_SOURCE'"
 
 # Configure the Linux environment
 
-_Dir=$BO_Home/activation/Linux
+_Dir="$BO_Home/activation/Linux"
 [[ ! -d "${_Dir}" ]] && echo "FATAL: Missing directory '${_Dir}'" && return 1
 
-_Script=${_Dir}/declare.bash
+_Script="${_Dir}/declare.bash"
 [[ ! -f "${_Script}" ]] && \
   echo "FATAL: Missing script '${_Script}'" && \
   return 1
 
-source ${_Script}
+source "${_Script}"
 
 _ExitCode=$?
 [[ ${_ExitCode} -ne 0 ]] && \
   echo "FATAL: Exit code ${_ExitCode} at '$BASH_SOURCE':$LINENO" && \
   return ${_ExitCode}
 
-export BO_PathProject=$BO_Project/bin/Linux
-export BO_PathLinux=$BO_Home/invocation/Linux
+[[ -z "$BO_E_Config" ]] && echo 'FATAL: Missing $BO_E_Config' && return 64
+[[ -z "$BO_E_Ok"     ]] && echo 'FATAL: Missing $BO_E_Ok'     && return "$BO_E_Config"
 
-PATH=${BO_PathProject}
-PATH=$PATH:${BO_PathLinux}
-PATH=$PATH:${BO_PathSystem}
+export BO_PathProject="$BO_Project/bin/Linux"
+export BO_PathLinux="$BO_Home/invocation/Linux"
+
+PATH="${BO_PathProject}"
+PATH="$PATH:${BO_PathLinux}"
+PATH="$PATH:${BO_PathSystem}"
 export PATH
 
 # Configure TMPDIR
@@ -39,6 +42,7 @@ if [[ -z "$TMPDIR" ]]; then
   [[ -z "$TMPDIR" ]] && [[ -n "$USER"     ]] && export TMPDIR="/tmp/$USER"
   [[ -z "$TMPDIR" ]] && [[ -n "$USERNAME" ]] && export TMPDIR="/tmp/$USERNAME"
   [[ -z "$TMPDIR" ]] && echo 'FATAL: Missing $TMPDIR' && return 1
+# TODO: return "$BO_E_Config"
   echo "INFO: Remembering TMPDIR='$TMPDIR'"
 fi
 [[ ! -d "$TMPDIR" ]] && mkdir -p "$TMPDIR"
@@ -52,8 +56,7 @@ logError  "EXAMPLE: This is an error message"
 _logFatal "EXAMPLE: This is a fatal message"
 
 # Return, but do NOT exit, with a success code
-# Return, but do NOT exit, with a success code
-return 0
+return "$BO_E_Ok"
 
 : <<'DisabledContent'
 DisabledContent

@@ -1,6 +1,10 @@
 #!/bin/bash
 echo "TRACE: Executing '$BASH_SOURCE'"
 
+[[ -z "$BO_E_Config"      ]] && echo 'FATAL: Missing $BO_E_Config'      && return 64
+[[ -z "$BO_E_Ok"          ]] && echo 'FATAL: Missing $BO_E_Ok'          && return "$BO_E_Config"
+[[ -z "$BO_E_Usage"       ]] && echo 'FATAL: Missing $BO_E_Usage'       && return "$BO_E_Config"
+
 changeFileGroup () {
   # Change ownership of file $2 to group $1
   requireParameters 2 "$#"
@@ -160,7 +164,7 @@ requireFile () {
 export -f requireFile
 
 # Return, but do NOT exit, with a success code
-return 0
+return "$BO_E_Ok"
 
 : <<'DisabledContent'
   # TODO:  Refactor & redesign
