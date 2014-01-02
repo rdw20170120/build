@@ -5,6 +5,8 @@ logDebug 'Running Nose-based tests on this project...'
 requireVariable BO_Project
 requireVariable BO_HomePackage
 
+requireDirectory "$BO_Project/src/$BO_HomePackage"
+
 _Config=${BO_Project}/cfg/nose.cfg
 requireFile "${_Config}"
 
