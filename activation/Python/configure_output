@@ -1,9 +1,0 @@
-#!/bin/bash
-echo "TRACE: Executing '$BASH_SOURCE'"
-
-requireVariable BO_Project      || return 1
-createDirectory $BO_Project/out || return 1
-
-# Return, but do NOT exit, with a success code
-return 1
-
