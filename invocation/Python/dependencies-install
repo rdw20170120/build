@@ -11,7 +11,9 @@ _Cmd=pip
 # TODO:  _Cmd="${_Cmd} --quiet"
 _Cmd="${_Cmd} install -r ${_File}"
 ${_Cmd}
+abortOnFail "$?"
 
 # Report the installed dependencies
 pip freeze
+abortOnFail "$?"
 

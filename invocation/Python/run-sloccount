@@ -18,4 +18,5 @@ _Cmd="$_Cmd ${BO_Project}/cfg"
 _Cmd="$_Cmd ${BO_Project}/doc"
 _Cmd="$_Cmd ${BO_Project}/src"
 $_Cmd > ${BO_Project}/out/sloccount.sc
+abortOnFail "$?"
 

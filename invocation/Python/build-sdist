@@ -5,5 +5,7 @@ logDebug 'Building a source distribution (sdist) of this project...'
 requireVariable BO_Project
 
 cd "${BO_Project}"
+abortOnFail "$?"
 python setup.py sdist
+abortOnFail "$?"
 

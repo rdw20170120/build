@@ -2,13 +2,15 @@
 echo "TRACE: Executing '$BASH_SOURCE'"
 logDebug 'Running pylint on this project...'
 
-requireVariable BO_Package
 requireVariable BO_Project
+requireVariable BO_HomePackage
 
 cd "${BO_Project}/src"
+abortOnFail "$?"
 
 _Cmd=pylint
 _Cmd="$_Cmd --rcfile=${BO_Project}/cfg/pylintrc"
-_Cmd="$_Cmd ${BO_Package}"
+_Cmd="$_Cmd ${BO_HomePackage}"
 $_Cmd | tee ${BO_Project}/out/pylint.out
+abortOnFail "$?"
 
