@@ -1,27 +1,33 @@
 #!/bin/bash
 echo "TRACE: Executing '$BASH_SOURCE'"
 
+###################################################################################################
 # NOTE:  Uses ANSI coloring
 # NOTE:  Logging priorities are implicitly ordered as:
 #        Debug < Info < Warn < Error < Fatal
 
-[[ -z "$BO_E_Config"      ]] && echo 'FATAL: Missing $BO_E_Config'      && return 64
+###################################################################################################
+# Verify pre-conditions
+
+[[ -z "$BO_E_Config"      ]] && echo 'FATAL: Missing $BO_E_Config'      && return 63
 [[ -z "$BO_E_Ok"          ]] && echo 'FATAL: Missing $BO_E_Ok'          && return "$BO_E_Config"
 [[ -z "$BO_E_Usage"       ]] && echo 'FATAL: Missing $BO_E_Usage'       && return "$BO_E_Config"
 [[ -z "$BO_E_Unavailable" ]] && echo 'FATAL: Missing $BO_E_Unavailable' && return "$BO_E_Config"
 [[ -z "$BO_Home"          ]] && echo 'FATAL: Missing $BO_Home'          && return "$BO_E_Config"
 
+###################################################################################################
 # Remember ANSI color escape sequences for our logging priorities
+
 _Script="$(dirname $BASH_SOURCE)/../../invocation/Linux/color.bash"
-[[ ! -f "${_Script}" ]] && \
-  echo "FATAL: Missing script '${_Script}'" && \
-  return "$BO_E_Unavailable"
+[[ ! -f "${_Script}" ]] && echo "FATAL: Missing script '${_Script}'" && return "$BO_E_Unavailable"
 export BO_ColorOff="$(${_Script} off)"
 export BO_ColorDebug="$(${_Script} magenta black)"
 export BO_ColorInfo="$(${_Script} green black)"
 export BO_ColorWarn="$(${_Script} cyan black)"
 export BO_ColorError="$(${_Script} yellow black)"
 export BO_ColorFatal="$(${_Script} red black)"
+
+###################################################################################################
 
 _log () {
   # Log the message $1 to STDERR
@@ -207,9 +213,11 @@ trace () {
 }
 export -f trace
 
+###################################################################################################
 # Return, but do NOT exit, with a success code
 return "$BO_E_Ok"
 
+###################################################################################################
 : <<'DisabledContent'
 DisabledContent
 

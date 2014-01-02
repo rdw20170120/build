@@ -1,9 +1,14 @@
 #!/bin/bash
 echo "TRACE: Executing '$BASH_SOURCE'"
 
-[[ -z "$BO_E_Config"      ]] && echo 'FATAL: Missing $BO_E_Config'      && return 64
+###################################################################################################
+# Verify pre-conditions
+
+[[ -z "$BO_E_Config"      ]] && echo 'FATAL: Missing $BO_E_Config'      && return 63
 [[ -z "$BO_E_Ok"          ]] && echo 'FATAL: Missing $BO_E_Ok'          && return "$BO_E_Config"
 [[ -z "$BO_E_Usage"       ]] && echo 'FATAL: Missing $BO_E_Usage'       && return "$BO_E_Config"
+
+###################################################################################################
 
 changeFileGroup () {
   # Change ownership of file $2 to group $1
@@ -92,10 +97,10 @@ directoryExists () {
   requireParameter "$1" 1 'target directory'
 
   [[   -d "$1" ]] && \
-    logDebug "Found directory '$1'" && return 0
+    logDebug "Found directory '$1'" && return "$BO_E_Ok"
   [[   -e "$1" ]] && \
     abort "Found non-directory '$1'"
-  return 1 # $1 does not exist, but appears to be creatable
+  return 63 # $1 does not exist, but appears to be creatable
 }
 export -f directoryExists
 
@@ -105,10 +110,10 @@ fileExists () {
   requireParameter "$1" 1 'target file'
 
   [[   -f "$1" ]] && \
-    logDebug "Found file '$1'" && return 0
+    logDebug "Found file '$1'" && return "$BO_E_Ok"
   [[   -e "$1" ]] && \
     abort "Found non-file '$1'"
-  return 1 # $1 does not exist, but appears to be creatable
+  return 63 # $1 does not exist, but appears to be creatable
 }
 export -f fileExists
 
@@ -148,7 +153,7 @@ requireDirectory () {
   requireParameters 1 "$#"
   requireParameter "$1" 1 'target directory'
 
-  directoryExists "$1" && return 0
+  directoryExists "$1" && return "$BO_E_Ok"
   abort "Required directory '$1' must exist!"
 }
 export -f requireDirectory
@@ -158,22 +163,24 @@ requireFile () {
   requireParameters 1 "$#"
   requireParameter "$1" 1 'target file'
 
-  fileExists "$1" && return 0
+  fileExists "$1" && return "$BO_E_Ok"
   abort "Required file '$1' must exist!"
 }
 export -f requireFile
 
+###################################################################################################
 # Return, but do NOT exit, with a success code
 return "$BO_E_Ok"
 
+###################################################################################################
 : <<'DisabledContent'
   # TODO:  Refactor & redesign
 
 directoryExists () {
   # Verify that directory $1 exists
   # $1 = pathname that should exist and be a directory
-  [[   -d "$1" ]] && logInfo  "Found directory $1"         && return 0
-  [[ ! -e "$1" ]] && logError "Pathname $1 does not exist" && return 1
+  [[   -d "$1" ]] && logInfo  "Found directory $1"         && return "$BO_E_Ok"
+  [[ ! -e "$1" ]] && logError "Pathname $1 does not exist" && return 63
   [[   -e "$1" ]] && logError "Found non-directory $1"     && return 2
   return 3
 }
@@ -181,8 +188,8 @@ directoryExists () {
 fileExists () {
   # Verify that file $1 exists
   # $1 = pathname that should exist and be a file
-  [[   -f "$1" ]] && logInfo  "Found file $1"              && return 0
-  [[ ! -e "$1" ]] && logError "Pathname $1 does not exist" && return 1
+  [[   -f "$1" ]] && logInfo  "Found file $1"              && return "$BO_E_Ok"
+  [[ ! -e "$1" ]] && logError "Pathname $1 does not exist" && return 63
   [[   -e "$1" ]] && logError "Found non-file $1"          && return 2
   return 3
 }
@@ -192,8 +199,8 @@ maybeCopyFile () {
   # $1 = pathname of source file
   # $2 = name of target directory
   # $3 = name of target file
-  [[   -f "$2/$3" ]] && logInfo  "Found file $2/$3"           && return 0
-  [[ ! -e "$1"    ]] && logError "Pathname $1 does not exist" && return 1
+  [[   -f "$2/$3" ]] && logInfo  "Found file $2/$3"           && return "$BO_E_Ok"
+  [[ ! -e "$1"    ]] && logError "Pathname $1 does not exist" && return 63
   [[ ! -f "$1"    ]] && logError "Found non-file $1"          && return 2
   maybeCreateDirectory "$2"
   directoryExists "$2" && cp "$1" "$2/$3" && logInfo "Created $2/$3"
@@ -202,7 +209,7 @@ maybeCopyFile () {
 maybeCreateDirectory () {
   # Create directory $1, but not if it exists
   # $1 = pathname of directory to create
-  maybeDirectoryExists "$1" && return 0
+  maybeDirectoryExists "$1" && return "$BO_E_Ok"
   pathnameNotExists "$1" && mkdir -p "$1" && logInfo "Created $1"
   directoryExists "$1"
 }
@@ -210,16 +217,16 @@ maybeCreateDirectory () {
 maybeDirectoryExists () {
   # Return pathname $1 does not exist or is a directory
   # $1 = pathname that could be a directory or not exist
-  [[ -d "$1" ]] && logInfo  "Found directory $1"     && return 0
+  [[ -d "$1" ]] && logInfo  "Found directory $1"     && return "$BO_E_Ok"
   [[ -e "$1" ]] && logError "Found non-directory $1" && return 2
-  logInfo "Pathname $1 does not exist"               && return 1
+  logInfo "Pathname $1 does not exist"               && return 63
 }
 
 pathnameNotExists () {
   # Verify that pathname $1 does not exist
   # $1 = pathname that should not exist
-  [[ -e "$1" ]] && logError "Pathname $1 should not exist" && return 1
-  return 0
+  [[ -e "$1" ]] && logError "Pathname $1 should not exist" && return 63
+  return "$BO_E_Ok"
 }
 DisabledContent
 

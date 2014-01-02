@@ -1,32 +1,37 @@
 #!/bin/bash
 echo "TRACE: Executing '$BASH_SOURCE'"
 
-[[   -z "$BO_Home"    ]] && echo 'FATAL: Missing $BO_Home'                && return 1
-[[ ! -d "$BO_Home"    ]] && echo "FATAL: Missing directory '$BO_Home'"    && return 1
-[[   -z "$BO_Project" ]] && echo 'FATAL: Missing $BO_Project'             && return 1
-[[ ! -d "$BO_Project" ]] && echo "FATAL: Missing directory '$BO_Project'" && return 1
+###################################################################################################
+# Verify pre-conditions
 
-[[ -z "$BO_PathSystem" ]] && echo 'FATAL: Missing $BO_PathSystem' && return 1
-
-# Configure the Linux environment
+[[   -z "$BO_Home"       ]] && echo 'FATAL: Missing $BO_Home'                && return 63
+[[ ! -d "$BO_Home"       ]] && echo "FATAL: Missing directory '$BO_Home'"    && return 63
+[[   -z "$BO_Project"    ]] && echo 'FATAL: Missing $BO_Project'             && return 63
+[[ ! -d "$BO_Project"    ]] && echo "FATAL: Missing directory '$BO_Project'" && return 63
+[[   -z "$BO_PathSystem" ]] && echo 'FATAL: Missing $BO_PathSystem'          && return 63
 
 _Dir="$BO_Home/activation/Linux"
-[[ ! -d "${_Dir}" ]] && echo "FATAL: Missing directory '${_Dir}'" && return 1
+[[ ! -d "${_Dir}" ]] && echo "FATAL: Missing directory '${_Dir}'" && return 63
+
+###################################################################################################
+# Configure the Linux environment
 
 _Script="${_Dir}/declare.bash"
-[[ ! -f "${_Script}" ]] && \
-  echo "FATAL: Missing script '${_Script}'" && \
-  return 1
+[[ ! -f "${_Script}" ]] && echo "FATAL: Missing script '${_Script}'" && return 63
 
 source "${_Script}"
 
 _ExitCode=$?
-[[ ${_ExitCode} -ne 0 ]] && \
-  echo "FATAL: Exit code ${_ExitCode} at '$BASH_SOURCE':$LINENO" && \
-  return ${_ExitCode}
+[[ ${_ExitCode} -ne 0 ]] && echo "FATAL: Exit code ${_ExitCode} at '$BASH_SOURCE':$LINENO" && return ${_ExitCode}
 
-[[ -z "$BO_E_Config" ]] && echo 'FATAL: Missing $BO_E_Config' && return 64
+###################################################################################################
+# Verify post-conditions
+
+[[ -z "$BO_E_Config" ]] && echo 'FATAL: Missing $BO_E_Config' && return 63
 [[ -z "$BO_E_Ok"     ]] && echo 'FATAL: Missing $BO_E_Ok'     && return "$BO_E_Config"
+
+###################################################################################################
+# Configure PATH
 
 export BO_PathProject="$BO_Project/bin/Linux"
 export BO_PathLinux="$BO_Home/invocation/Linux"
@@ -36,28 +41,34 @@ PATH="$PATH:${BO_PathLinux}"
 PATH="$PATH:${BO_PathSystem}"
 export PATH
 
+###################################################################################################
 # Configure TMPDIR
+
 if [[ -z "$TMPDIR" ]]; then
   echo 'WARN: Missing $TMPDIR'
   [[ -z "$TMPDIR" ]] && [[ -n "$USER"     ]] && export TMPDIR="/tmp/$USER"
   [[ -z "$TMPDIR" ]] && [[ -n "$USERNAME" ]] && export TMPDIR="/tmp/$USERNAME"
-  [[ -z "$TMPDIR" ]] && echo 'FATAL: Missing $TMPDIR' && return 1
+  [[ -z "$TMPDIR" ]] && echo 'FATAL: Missing $TMPDIR' && return 63
 # TODO: return "$BO_E_Config"
   echo "INFO: Remembering TMPDIR='$TMPDIR'"
 fi
 [[ ! -d "$TMPDIR" ]] && mkdir -p "$TMPDIR"
-[[ ! -d "$TMPDIR" ]] && echo "FATAL: Missing directory '$TMPDIR'" && return 1
+[[ ! -d "$TMPDIR" ]] && echo "FATAL: Missing directory '$TMPDIR'" && return 63
 
+###################################################################################################
 # Demonstrate logging
+
 logDebug  "EXAMPLE: This is a debugging message"
 logInfo   "EXAMPLE: This is an informational message"
 logWarn   "EXAMPLE: This is a warning message"
 logError  "EXAMPLE: This is an error message"
 _logFatal "EXAMPLE: This is a fatal message"
 
+###################################################################################################
 # Return, but do NOT exit, with a success code
 return "$BO_E_Ok"
 
+###################################################################################################
 : <<'DisabledContent'
 DisabledContent
 

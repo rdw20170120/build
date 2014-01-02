@@ -1,9 +1,14 @@
 #!/bin/bash
 echo "TRACE: Executing '$BASH_SOURCE'"
 
-[[ -z "$BO_E_Config" ]] && echo 'FATAL: Missing $BO_E_Config' && return 64
+###################################################################################################
+# Verify pre-conditions
+
+[[ -z "$BO_E_Config" ]] && echo 'FATAL: Missing $BO_E_Config' && return 63
 [[ -z "$BO_E_Ok"     ]] && echo 'FATAL: Missing $BO_E_Ok'     && return "$BO_E_Config"
 [[ -z "$BO_E_Usage"  ]] && echo 'FATAL: Missing $BO_E_Usage'  && return "$BO_E_Config"
+
+###################################################################################################
 
 requireParameter () {
   # Require parameter passed as $1, indexed as $2, and described as $3;
@@ -61,9 +66,11 @@ requireVariable () {
 }
 export -f requireVariable
 
+###################################################################################################
 # Return, but do NOT exit, with a success code
 return "$BO_E_Ok"
 
+###################################################################################################
 : <<'DisabledContent'
 DisabledContent
 
