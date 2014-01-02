@@ -6,7 +6,8 @@ echo "TRACE: Executing '$BASH_SOURCE'"
 [[   -z "$BO_Project" ]] && echo 'FATAL: Missing $BO_Project'             && return 1
 [[ ! -d "$BO_Project" ]] && echo "FATAL: Missing directory '$BO_Project'" && return 1
 
-[[ -z "$BO_PathSystem" ]] && echo 'FATAL: Missing $BO_PathSystem' && return 1
+[[ -z "$BO_HomePackage" ]] && echo 'FATAL: Missing $BO_HomePackage' && return 1
+[[ -z "$BO_PathSystem"  ]] && echo 'FATAL: Missing $BO_PathSystem'  && return 1
 
 # Configure environment for Linux
 
