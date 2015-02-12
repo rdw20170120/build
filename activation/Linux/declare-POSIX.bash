@@ -176,24 +176,6 @@ return "$BO_E_Ok"
 : <<'DisabledContent'
   # TODO:  Refactor & redesign
 
-directoryExists () {
-  # Verify that directory $1 exists
-  # $1 = pathname that should exist and be a directory
-  [[   -d "$1" ]] && logInfo  "Found directory $1"         && return "$BO_E_Ok"
-  [[ ! -e "$1" ]] && logError "Pathname $1 does not exist" && return 63
-  [[   -e "$1" ]] && logError "Found non-directory $1"     && return 2
-  return 3
-}
-
-fileExists () {
-  # Verify that file $1 exists
-  # $1 = pathname that should exist and be a file
-  [[   -f "$1" ]] && logInfo  "Found file $1"              && return "$BO_E_Ok"
-  [[ ! -e "$1" ]] && logError "Pathname $1 does not exist" && return 63
-  [[   -e "$1" ]] && logError "Found non-file $1"          && return 2
-  return 3
-}
-
 maybeCopyFile () {
   # Copy file $1 to directory $2 as $3, but not if it exists
   # $1 = pathname of source file

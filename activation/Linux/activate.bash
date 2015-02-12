@@ -33,8 +33,8 @@ _ExitCode=$?
 ###################################################################################################
 # Configure PATH
 
-export BO_PathProject="$BO_Project/bin/Linux"
 export BO_PathLinux="$BO_Home/invocation/Linux"
+export BO_PathProject="$BO_Project/bin/Linux"
 
 PATH="${BO_PathProject}"
 PATH="$PATH:${BO_PathLinux}"
