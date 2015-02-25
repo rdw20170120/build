@@ -10,6 +10,8 @@
 
 ###################################################################################################
 
+# TODO: FIX: Replace exit status of 100 with something more meaningful...
+
 requireParameter () {
   # Require parameter passed as $1, indexed as $2, and described as $3;
   # abort if missing
@@ -29,7 +31,7 @@ requireParameters () {
   requireValue "$2" 'actual parameter count'
 
   [[ "$2" -eq "$1" ]] && return "$BO_E_Ok"
-  abort "'$2' parameters were passed when exactly '$1' are required!"
+  abort 100 "'$2' parameters were passed when exactly '$1' are required!"
 }
 export -f requireParameters
 
@@ -40,7 +42,7 @@ requireParametersAtLeast () {
   requireValue "$2" 'actual parameter count'
 
   [[ "$2" -ge "$1" ]] && return "$BO_E_Ok"
-  abort "'$2' parameters were passed when at least '$1' are required!"
+  abort 100 "'$2' parameters were passed when at least '$1' are required!"
 }
 export -f requireParametersAtLeast
 
@@ -62,7 +64,7 @@ requireVariable () {
   declare _Name=$1
   declare _Value="${!_Name}"
   [[ -n "${_Value}" ]] && return "$BO_E_Ok"
-  abort "Variable '$1' is required (defined and non-null)!"
+  abort 100 "Variable '$1' is required (defined and non-null)!"
 }
 export -f requireVariable
 
