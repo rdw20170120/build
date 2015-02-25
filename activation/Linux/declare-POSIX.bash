@@ -10,8 +10,6 @@
 
 ###################################################################################################
 
-# TODO: FIX: Replace exit status of 100 with something more meaningful...
-
 changeFileGroup () {
   # Change ownership of file $2 to group $1
   requireParameters 2 "$#"
@@ -100,6 +98,7 @@ directoryExists () {
 
   [[   -d "$1" ]] && \
     logDebug "Found directory '$1'" && return "$BO_E_Ok"
+  # TODO: FIX: Replace exit status of 100 with something more meaningful...
   [[   -e "$1" ]] && \
     abort 100 "Found non-directory '$1'"
   return 63 # $1 does not exist, but appears to be creatable
@@ -113,6 +112,7 @@ fileExists () {
 
   [[   -f "$1" ]] && \
     logDebug "Found file '$1'" && return "$BO_E_Ok"
+  # TODO: FIX: Replace exit status of 100 with something more meaningful...
   [[   -e "$1" ]] && \
     abort 100 "Found non-file '$1'"
   return 63 # $1 does not exist, but appears to be creatable
@@ -156,6 +156,7 @@ requireDirectory () {
   requireParameter "$1" 1 'target directory'
 
   directoryExists "$1" && return "$BO_E_Ok"
+  # TODO: FIX: Replace exit status of 100 with something more meaningful...
   abort 100 "Required directory '$1' must exist!"
 }
 export -f requireDirectory
@@ -166,6 +167,7 @@ requireFile () {
   requireParameter "$1" 1 'target file'
 
   fileExists "$1" && return "$BO_E_Ok"
+  # TODO: FIX: Replace exit status of 100 with something more meaningful...
   abort 100 "Required file '$1' must exist!"
 }
 export -f requireFile
