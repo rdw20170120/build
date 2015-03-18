@@ -52,7 +52,7 @@ report () {
   # $1 = exit status
   # $2 = message
 
-  logWarn "Last command exited with status $1: $2"
+  logError "Last command exited with status $1: $2"
 }
 export -f report
 
