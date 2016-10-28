@@ -4,8 +4,6 @@
 ###################################################################################################
 # Declare needed SSH functionality to support this project
 #
-# NOTE: We use the 'ssh' prefix by convention for all our SSH functions.
-#
 # NOTE: We MUST NOT EVER invoke the BASH 'exit' command from these functions since it will
 #   terminate the user's shell (terminal).
 
