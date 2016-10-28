@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/cat
 [[ -n "$BO_Trace" ]] && echo "TRACE: Executing '$BASH_SOURCE'"
 # NOTE: This script MUST be 'source'd from scripts in this BriteOnyx project
 

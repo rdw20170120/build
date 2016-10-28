@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/cat
 [[ -n "$BO_Trace" ]] && echo "TRACE: Executing '$BASH_SOURCE'"
 echo "INFO: Activating the BriteOnyx framework for this source project..."
 echo "WARN: This script MUST be executed as 'source ./activate.src', WAS IT?"

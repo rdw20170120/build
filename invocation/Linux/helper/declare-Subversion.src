@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/cat
 # Declare BASH functionality for Subversion
 # TODO: Integrate with latest framework
 

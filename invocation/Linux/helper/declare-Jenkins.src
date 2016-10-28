@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/cat
 # Declare BASH functionality for the Jenkins continuous integration server
 # TODO: Integrate with latest framework
 

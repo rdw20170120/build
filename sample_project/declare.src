@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/cat
 [[ -n "$BO_Trace" ]] && echo "TRACE: Executing '$BASH_SOURCE'"
 ###################################################################################################
 # Declare project-specific functionality
@@ -19,13 +19,12 @@ abortOnFail "$?"
 # Use Resty tool
 
 requireVariable 'BO_Project'
-export HW_ScriptResty="$BO_Project/lib/Resty-2.2.src"
-requireFile "$HW_ScriptResty"
-chmod u+x   "$HW_ScriptResty"
+export ScriptResty="$BO_Project/lib/Resty-2.2.src"
+requireFile "$ScriptResty"
+chmod u+x   "$ScriptResty"
 abortOnFail $?
 
 # Do not 'source' Resty here, do it upon actual use
-# source "${HW_ScriptResty}"
+# source "$ScriptResty"
 
 DisabledContent
-

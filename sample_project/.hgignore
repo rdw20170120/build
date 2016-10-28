@@ -31,4 +31,3 @@ syntax: regexp
 
 # output
 ^out$
-
