@@ -16,7 +16,7 @@ _Dir="$BO_Home/activation/Linux"
 ###################################################################################################
 # Configure the Linux environment
 
-_Script="${_Dir}/declare.bash"
+_Script="${_Dir}/declare.src"
 [[ ! -f "${_Script}" ]] && echo "FATAL: Missing script '${_Script}'" && return 63
 
 source "${_Script}"

@@ -17,7 +17,7 @@ _Dir=$BO_Home/activation/Linux
 ###################################################################################################
 # Configure environment for Linux
 
-_Script=${_Dir}/activate.bash
+_Script=${_Dir}/activate.src
 [[ ! -f "${_Script}" ]] && echo "FATAL: Missing script '${_Script}'" && return 63
 
 source ${_Script}
