@@ -9,10 +9,9 @@
 boVariableRequire 'BO_Project' || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
 
 ###################################################################################################
-# Configure for this user
+# Configure for BriteOnyx
 
-_Script="$HOME/BriteOnyx-env.src"
-[[ ! -f ${_Script} ]] && cp "$BO_Project/BriteOnyx/sample-BriteOnyx-env.src" "${_Script}"
+_Script="$BO_Project/BriteOnyx/env.src"
 boScriptRequire "${_Script}" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
 source          "${_Script}" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
 
@@ -24,9 +23,10 @@ boScriptRequire "${_Script}" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $
 source          "${_Script}" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
 
 ###################################################################################################
-# Configure for BriteOnyx
+# Configure for this user
 
-_Script="$BO_Project/BriteOnyx/env.src"
+_Script="$HOME/BriteOnyx-env.src"
+[[ ! -f ${_Script} ]] && cp "$BO_Project/BriteOnyx/sample-BriteOnyx-env.src" "${_Script}"
 boScriptRequire "${_Script}" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
 source          "${_Script}" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
 
@@ -79,4 +79,3 @@ return 0
 ###################################################################################################
 : <<'DisabledContent'
 DisabledContent
-

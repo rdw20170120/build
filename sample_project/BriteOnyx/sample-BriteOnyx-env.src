@@ -2,10 +2,9 @@
 echo "TRACE: Executing '$BASH_SOURCE'"
 ###################################################################################################
 
-export BO_Home=$HOME/.BriteOnyx
 export BO_Version=tip
-export BO_Version=predeployed
 
 ###################################################################################################
 : <<'DisabledContent'
+export BO_Version=predeployed
 DisabledContent

@@ -3,14 +3,7 @@
 ###################################################################################################
 # Configure this project for the BriteOnyx framework
 
-alias ignored='hg ignored | grep -v work-in-progress | grep -v wip'
-alias someday='grep -Einrw TODO . --include=*.bash --include=*.out --include=*.txt | sort | grep -v work-in-progress'
-alias todo='grep -Einrw TODO . --include=*.bash --include=*.out --include=*.txt | sort | grep -v work-in-progress | grep -v SOMEDAY'
-
 export TMPDIR=$HOME/tmp
-
-###################################################################################################
-# New functionality to be moved to the BriteOnyx framework
 
 ###################################################################################################
 : <<'DisabledContent'
