@@ -1,0 +1,32 @@
+#!/bin/bash
+[[ -n "$BO_Trace" ]] && echo "TRACE: Executing '$BASH_SOURCE'"
+# NOTE: This script MUST be 'source'd from scripts in this BriteOnyx project
+
+###################################################################################################
+# Skip if BriteOnyx is already activated
+
+_Msg='$BO_Home is defined, assuming BriteOnyx already activated'
+[[ -n "$BO_Home" ]] && logDebug "${_Msg}" && return 63
+
+###################################################################################################
+# Activate BriteOnyx
+
+_Script="$(dirname "$BASH_SOURCE")/../activate"
+[[ ! -f "${_Script}" ]] && echo "FATAL: Missing script '${_Script}'" && exit 63
+source "${_Script}"; _Status=$?
+_Msg="FATAL: Status ${_Status} at '$BASH_SOURCE:$LINENO'"
+[[ ${_Status} -ne 0 ]] && echo "${_Msg}" && exit ${_Status}
+
+###################################################################################################
+# Verify post-conditions
+
+boVariableRequire   'BO_Home' || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
+boDirectoryRequire "$BO_Home" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
+
+###################################################################################################
+# Return, but do NOT exit, with a success code
+return 0
+
+###################################################################################################
+: <<'DisabledContent'
+DisabledContent

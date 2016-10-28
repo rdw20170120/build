@@ -1,0 +1,12 @@
+#!/bin/bash
+echo "TRACE: Executing '$BASH_SOURCE'"
+###################################################################################################
+
+export BO_Home=$HOME/.BO
+export BO_Version=tip
+export BO_Version=predeployed
+
+###################################################################################################
+: <<'DisabledContent'
+DisabledContent
+

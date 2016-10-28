@@ -1,15 +1,38 @@
+################################################################################
 syntax: glob
-.*.swp
+
+# Apple Mac OSX
+.DS_Store
+
+# archive
+*.gz
+*.tgz
+*.zip
+
+# editor temporaries
 *~
+
+# Mercurial
 *.orig
+
+# output
+*.err
+*.log
 *.out
-*.pyc
 
-#.DS_Store
-#.installed.cfg
+# Python
+# *.pyc
 
+# Vim
+.*.swp
+
+################################################################################
 syntax: regexp
-^dist$
-^MANIFEST$
-^out$
-^PVE$
+
+# output
+# ^out$
+
+# Python
+# ^dist$
+# ^MANIFEST$
+# ^PVE$

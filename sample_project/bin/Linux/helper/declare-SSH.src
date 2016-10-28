@@ -1,0 +1,60 @@
+#!/bin/bash
+[[ -n "$BO_Trace" ]] && echo "TRACE: Executing '$BASH_SOURCE'"
+
+###################################################################################################
+# Declare needed SSH functionality to support this project
+#
+# NOTE: We use the 'ssh' prefix by convention for all our SSH functions.
+#
+# NOTE: We MUST NOT EVER invoke the BASH 'exit' command from these functions since it will
+#   terminate the user's shell (terminal).
+
+###################################################################################################
+# Functions in this section should NOT call functions from following sections
+
+sshOn () {
+  # Execute command $2 on target $1 via SSH
+  requireParameters 2 "$#"
+  requireValue "$1" 'target (user@host)'
+  requireValue "$2" 'command to execute via SSH'
+
+  # TODO: Use SSH key explicitly?
+  declare -r _Cmd="ssh $1 $2"
+  logDebug "Executing command: ${_Cmd}"
+  # NOTE: Do NOT attempt to handle exit status, let it propagate to caller
+  ${_Cmd}
+} && export -f sshOn 
+
+###################################################################################################
+# Functions in this section should NOT call functions from following sections
+
+scpFrom () {
+  # Copy local file $2 from remote file $3 on target $1 (user@machine)
+  # $1 = user@machine of source remote file
+  # $2 = target local file
+  # $3 = source remote file
+  declare -r _Cmd="scp -Bpr $1:$3 $2"
+  logDebug "Executing command: ${_Cmd}"
+  ${_Cmd}
+  abortOnFail $?
+} && export -f scpFrom
+
+scpTo () {
+  # Copy local file $2 to remote file $3 on target $1 (user@machine)
+  # $1 = user@machine of source remote file
+  # $2 = source local file
+  # $3 = target remote file
+  declare -r _Cmd="scp -Bpr $2 $1:$3"
+  logDebug "Executing command: ${_Cmd}"
+  ${_Cmd}
+  abortOnFail $?
+} && export -f scpTo
+
+###################################################################################################
+# Return, but do NOT exit, with a success code
+return "$BO_E_Ok"
+
+###################################################################################################
+: <<'DisabledContent'
+DisabledContent
+

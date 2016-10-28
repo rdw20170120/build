@@ -1,0 +1,43 @@
+#!/bin/bash
+[[ -n "$BO_Trace" ]] && echo "TRACE: Executing '$BASH_SOURCE'"
+###################################################################################################
+# Configure this project for the BriteOnyx framework
+
+alias ignored='hg ignored | grep -v work-in-progress | grep -v wip'
+alias someday='grep -Einrw TODO . --include=*.bash --include=*.out --include=*.txt | sort | grep -v work-in-progress'
+alias todo='grep -Einrw TODO . --include=*.bash --include=*.out --include=*.txt | sort | grep -v work-in-progress | grep -v SOMEDAY'
+
+export TMPDIR=/data/$USER
+
+# Control exercise execution
+export CB_Assert=true
+export CB_Force=false
+export CB_Tuning=false
+
+# How many seconds to sleep after each execution of Couchbase CBQ
+export CB_Sleep=0
+
+###################################################################################################
+# New functionality to be moved to the BriteOnyx framework
+
+getPathAbsolute () {
+  # Get absolute (canonical) path for the pathname $1
+  # $1 = pathname
+  # TODO: echo "$1"
+  if [ -d "$1" ]; then
+    # dir
+    (cd "$1"; pwd)
+  elif [ -f "$1" ]; then
+    # file
+    if [[ $1 == */* ]]; then
+      echo "$(cd "${1%/*}"; pwd)/${1##*/}"
+    else
+      echo "$(pwd)/$1"
+    fi
+  fi
+} && export -f getPathAbsolute 
+
+###################################################################################################
+: <<'DisabledContent'
+DisabledContent
+

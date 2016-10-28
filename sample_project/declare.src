@@ -1,0 +1,31 @@
+#!/bin/bash
+[[ -n "$BO_Trace" ]] && echo "TRACE: Executing '$BASH_SOURCE'"
+###################################################################################################
+# Declare project-specific functionality
+
+_Script="$BO_Project/bin/Linux/helper/declare-BASH.src"
+requireFile "${_Script}"
+source      "${_Script}"
+abortOnFail "$?"
+
+_Script="$BO_Project/bin/Linux/helper/declare-SSH.src"
+requireFile "${_Script}"
+source      "${_Script}"
+abortOnFail "$?"
+
+###################################################################################################
+: <<'DisabledContent'
+###################################################################################################
+# Use Resty tool
+
+requireVariable 'BO_Project'
+export HW_ScriptResty="$BO_Project/lib/Resty-2.2.src"
+requireFile "$HW_ScriptResty"
+chmod u+x   "$HW_ScriptResty"
+abortOnFail $?
+
+# Do not 'source' Resty here, do it upon actual use
+# source "${HW_ScriptResty}"
+
+DisabledContent
+

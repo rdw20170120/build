@@ -1,0 +1,88 @@
+#!/bin/bash
+[[ -n "$BO_Trace" ]] && echo "TRACE: Executing '$BASH_SOURCE'"
+echo "INFO: Activating the BriteOnyx framework for this source project..."
+echo "WARN: This script MUST be executed as 'source ./activate', WAS IT?"
+
+###################################################################################################
+# Activate the BriteOnyx framework to manage this project directory tree
+#
+# NOTE: This script is designed to be 'source'd into a user's BASH shell environment
+#
+# NOTE: This script, and EVERY script that it calls, must NOT invoke 'exit'!  The user calling this
+#   script must be allowed to preserve their shell and every effort must be made to inform the user
+#   of problems while continuing execution where possible.  Terminating the shell robs the user of
+#   useful feedback and interrupts their work, which is unacceptable.  Instead, the BASH 'return'
+#   statement should be invoked to end execution with an appropriate status code.
+#
+# TODO: Research whether it is possible to detect whether a script was 'source'd
+# TODO: Verify that $BO_Project does indeed point to the root of our source project directory tree
+
+###################################################################################################
+# Dump incoming environment for potential troubleshooting
+env | sort > "./BO-env-incoming.out"
+
+###################################################################################################
+# Remember the directory containing this script as our project root
+export BO_Project="$(dirname $BASH_SOURCE)"
+cd "$BO_Project" || return $?
+
+###################################################################################################
+# Declare BriteOnyx support functionality
+
+_Script="$BO_Project/BriteOnyx/declare.src"
+[[ ! -f "${_Script}" ]] && echo "FATAL: Missing script '${_Script}'" && return 63
+source "${_Script}"; _Status=$?
+[[ "${_Status}" -ne 0 ]] && echo "FATAL: Script exited with '${_Status}'" && return ${_Status}
+
+###################################################################################################
+# NOTE: Now that we have our support functionality declared, we can switch to using it from here on
+
+boVariableRequire 'BO_Project' || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
+boTraceVariable 'BO_Project'
+export BO_Project="$(boNodeCanonical $BO_Project)"
+boTraceVariable 'BO_Project'
+boLogInfo "Canonical form of BO_Project directory pathname is '$BO_Project'"
+boDirectoryRequire "$BO_Project" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
+
+###################################################################################################
+# Bootstrap BriteOnyx
+
+_Script="$BO_Project/BriteOnyx/bootstrap.src"
+boScriptRequire "${_Script}" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
+source          "${_Script}" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
+
+###################################################################################################
+# Activate as a Linux project
+
+_Script="$BO_Home/activation/Linux/activate.src"
+boScriptRequire "${_Script}" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
+source          "${_Script}" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
+
+###################################################################################################
+# Ensure that we are in our project root directory
+
+cd "$BO_Project" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
+
+###################################################################################################
+# Declare optional project functionality
+
+_Script="$BO_Project/declare.src"
+if [[ -f "${_Script}" ]] ; then
+  source "${_Script}"
+  _Status=$?
+  [[ "${_Status}" -ne 0 ]] && echo "FATAL: Script exited with '${_Status}'" && return ${_Status}
+fi
+
+###################################################################################################
+# Dump outgoing environment for potential troubleshooting
+env | sort > "./BO-env-outgoing.out"
+
+###################################################################################################
+# Return, but do NOT exit, with a success code
+logInfo "Project '$BO_Project' is now activated, done."
+return 0
+
+###################################################################################################
+: <<'DisabledContent'
+DisabledContent
+

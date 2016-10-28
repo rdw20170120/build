@@ -1,0 +1,34 @@
+###############################################################################
+syntax: glob
+
+# project
+work-in-progress
+ 
+# archive
+*.gz
+*.tgz
+*.zip
+
+# editor temporaries
+*~
+
+# Apple Mac OSX
+.DS_Store
+
+# Mercurial
+*.orig
+
+# output
+*.err
+*.log
+*.out
+
+# Vim
+.*.swp
+
+###############################################################################
+syntax: regexp
+
+# output
+^out$
+
