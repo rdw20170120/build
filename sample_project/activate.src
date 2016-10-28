@@ -1,7 +1,7 @@
 #!/bin/bash
 [[ -n "$BO_Trace" ]] && echo "TRACE: Executing '$BASH_SOURCE'"
 echo "INFO: Activating the BriteOnyx framework for this source project..."
-echo "WARN: This script MUST be executed as 'source ./activate', WAS IT?"
+echo "WARN: This script MUST be executed as 'source ./activate.src', WAS IT?"
 
 ###################################################################################################
 # Activate the BriteOnyx framework to manage this project directory tree
@@ -85,4 +85,3 @@ return 0
 ###################################################################################################
 : <<'DisabledContent'
 DisabledContent
-
