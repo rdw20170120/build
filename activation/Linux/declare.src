@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin.src
 echo "TRACE: Executing '$BASH_SOURCE'"
 
 ###################################################################################################
@@ -10,7 +10,7 @@ _Dir="$BO_Home/activation/Linux"
 [[ ! -d "${_Dir}" ]] && echo "FATAL: Missing directory '${_Dir}'" && return 63
 
 ###################################################################################################
-_Script="${_Dir}/declare-exit.bash"
+_Script="${_Dir}/declare-exit.src"
 [[ ! -f "${_Script}" ]] && echo "FATAL: Missing script '${_Script}'" && return 63
 source "${_Script}"
 _ExitCode=$?
@@ -24,28 +24,28 @@ _ExitCode=$?
 [[ -z "$BO_E_Unavailable" ]] && echo 'FATAL: Missing $BO_E_Unavailable' && return "$BO_E_Config"
 
 ###################################################################################################
-_Script="${_Dir}/declare-logging.bash"
+_Script="${_Dir}/declare-logging.src"
 [[ ! -f "${_Script}" ]] && echo "FATAL: Missing script '${_Script}'" && return "$BO_E_Unavailable"
 source "${_Script}"
 _ExitCode=$?
 [[ ${_ExitCode} -ne 0 ]] && echo "FATAL: Exit code ${_ExitCode} at '$BASH_SOURCE':$LINENO" && return ${_ExitCode}
 
 ###################################################################################################
-_Script="${_Dir}/declare-abort.bash"
+_Script="${_Dir}/declare-abort.src"
 [[ ! -f "${_Script}" ]] && echo "FATAL: Missing script '${_Script}'" && return "$BO_E_Unavailable"
 source "${_Script}"
 _ExitCode=$?
 [[ ${_ExitCode} -ne 0 ]] && echo "FATAL: Exit code ${_ExitCode} at '$BASH_SOURCE':$LINENO" && return ${_ExitCode}
 
 ###################################################################################################
-_Script="${_Dir}/declare-BASH.bash"
+_Script="${_Dir}/declare-BASH.src"
 [[ ! -f "${_Script}" ]] && echo "FATAL: Missing script '${_Script}'" && return "$BO_E_Unavailable"
 source "${_Script}"
 _ExitCode=$?
 [[ ${_ExitCode} -ne 0 ]] && echo "FATAL: Exit code ${_ExitCode} at '$BASH_SOURCE':$LINENO" && return ${_ExitCode}
 
 ###################################################################################################
-_Script="${_Dir}/declare-POSIX.bash"
+_Script="${_Dir}/declare-POSIX.src"
 [[ ! -f "${_Script}" ]] && echo "FATAL: Missing script '${_Script}'" && return "$BO_E_Unavailable"
 source "${_Script}"
 _ExitCode=$?

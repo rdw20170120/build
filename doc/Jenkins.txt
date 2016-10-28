@@ -92,7 +92,7 @@ sudo vi /var/lib/jenkins/.hgrc
 
   [ui]
   ssh = ssh -C
-  username = Jenkins <RDW.20091028a.2bq64D@refactory.biz>
+  username = Jenkins <rdw.bitbucket.robwilliams@refactory.biz>
 
 sudo vi /var/lib/jenkins/.ssh/config
   Host bitbucket.org
