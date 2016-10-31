@@ -9,7 +9,7 @@ This="$(dirname $Self)"                ; abortOnFail $?
 
 ################################################################################
 [[ -z "$1" ]] && abort 1 'A regular expression pattern is required as the first positional parameter'
-logInfo "Search for regex pattern $1 in BASH scripts"
+logInfo "Search for regex pattern '$1' in BASH scripts"
 
 Dir=$PWD
 requireVariable   Dir
@@ -21,13 +21,12 @@ cd $Dir ; abortOnFail $?
 # set -o verbose
 # set -o xtrace
 
-logInfo "Searching directory '$Dir' for regex $1"
-for File in $(grep -Elr $1 $Dir --include='*.bash' | sort) ; do
-  logInfo "Searching for $1 in '$File'"
+logInfo "Searching directory '$Dir' for regex '$1'"
+for File in $(grep -Elr "$1" $Dir --include='*.bash' --include='*.src' | sort) ; do
+  logInfo "Searching for '$1' in '$File'"
   sed -n "/$1/ {p}" $File
 done
 
 ################################################################################
 : <<'DisabledContent'
 DisabledContent
-
