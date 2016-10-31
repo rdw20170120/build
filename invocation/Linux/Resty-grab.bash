@@ -7,13 +7,13 @@
 # NOTE: Assumes that this project has been activated using the BriteOnyx framework.
 ###################################################################################################
 
-requireVariable 'BO_Project'
-requireDirectory "$BO_Project"
+variableRequire 'BO_Project'
+directoryRequire "$BO_Project"
 
 Version=2.2
 
 Dir="$BO_Project/lib"
-createDirectory "${Dir}"
+directoryCreate "${Dir}"
 
 logInfo "Grabbing Resty ${Version} into ${Dir}..."
 

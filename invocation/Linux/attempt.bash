@@ -13,8 +13,8 @@ This="$(dirname $Self)"                ; abortOnFail $?
 logInfo "Attempt (show but do NOT save) replacement of regex pattern '$1' with text '$2' in BASH scripts"
 
 Dir=$PWD
-requireVariable   Dir
-requireDirectory $Dir
+variableRequire   Dir
+directoryRequire $Dir
 cd $Dir ; abortOnFail $?
 
 ################################################################################

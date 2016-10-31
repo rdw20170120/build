@@ -2,13 +2,13 @@
 echo "TRACE: Executing '$BASH_SOURCE'"
 logDebug 'Running Nose-based tests on this project...'
 
-requireVariable BO_Project
-requireVariable BO_HomePackage
+variableRequire BO_Project
+variableRequire BO_HomePackage
 
-requireDirectory "$BO_Project/src/$BO_HomePackage"
+directoryRequire "$BO_Project/src/$BO_HomePackage"
 
 Config=${BO_Project}/cfg/nose.cfg
-requireFile "${Config}"
+fileRequire "${Config}"
 
 cd "${BO_Project}/src"
 abortOnFail $?

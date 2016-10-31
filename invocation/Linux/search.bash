@@ -12,8 +12,8 @@ This="$(dirname $Self)"                ; abortOnFail $?
 logInfo "Search for regex pattern '$1' in BASH scripts"
 
 Dir=$PWD
-requireVariable   Dir
-requireDirectory $Dir
+variableRequire   Dir
+directoryRequire $Dir
 cd $Dir ; abortOnFail $?
 
 ################################################################################

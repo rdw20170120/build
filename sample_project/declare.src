@@ -19,9 +19,9 @@ return 0
 : <<'DisabledContent'
 # Use Resty tool
 
-requireVariable 'BO_Project'
+variableRequire 'BO_Project'
 export ScriptResty="$BO_Project/lib/Resty-2.2.src"
-requireFile "$ScriptResty"
+fileRequire "$ScriptResty"
 chmod u+x   "$ScriptResty"
 abortOnFail $?
 

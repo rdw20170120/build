@@ -27,8 +27,8 @@ Status=$?
 ###################################################################################################
 # Verify post-conditions
 
-[[ -z "$BO_EConfig" ]] && echo 'FATAL: Missing $BO_EConfig' && return 63
-[[ -z "$BO_E_Ok"     ]] && echo 'FATAL: Missing $BO_E_Ok'     && return "$BO_EConfig"
+[[ -z "$BO_E_Config" ]] && echo 'FATAL: Missing $BO_E_Config' && return 63
+[[ -z "$BO_E_Ok"     ]] && echo 'FATAL: Missing $BO_E_Ok'     && return "$BO_E_Config"
 
 ###################################################################################################
 # Configure PATH
@@ -49,7 +49,7 @@ if [[ -z "$TMPDIR" ]]; then
   [[ -z "$TMPDIR" ]] && [[ -n "$USER"     ]] && export TMPDIR="/tmp/$USER"
   [[ -z "$TMPDIR" ]] && [[ -n "$USERNAME" ]] && export TMPDIR="/tmp/$USERNAME"
   [[ -z "$TMPDIR" ]] && echo 'FATAL: Missing $TMPDIR' && return 63
-# TODO: return "$BO_EConfig"
+# TODO: return "$BO_E_Config"
   echo "INFO: Remembering TMPDIR='$TMPDIR'"
 fi
 [[ ! -d "$TMPDIR" ]] && mkdir -p "$TMPDIR"

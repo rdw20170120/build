@@ -4,9 +4,9 @@
 
 Jenkins_findBuild() {
   # Return whether found Jenkins build for job $2, and save to file $1 if found
-  requireParameters "$FUNCNAME" "$LINENO" 2 "$#"
-  requireParameter  "$FUNCNAME" "$LINENO" "$1" 1 'build number file'
-  requireParameter  "$FUNCNAME" "$LINENO" "$2" 2 'Jenkins URL'
+  parametersRequire "$FUNCNAME" "$LINENO" 2 "$#"
+  parameterRequire  "$FUNCNAME" "$LINENO" "$1" 1 'build number file'
+  parameterRequire  "$FUNCNAME" "$LINENO" "$2" 2 'Jenkins URL'
 
   logInfo "$FUNCNAME" "$LINENO" "Getting build number from '$2'..."
   Number=$(Jenkins_getBuildNumber "$2")
@@ -15,9 +15,9 @@ Jenkins_findBuild() {
 
 Jenkins_getArtifact () {
   # Get the Jenkins build artifact from URL $1 as file $2
-  requireParameters "$FUNCNAME" "$LINENO" 2 "$#"
-  requireParameter  "$FUNCNAME" "$LINENO" "$1" 1 'artifact target file'
-  requireParameter  "$FUNCNAME" "$LINENO" "$2" 2 'artifact URL'
+  parametersRequire "$FUNCNAME" "$LINENO" 2 "$#"
+  parameterRequire  "$FUNCNAME" "$LINENO" "$1" 1 'artifact target file'
+  parameterRequire  "$FUNCNAME" "$LINENO" "$2" 2 'artifact URL'
 
   if fileExists "$1"; then
     logWarn "$FUNCNAME" "$LINENO" "Artifact $1 already exists, skipping get!"
@@ -25,15 +25,15 @@ Jenkins_getArtifact () {
     logInfo "$FUNCNAME" "$LINENO" "Getting artifact file '$1' from '$2'..."
     curl -L# "$2" > "$1"
     abortOnFail "$FUNCNAME" "$LINENO" "$?"
-    requireFile "$1"
+    fileRequire "$1"
   fi
 }
 
 Jenkins_getBuildNumber () {
   # Return the Jenkins build number for job $1
   # NOTE:  Designed to return result via standard output
-  requireParameters "$FUNCNAME" "$LINENO" 1 "$#"
-  requireParameter  "$FUNCNAME" "$LINENO" "$1" 1 'Jenkins job'
+  parametersRequire "$FUNCNAME" "$LINENO" 1 "$#"
+  parameterRequire  "$FUNCNAME" "$LINENO" "$1" 1 'Jenkins job'
 
   declare -r Number=$(curl -Ls "$1")
   abortOnFail "$FUNCNAME" "$LINENO" "$?"
@@ -42,11 +42,11 @@ Jenkins_getBuildNumber () {
 
 Jenkins_saveBuildNumber() {
   # Save Jenkins build number $2 to file $1
-  requireParameters "$FUNCNAME" "$LINENO" 2 "$#"
-  requireParameter  "$FUNCNAME" "$LINENO" "$1" 1 'target file'
-  requireParameter  "$FUNCNAME" "$LINENO" "$2" 2 'build number'
+  parametersRequire "$FUNCNAME" "$LINENO" 2 "$#"
+  parameterRequire  "$FUNCNAME" "$LINENO" "$1" 1 'target file'
+  parameterRequire  "$FUNCNAME" "$LINENO" "$2" 2 'build number'
 
   logInfo "$FUNCNAME" "$LINENO" "Saving build number '$2' in file '$1'..."
   echo "$2" > "$1"
-  requireFile "$1"
+  fileRequire "$1"
 }

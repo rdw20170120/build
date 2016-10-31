@@ -111,13 +111,13 @@ declare -irx BO_E_InOut=$((        $BO_E_UserBase + 10 ))
 declare -irx BO_E_Temporary=$((    $BO_E_UserBase + 11 ))
 declare -irx BO_E_Protocol=$((     $BO_E_UserBase + 12 ))
 declare -irx BO_E_Denied=$((       $BO_E_UserBase + 13 ))
-declare -irx BO_EConfig=$((       $BO_E_UserBase + 14 ))
+declare -irx BO_E_Config=$((       $BO_E_UserBase + 14 ))
 
 ###################################################################################################
 # Verify post-conditions
 
-[[ -z "$BO_EConfig" ]] && echo 'FATAL: Missing $BO_EConfig' && return 63
-[[ -z "$BO_E_Ok"     ]] && echo 'FATAL: Missing $BO_E_Ok'     && return "$BO_EConfig"
+[[ -z "$BO_E_Config" ]] && echo 'FATAL: Missing $BO_E_Config' && return 63
+[[ -z "$BO_E_Ok"     ]] && echo 'FATAL: Missing $BO_E_Ok'     && return "$BO_E_Config"
 
 ###################################################################################################
 # Return, but do NOT exit, with a success code

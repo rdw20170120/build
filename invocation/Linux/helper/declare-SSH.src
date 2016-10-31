@@ -14,9 +14,9 @@
 
 sshOn () {
   # Execute command $2 on target $1 via SSH
-  requireParameters 2 "$#"
-  requireValue "$1" 'target (user@host)'
-  requireValue "$2" 'command to execute via SSH'
+  parametersRequire 2 "$#"
+  valueRequire "$1" 'target (user@host)'
+  valueRequire "$2" 'command to execute via SSH'
 
   # TODO: Use SSH key explicitly?
   declare -r Cmd="ssh $1 $2"

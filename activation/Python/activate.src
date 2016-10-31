@@ -28,9 +28,9 @@ Status=$?
 ###################################################################################################
 # Verify post-conditions
 
-[[ -z "$BO_EConfig"  ]] && echo 'FATAL: Missing $BO_EConfig'  && return 63
-[[ -z "$BO_E_Ok"      ]] && echo 'FATAL: Missing $BO_E_Ok'      && return "$BO_EConfig"
-[[ -z "$BO_PathLinux" ]] && echo 'FATAL: Missing $BO_PathLinux' && return "$BO_EConfig"
+[[ -z "$BO_E_Config"  ]] && echo 'FATAL: Missing $BO_E_Config'  && return 63
+[[ -z "$BO_E_Ok"      ]] && echo 'FATAL: Missing $BO_E_Ok'      && return "$BO_E_Config"
+[[ -z "$BO_PathLinux" ]] && echo 'FATAL: Missing $BO_PathLinux' && return "$BO_E_Config"
 
 ###################################################################################################
 # Configure environment for Python on Linux

@@ -5,13 +5,13 @@
 # TODO: FIX: Make this work on OSX as well as Linux
 ###################################################################################################
 
-requireVariable 'BO_Project'
-requireDirectory "$BO_Project"
+variableRequire 'BO_Project'
+directoryRequire "$BO_Project"
 
 fixPermissions () {
   logInfo "Fixing POSIX permissions within path '$1'"
-  requireParameters 1 "$#"
-  requireValue "$1" 'path'
+  parametersRequire 1 "$#"
+  valueRequire "$1" 'path'
 
   # TODO: SOMEDAY FIX does not work on OSX due to unrecognized syntax
 

@@ -3,8 +3,8 @@
 # NOTE: Assumes that this project has been activated using the BriteOnyx framework.
 ###################################################################################################
 
-requireVariable 'BO_Project'
-requireDirectory "$BO_Project"
+variableRequire 'BO_Project'
+directoryRequire "$BO_Project"
 
 ###################################################################################################
 logInfo 'Cleaning up in project'

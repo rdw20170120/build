@@ -4,49 +4,49 @@
 ###################################################################################################
 # Verify pre-conditions
 
-[[ -z "$BO_EConfig" ]] && echo 'FATAL: Missing $BO_EConfig' && return 63
-[[ -z "$BO_E_Ok"     ]] && echo 'FATAL: Missing $BO_E_Ok'     && return "$BO_EConfig"
-[[ -z "$BO_E_Usage"  ]] && echo 'FATAL: Missing $BO_E_Usage'  && return "$BO_EConfig"
+[[ -z "$BO_E_Config" ]] && echo 'FATAL: Missing $BO_E_Config' && return 63
+[[ -z "$BO_E_Ok"     ]] && echo 'FATAL: Missing $BO_E_Ok'     && return "$BO_E_Config"
+[[ -z "$BO_E_Usage"  ]] && echo 'FATAL: Missing $BO_E_Usage'  && return "$BO_E_Config"
 
 ###################################################################################################
 
-requireParameter () {
+parameterRequire () {
   # Require parameter passed as $1, indexed as $2, and described as $3;
   # abort if missing
-  requireParameters 3 "$#"
+  parametersRequire 3 "$#"
   # $1 = actual parameter value (may be null)
-  requireValue "$2" 'parameter index'
-  requireValue "$3" 'description'
+  valueRequire "$2" 'parameter index'
+  valueRequire "$3" 'description'
 
   abortIfMissing "$1" "Missing parameter $2: $3!"
 }
-export -f requireParameter
+export -f parameterRequire
 
-requireParameters () {
+parametersRequire () {
   # Require exactly $1 parameters to calling function/script
   [[ "$#" -ne 2 ]] && Oops && exit "$BO_E_Usage"
-  requireValue "$1" 'required parameter count'
-  requireValue "$2" 'actual parameter count'
+  valueRequire "$1" 'required parameter count'
+  valueRequire "$2" 'actual parameter count'
 
   [[ "$2" -eq "$1" ]] && return "$BO_E_Ok"
   # TODO: FIX: Replace exit status of 100 with something more meaningful...
   abort 100 "'$2' parameters were passed when exactly '$1' are required!"
 }
-export -f requireParameters
+export -f parametersRequire
 
-requireParametersAtLeast () {
+parametersRequireAtLeast () {
   # Require at least $1 parameters to calling function/script
-  requireParameters 2 "$#"
-  requireValue "$1" 'required parameter count'
-  requireValue "$2" 'actual parameter count'
+  parametersRequire 2 "$#"
+  valueRequire "$1" 'required parameter count'
+  valueRequire "$2" 'actual parameter count'
 
   [[ "$2" -ge "$1" ]] && return "$BO_E_Ok"
   # TODO: FIX: Replace exit status of 100 with something more meaningful...
   abort 100 "'$2' parameters were passed when at least '$1' are required!"
 }
-export -f requireParametersAtLeast
+export -f parametersRequireAtLeast
 
-requireValue () {
+valueRequire () {
   # Require value $1 described as $2, abort if missing (resolves to null)
   [[ "$#" -ne 2 ]] && Oops && exit "$BO_E_Usage"
   # $1 = value that is required
@@ -54,12 +54,12 @@ requireValue () {
 
   abortIfMissing "$1" "Value for '$2' is missing (non-null)!"
 }
-export -f requireValue
+export -f valueRequire
 
-requireVariable () {
+variableRequire () {
   # Require variable $1, abort if it is missing
-  requireParameters 1 "$#"
-  requireParameter  "$1" 1 'name of variable that is required'
+  parametersRequire 1 "$#"
+  parameterRequire  "$1" 1 'name of variable that is required'
 
   declare Name=$1
   declare Value="${!Name}"
@@ -67,7 +67,7 @@ requireVariable () {
   # TODO: FIX: Replace exit status of 100 with something more meaningful...
   abort 100 "Variable '$1' is required (defined and non-null)!"
 }
-export -f requireVariable
+export -f variableRequire
 
 ###################################################################################################
 # Return, but do NOT exit, with a success code

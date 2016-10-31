@@ -9,11 +9,11 @@
 ###################################################################################################
 # Verify pre-conditions
 
-[[ -z "$BO_EConfig"      ]] && echo 'FATAL: Missing $BO_EConfig'      && return 63
-[[ -z "$BO_E_Ok"          ]] && echo 'FATAL: Missing $BO_E_Ok'          && return "$BO_EConfig"
-[[ -z "$BO_E_Usage"       ]] && echo 'FATAL: Missing $BO_E_Usage'       && return "$BO_EConfig"
-[[ -z "$BO_E_Unavailable" ]] && echo 'FATAL: Missing $BO_E_Unavailable' && return "$BO_EConfig"
-[[ -z "$BO_Home"          ]] && echo 'FATAL: Missing $BO_Home'          && return "$BO_EConfig"
+[[ -z "$BO_E_Config"      ]] && echo 'FATAL: Missing $BO_E_Config'      && return 63
+[[ -z "$BO_E_Ok"          ]] && echo 'FATAL: Missing $BO_E_Ok'          && return "$BO_E_Config"
+[[ -z "$BO_E_Usage"       ]] && echo 'FATAL: Missing $BO_E_Usage'       && return "$BO_E_Config"
+[[ -z "$BO_E_Unavailable" ]] && echo 'FATAL: Missing $BO_E_Unavailable' && return "$BO_E_Config"
+[[ -z "$BO_Home"          ]] && echo 'FATAL: Missing $BO_Home'          && return "$BO_E_Config"
 
 ###################################################################################################
 # Remember ANSI color escape sequences for our logging priorities
@@ -194,7 +194,7 @@ export -f logWarn
 
 Oops () {
   # Echo to STDERR that an Oops occurred
-  # NOTE:  This is usable to indicate an error in low-level code such as this
+  # NOTE:  This is used to indicate an error in low-level code such as this
   # logging infrastructure that is then used to support error handling in
   # other higher-level code.
 

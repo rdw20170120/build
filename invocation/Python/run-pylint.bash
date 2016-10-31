@@ -2,16 +2,16 @@
 echo "TRACE: Executing '$BASH_SOURCE'"
 logDebug 'Running pylint on this project...'
 
-requireVariable BO_Project
-requireVariable BO_HomePackage
+variableRequire BO_Project
+variableRequire BO_HomePackage
 
-requireDirectory "$BO_Project/src/$BO_HomePackage"
+directoryRequire "$BO_Project/src/$BO_HomePackage"
 
 Config=${BO_Project}/cfg/pylintrc
-requireFile "${Config}"
+fileRequire "${Config}"
 
 Dir=$BO_Project/out
-createDirectory "${Dir}"
+directoryCreate "${Dir}"
 
 cd "${BO_Project}/src"
 abortOnFail $?

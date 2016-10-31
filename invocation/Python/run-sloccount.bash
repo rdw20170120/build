@@ -3,21 +3,21 @@ echo "TRACE: Executing '$BASH_SOURCE'"
 logDebug 'Counting the lines of source code (SLOC) in this project...'
 # TODO: This script requires the 'sloccount' package to have been installed
 
-requireVariable BO_Project
+variableRequire BO_Project
 
 Dir=$BO_Project/out
-createDirectory "${Dir}"
+directoryCreate "${Dir}"
 
-requireFile "$BO_Project/activate"
-requireFile "$BO_Project/MANIFEST.in"
-requireFile "$BO_Project/README.rst"
-requireFile "$BO_Project/setup.py"
+fileRequire "$BO_Project/activate"
+fileRequire "$BO_Project/MANIFEST.in"
+fileRequire "$BO_Project/README.rst"
+fileRequire "$BO_Project/setup.py"
 
-requireDirectory "$BO_Project/bin"
-requireDirectory "$BO_Project/BriteOnyx"
-requireDirectory "$BO_Project/cfg"
-requireDirectory "$BO_Project/doc"
-requireDirectory "$BO_Project/src"
+directoryRequire "$BO_Project/bin"
+directoryRequire "$BO_Project/BriteOnyx"
+directoryRequire "$BO_Project/cfg"
+directoryRequire "$BO_Project/doc"
+directoryRequire "$BO_Project/src"
 
 # NOTE:  Do NOT include subdirectories "dist", "out", or "PVE"
 Cmd=sloccount
