@@ -119,6 +119,23 @@ fileExists () {
 }
 export -f fileExists
 
+getPathAbsolute () {
+  # Get absolute (canonical) path for the pathname $1
+  # $1 = pathname
+  # TODO: echo "$1"
+  if [ -d "$1" ]; then
+    # dir
+    (cd "$1"; pwd)
+  elif [ -f "$1" ]; then
+    # file
+    if [[ $1 == */* ]]; then
+      echo "$(cd "${1%/*}"; pwd)/${1##*/}"
+    else
+      echo "$(pwd)/$1"
+    fi
+  fi
+} && export -f getPathAbsolute 
+
 makeFilesExecutable () {
   # Make the files executable within directory $1
   requireParameters 1 "$#"

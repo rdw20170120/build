@@ -56,6 +56,13 @@ fi
 [[ ! -d "$TMPDIR" ]] && echo "FATAL: Missing directory '$TMPDIR'" && return 63
 
 ###################################################################################################
+# Define common aliases
+
+alias ignored='hg ignored | grep -v work-in-progress | grep -v wip'
+alias someday='grep -Einrw TODO . --include=*.bash --include=*.out --include=*.src --include=*.txt | sort | grep -v work-in-progress'
+alias todo='grep -Einrw TODO . --include=*.bash --include=*.out --include=*.src --include=*.txt | sort | grep -v work-in-progress | grep -v SOMEDAY'
+
+###################################################################################################
 # Demonstrate logging
 
 logDebug  "EXAMPLE: This is a debugging message"
@@ -71,4 +78,3 @@ return "$BO_E_Ok"
 ###################################################################################################
 : <<'DisabledContent'
 DisabledContent
-
