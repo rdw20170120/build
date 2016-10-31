@@ -9,23 +9,23 @@
 ###################################################################################################
 # Verify pre-conditions
 
-[[ -z "$BO_E_Config"      ]] && echo 'FATAL: Missing $BO_E_Config'      && return 63
-[[ -z "$BO_E_Ok"          ]] && echo 'FATAL: Missing $BO_E_Ok'          && return "$BO_E_Config"
-[[ -z "$BO_E_Usage"       ]] && echo 'FATAL: Missing $BO_E_Usage'       && return "$BO_E_Config"
-[[ -z "$BO_E_Unavailable" ]] && echo 'FATAL: Missing $BO_E_Unavailable' && return "$BO_E_Config"
-[[ -z "$BO_Home"          ]] && echo 'FATAL: Missing $BO_Home'          && return "$BO_E_Config"
+[[ -z "$BO_EConfig"      ]] && echo 'FATAL: Missing $BO_EConfig'      && return 63
+[[ -z "$BO_E_Ok"          ]] && echo 'FATAL: Missing $BO_E_Ok'          && return "$BO_EConfig"
+[[ -z "$BO_E_Usage"       ]] && echo 'FATAL: Missing $BO_E_Usage'       && return "$BO_EConfig"
+[[ -z "$BO_E_Unavailable" ]] && echo 'FATAL: Missing $BO_E_Unavailable' && return "$BO_EConfig"
+[[ -z "$BO_Home"          ]] && echo 'FATAL: Missing $BO_Home'          && return "$BO_EConfig"
 
 ###################################################################################################
 # Remember ANSI color escape sequences for our logging priorities
 
-_Script="$(dirname $BASH_SOURCE)/../../invocation/Linux/color.bash"
-[[ ! -f "${_Script}" ]] && echo "FATAL: Missing script '${_Script}'" && return "$BO_E_Unavailable"
-export BO_ColorOff="$(${_Script} off)"
-export BO_ColorDebug="$(${_Script} magenta black)"
-export BO_ColorInfo="$(${_Script} green black)"
-export BO_ColorWarn="$(${_Script} cyan black)"
-export BO_ColorError="$(${_Script} yellow black)"
-export BO_ColorFatal="$(${_Script} red black)"
+Script="$(dirname $BASH_SOURCE)/../../invocation/Linux/color.bash"
+[[ ! -f "${Script}" ]] && echo "FATAL: Missing script '${Script}'" && return "$BO_E_Unavailable"
+export BO_ColorOff="$(${Script} off)"
+export BO_ColorDebug="$(${Script} magenta black)"
+export BO_ColorInfo="$(${Script} green black)"
+export BO_ColorWarn="$(${Script} cyan black)"
+export BO_ColorError="$(${Script} yellow black)"
+export BO_ColorFatal="$(${Script} red black)"
 
 ###################################################################################################
 
@@ -35,8 +35,8 @@ _log () {
   [[ "$#" -ne 1 ]] && Oops && exit "$BO_E_Usage"
   # $1 = message
 
-  declare -r _Message="${1:-No message provided.}"
-  echo -e "${_Message}" >&2
+  declare -r Msg="${1:-No message provided.}"
+  echo -e "${Msg}" >&2
 }
 export -f _log
 
@@ -207,9 +207,9 @@ trace () {
   [[ "$#" -ne 1 ]] && Oops && exit "$BO_E_Usage"
   # $1 = name of variable to trace
 
-  declare -r _Name=$1
-  declare -r _Value="${!_Name}"
-  logDebug "${_Name}='${_Value}'"
+  declare -r Name=$1
+  declare -r Value="${!Name}"
+  logDebug "${Name}='${Value}'"
 }
 export -f trace
 
@@ -220,4 +220,3 @@ return "$BO_E_Ok"
 ###################################################################################################
 : <<'DisabledContent'
 DisabledContent
-

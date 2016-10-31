@@ -19,10 +19,10 @@ sshOn () {
   requireValue "$2" 'command to execute via SSH'
 
   # TODO: Use SSH key explicitly?
-  declare -r _Cmd="ssh $1 $2"
-  logDebug "Executing command: ${_Cmd}"
+  declare -r Cmd="ssh $1 $2"
+  logDebug "Executing command: ${Cmd}"
   # NOTE: Do NOT attempt to handle exit status, let it propagate to caller
-  ${_Cmd}
+  ${Cmd}
 } && export -f sshOn 
 
 ###################################################################################################
@@ -33,9 +33,9 @@ scpFrom () {
   # $1 = user@machine of source remote file
   # $2 = target local file
   # $3 = source remote file
-  declare -r _Cmd="scp -Bpr $1:$3 $2"
-  logDebug "Executing command: ${_Cmd}"
-  ${_Cmd}
+  declare -r Cmd="scp -Bpr $1:$3 $2"
+  logDebug "Executing command: ${Cmd}"
+  ${Cmd}
   abortOnFail $?
 } && export -f scpFrom
 
@@ -44,9 +44,9 @@ scpTo () {
   # $1 = user@machine of source remote file
   # $2 = source local file
   # $3 = target remote file
-  declare -r _Cmd="scp -Bpr $2 $1:$3"
-  logDebug "Executing command: ${_Cmd}"
-  ${_Cmd}
+  declare -r Cmd="scp -Bpr $2 $1:$3"
+  logDebug "Executing command: ${Cmd}"
+  ${Cmd}
   abortOnFail $?
 } && export -f scpTo
 
@@ -57,4 +57,3 @@ return "$BO_E_Ok"
 ###################################################################################################
 : <<'DisabledContent'
 DisabledContent
-

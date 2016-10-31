@@ -9,8 +9,8 @@ Jenkins_findBuild() {
   requireParameter  "$FUNCNAME" "$LINENO" "$2" 2 'Jenkins URL'
 
   logInfo "$FUNCNAME" "$LINENO" "Getting build number from '$2'..."
-  _Number=$(Jenkins_getBuildNumber "$2")
-  Jenkins_saveBuildNumber "$1" "${_Number}"
+  Number=$(Jenkins_getBuildNumber "$2")
+  Jenkins_saveBuildNumber "$1" "${Number}"
 }
 
 Jenkins_getArtifact () {
@@ -35,9 +35,9 @@ Jenkins_getBuildNumber () {
   requireParameters "$FUNCNAME" "$LINENO" 1 "$#"
   requireParameter  "$FUNCNAME" "$LINENO" "$1" 1 'Jenkins job'
 
-  declare -r _Number=$(curl -Ls "$1")
+  declare -r Number=$(curl -Ls "$1")
   abortOnFail "$FUNCNAME" "$LINENO" "$?"
-  echo "${_Number}"
+  echo "${Number}"
 }
 
 Jenkins_saveBuildNumber() {
@@ -50,4 +50,3 @@ Jenkins_saveBuildNumber() {
   echo "$2" > "$1"
   requireFile "$1"
 }
-

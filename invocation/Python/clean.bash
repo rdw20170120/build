@@ -14,4 +14,3 @@ find ${BO_Project} \( -type f -a -name ".coverage"     \) -exec rm {} \;
 find ${BO_Project} \( -type f -a -name "coverage.xml"  \) -exec rm {} \;
 find ${BO_Project} \( -type f -a -name "nosetests.xml" \) -exec rm {} \;
 find ${BO_Project} \( -type f -a -name "sloccount.sc"  \) -exec rm {} \;
-

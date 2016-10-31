@@ -10,25 +10,25 @@ echo "TRACE: Executing '$BASH_SOURCE'"
 [[ ! -d "$BO_Project"    ]] && echo "FATAL: Missing directory '$BO_Project'" && return 63
 [[   -z "$BO_PathSystem" ]] && echo 'FATAL: Missing $BO_PathSystem'          && return 63
 
-_Dir="$BO_Home/activation/Linux"
-[[ ! -d "${_Dir}" ]] && echo "FATAL: Missing directory '${_Dir}'" && return 63
+Dir="$BO_Home/activation/Linux"
+[[ ! -d "${Dir}" ]] && echo "FATAL: Missing directory '${Dir}'" && return 63
 
 ###################################################################################################
 # Configure the Linux environment
 
-_Script="${_Dir}/declare.src"
-[[ ! -f "${_Script}" ]] && echo "FATAL: Missing script '${_Script}'" && return 63
+Script="${Dir}/declare.src"
+[[ ! -f "${Script}" ]] && echo "FATAL: Missing script '${Script}'" && return 63
 
-source "${_Script}"
+source "${Script}"
 
-_ExitCode=$?
-[[ ${_ExitCode} -ne 0 ]] && echo "FATAL: Exit code ${_ExitCode} at '$BASH_SOURCE':$LINENO" && return ${_ExitCode}
+Status=$?
+[[ ${Status} -ne 0 ]] && echo "FATAL: Exit code ${Status} at '$BASH_SOURCE':$LINENO" && return ${Status}
 
 ###################################################################################################
 # Verify post-conditions
 
-[[ -z "$BO_E_Config" ]] && echo 'FATAL: Missing $BO_E_Config' && return 63
-[[ -z "$BO_E_Ok"     ]] && echo 'FATAL: Missing $BO_E_Ok'     && return "$BO_E_Config"
+[[ -z "$BO_EConfig" ]] && echo 'FATAL: Missing $BO_EConfig' && return 63
+[[ -z "$BO_E_Ok"     ]] && echo 'FATAL: Missing $BO_E_Ok'     && return "$BO_EConfig"
 
 ###################################################################################################
 # Configure PATH
@@ -49,7 +49,7 @@ if [[ -z "$TMPDIR" ]]; then
   [[ -z "$TMPDIR" ]] && [[ -n "$USER"     ]] && export TMPDIR="/tmp/$USER"
   [[ -z "$TMPDIR" ]] && [[ -n "$USERNAME" ]] && export TMPDIR="/tmp/$USERNAME"
   [[ -z "$TMPDIR" ]] && echo 'FATAL: Missing $TMPDIR' && return 63
-# TODO: return "$BO_E_Config"
+# TODO: return "$BO_EConfig"
   echo "INFO: Remembering TMPDIR='$TMPDIR'"
 fi
 [[ ! -d "$TMPDIR" ]] && mkdir -p "$TMPDIR"

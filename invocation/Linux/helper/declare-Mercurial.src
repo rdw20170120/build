@@ -31,4 +31,3 @@ updateMercurial () {
   hg update "$2"
   abortOnFail "$FUNCNAME" "$LINENO" "$?"
 }
-

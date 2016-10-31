@@ -28,10 +28,10 @@ cd "$BO_Project" || return $?
 ###################################################################################################
 # Declare BriteOnyx support functionality
 
-_Script="$BO_Project/BriteOnyx/declare.src"
-[[ ! -f "${_Script}" ]] && echo "FATAL: Missing script '${_Script}'" && return 63
-source "${_Script}" ; _Status=$?
-[[ "${_Status}" -ne 0 ]] && echo "FATAL: Script exited with '${_Status}'" && return ${_Status}
+Script="$BO_Project/BriteOnyx/declare.src"
+[[ ! -f "${Script}" ]] && echo "FATAL: Missing script '${Script}'" && return 63
+source "${Script}" ; Status=$?
+[[ "${Status}" -ne 0 ]] && echo "FATAL: Script exited with '${Status}'" && return ${Status}
 
 ###################################################################################################
 # NOTE: Now that we have our support functionality declared, we can use it from here on
@@ -46,16 +46,16 @@ boDirectoryRequire "$BO_Project" || boFailed "$BASH_SOURCE" "$LINENO" $? || retu
 ###################################################################################################
 # Bootstrap BriteOnyx
 
-_Script="$BO_Project/BriteOnyx/bootstrap.src"
-boScriptRequire "${_Script}" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
-source          "${_Script}" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
+Script="$BO_Project/BriteOnyx/bootstrap.src"
+boScriptRequire "${Script}" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
+source          "${Script}" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
 
 ###################################################################################################
 # Activate as a Linux project
 
-_Script="$BO_Home/activation/Linux/activate.src"
-boScriptRequire "${_Script}" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
-source          "${_Script}" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
+Script="$BO_Home/activation/Linux/activate.src"
+boScriptRequire "${Script}" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
+source          "${Script}" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
 
 ###################################################################################################
 # Ensure that we are in our project root directory
@@ -65,10 +65,10 @@ cd "$BO_Project" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
 ###################################################################################################
 # Declare optional project functionality
 
-_Script="$BO_Project/declare.src"
-if [[ -f "${_Script}" ]] ; then
-  source "${_Script}" ; _Status=$?
-  [[ "${_Status}" -ne 0 ]] && echo "FATAL: Script exited with '${_Status}'" && return ${_Status}
+Script="$BO_Project/declare.src"
+if [[ -f "${Script}" ]] ; then
+  source "${Script}" ; Status=$?
+  [[ "${Status}" -ne 0 ]] && echo "FATAL: Script exited with '${Status}'" && return ${Status}
 fi
 
 ###################################################################################################
@@ -83,8 +83,8 @@ return 0
 ###################################################################################################
 : <<'DisabledContent'
 # Activate as a Gradle project
-_Script="$BO_Home/activation/Gradle/activate.src"
+Script="$BO_Home/activation/Gradle/activate.src"
 
 # Activate as a Python project
-_Script="$BO_Home/activation/Python/activate.src"
+Script="$BO_Home/activation/Python/activate.src"
 DisabledContent

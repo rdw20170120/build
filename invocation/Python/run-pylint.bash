@@ -7,18 +7,17 @@ requireVariable BO_HomePackage
 
 requireDirectory "$BO_Project/src/$BO_HomePackage"
 
-_Config=${BO_Project}/cfg/pylintrc
-requireFile "${_Config}"
+Config=${BO_Project}/cfg/pylintrc
+requireFile "${Config}"
 
-_Dir=$BO_Project/out
-createDirectory "${_Dir}"
+Dir=$BO_Project/out
+createDirectory "${Dir}"
 
 cd "${BO_Project}/src"
-abortOnFail "$?"
+abortOnFail $?
 
-_Cmd=pylint
-_Cmd="$_Cmd --rcfile=${_Config}"
-_Cmd="$_Cmd ${BO_HomePackage}"
-$_Cmd | tee ${BO_Project}/out/pylint.out
-abortOnFail "$?"
-
+Cmd=pylint
+Cmd="$Cmd --rcfile=${Config}"
+Cmd="$Cmd ${BO_HomePackage}"
+$Cmd | tee ${BO_Project}/out/pylint.out
+abortOnFail $?

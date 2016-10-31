@@ -3,14 +3,13 @@ echo "TRACE: Executing '$BASH_SOURCE'"
 logDebug 'Running continuous integration (Jenkins) build on this project...'
 
 run-sloccount
-abortOnFail "$?"
+abortOnFail $?
 
 run-nose
-abortOnFail "$?"
+abortOnFail $?
 
 run-pylint
-abortOnFail "$?"
+abortOnFail $?
 
 build-sdist
-abortOnFail "$?"
-
+abortOnFail $?

@@ -18,4 +18,3 @@ checkoutSubversion () {
     requireDirectory "$1"
   fi
 }
-

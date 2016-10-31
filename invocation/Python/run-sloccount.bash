@@ -5,8 +5,8 @@ logDebug 'Counting the lines of source code (SLOC) in this project...'
 
 requireVariable BO_Project
 
-_Dir=$BO_Project/out
-createDirectory "${_Dir}"
+Dir=$BO_Project/out
+createDirectory "${Dir}"
 
 requireFile "$BO_Project/activate"
 requireFile "$BO_Project/MANIFEST.in"
@@ -20,17 +20,16 @@ requireDirectory "$BO_Project/doc"
 requireDirectory "$BO_Project/src"
 
 # NOTE:  Do NOT include subdirectories "dist", "out", or "PVE"
-_Cmd=sloccount
-_Cmd="${_Cmd} --addlangall --details --wide"
-_Cmd="${_Cmd} $BO_Project/activate"
-_Cmd="${_Cmd} $BO_Project/MANIFEST.in"
-_Cmd="${_Cmd} $BO_Project/README.rst"
-_Cmd="${_Cmd} $BO_Project/setup.py"
-_Cmd="${_Cmd} $BO_Project/bin"
-_Cmd="${_Cmd} $BO_Project/BriteOnyx"
-_Cmd="${_Cmd} $BO_Project/cfg"
-_Cmd="${_Cmd} $BO_Project/doc"
-_Cmd="${_Cmd} $BO_Project/src"
-${_Cmd} > $BO_Project/out/sloccount.sc
-abortOnFail "$?"
-
+Cmd=sloccount
+Cmd="${Cmd} --addlangall --details --wide"
+Cmd="${Cmd} $BO_Project/activate"
+Cmd="${Cmd} $BO_Project/MANIFEST.in"
+Cmd="${Cmd} $BO_Project/README.rst"
+Cmd="${Cmd} $BO_Project/setup.py"
+Cmd="${Cmd} $BO_Project/bin"
+Cmd="${Cmd} $BO_Project/BriteOnyx"
+Cmd="${Cmd} $BO_Project/cfg"
+Cmd="${Cmd} $BO_Project/doc"
+Cmd="${Cmd} $BO_Project/src"
+${Cmd} > $BO_Project/out/sloccount.sc
+abortOnFail $?

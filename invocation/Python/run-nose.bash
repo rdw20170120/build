@@ -7,16 +7,15 @@ requireVariable BO_HomePackage
 
 requireDirectory "$BO_Project/src/$BO_HomePackage"
 
-_Config=${BO_Project}/cfg/nose.cfg
-requireFile "${_Config}"
+Config=${BO_Project}/cfg/nose.cfg
+requireFile "${Config}"
 
 cd "${BO_Project}/src"
-abortOnFail "$?"
+abortOnFail $?
 
-_Cmd=nosetests
-_Cmd="$_Cmd --config=${_Config}"
-_Cmd="$_Cmd --id-file=${BO_Project}/.noseids"
-_Cmd="$_Cmd --cover-package=${BO_HomePackage}"
-$_Cmd
-abortOnFail "$?"
-
+Cmd=nosetests
+Cmd="$Cmd --config=${Config}"
+Cmd="$Cmd --id-file=${BO_Project}/.noseids"
+Cmd="$Cmd --cover-package=${BO_HomePackage}"
+$Cmd
+abortOnFail $?

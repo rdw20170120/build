@@ -12,26 +12,26 @@ echo "TRACE: Executing '$BASH_SOURCE'"
 [[   -z "$BO_PathSystem"    ]] && echo 'FATAL: Missing $BO_PathSystem'          && return 63
 [[   -z "$JAVA_HOME"        ]] && echo 'FATAL: Missing $JAVA_HOME'              && return 63
 
-_Dir=$BO_Home/activation/Linux
-[[ ! -d "${_Dir}" ]] && echo "FATAL: Missing directory '${_Dir}'" && return 63
+Dir=$BO_Home/activation/Linux
+[[ ! -d "${Dir}" ]] && echo "FATAL: Missing directory '${Dir}'" && return 63
 
 ###################################################################################################
 # Configure environment for Linux
 
-_Script=${_Dir}/activate.src
-[[ ! -f "${_Script}" ]] && echo "FATAL: Missing script '${_Script}'" && return 63
+Script=${Dir}/activate.src
+[[ ! -f "${Script}" ]] && echo "FATAL: Missing script '${Script}'" && return 63
 
-source ${_Script}
+source ${Script}
 
-_ExitCode=$?
-[[ ${_ExitCode} -ne 0 ]] && echo "FATAL: Exit code ${_ExitCode} at '$BASH_SOURCE':$LINENO" && return ${_ExitCode}
+Status=$?
+[[ ${Status} -ne 0 ]] && echo "FATAL: Exit code ${Status} at '$BASH_SOURCE':$LINENO" && return ${Status}
 
 ###################################################################################################
 # Verify post-conditions
 
-[[ -z "$BO_E_Config"  ]] && echo 'FATAL: Missing $BO_E_Config'  && return 63
-[[ -z "$BO_E_Ok"      ]] && echo 'FATAL: Missing $BO_E_Ok'      && return "$BO_E_Config"
-[[ -z "$BO_PathLinux" ]] && echo 'FATAL: Missing $BO_PathLinux' && return "$BO_E_Config"
+[[ -z "$BO_EConfig"  ]] && echo 'FATAL: Missing $BO_EConfig'  && return 63
+[[ -z "$BO_E_Ok"      ]] && echo 'FATAL: Missing $BO_E_Ok'      && return "$BO_EConfig"
+[[ -z "$BO_PathLinux" ]] && echo 'FATAL: Missing $BO_PathLinux' && return "$BO_EConfig"
 
 ###################################################################################################
 # Configure environment for Gradle on Linux
@@ -51,4 +51,3 @@ return "$BO_E_Ok"
 ###################################################################################################
 : <<'DisabledContent'
 DisabledContent
-

@@ -57,4 +57,3 @@ fixPermissions $BO_Project
 ###################################################################################################
 : <<'DisabledContent'
 DisabledContent
-

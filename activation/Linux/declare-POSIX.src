@@ -4,9 +4,9 @@
 ###################################################################################################
 # Verify pre-conditions
 
-[[ -z "$BO_E_Config"      ]] && echo 'FATAL: Missing $BO_E_Config'      && return 63
-[[ -z "$BO_E_Ok"          ]] && echo 'FATAL: Missing $BO_E_Ok'          && return "$BO_E_Config"
-[[ -z "$BO_E_Usage"       ]] && echo 'FATAL: Missing $BO_E_Usage'       && return "$BO_E_Config"
+[[ -z "$BO_EConfig"      ]] && echo 'FATAL: Missing $BO_EConfig'      && return 63
+[[ -z "$BO_E_Ok"          ]] && echo 'FATAL: Missing $BO_E_Ok'          && return "$BO_EConfig"
+[[ -z "$BO_E_Usage"       ]] && echo 'FATAL: Missing $BO_E_Usage'       && return "$BO_EConfig"
 
 ###################################################################################################
 
@@ -20,7 +20,7 @@ changeFileGroup () {
   requireFile "$2"
   logInfo "Changing owner of file '$2' to group '$1'..."
   chgrp "$1" "$2"
-  abortOnFail "$?"
+  abortOnFail $?
 }
 export -f changeFileGroup
 
@@ -36,7 +36,7 @@ copyFile () {
   else
     logInfo "Copying file '$2' from file '$1'..."
     cp "$1" "$2"
-    abortOnFail "$?"
+    abortOnFail $?
   fi
   requireFile "$2"
 }
@@ -54,7 +54,7 @@ copyFileForce () {
   fi
   logInfo "Copying file '$2' from file '$1'..."
   cp "$1" "$2"
-  abortOnFail "$?"
+  abortOnFail $?
   requireFile "$2"
 }
 export -f copyFileForce
@@ -69,7 +69,7 @@ copyFiles () {
   # if directoryExists "$2" ; then
     logInfo "Copying directory '$2' from directory '$1'..."
     cp -R $1/* $2/
-    abortOnFail "$?"
+    abortOnFail $?
   # fi
   requireDirectory "$2"
 }
@@ -85,7 +85,7 @@ createDirectory () {
   else
     logInfo "Creating directory '$1'..."
     mkdir -p "$1"
-    abortOnFail "$?"
+    abortOnFail $?
   fi
   requireDirectory "$1"
 }
@@ -144,7 +144,7 @@ makeFilesExecutable () {
   requireDirectory "$1"
   logInfo "Making files executable in directory '$1'..."
   chmod -R u+x "$1"
-  abortOnFail "$?"
+  abortOnFail $?
 }
 export -f makeFilesExecutable
 
@@ -160,7 +160,7 @@ moveFile () {
   else
     logInfo "Moving file '$2' from file '$1'..."
     mv "$1" "$2"
-    abortOnFail "$?"
+    abortOnFail $?
   fi
   # TODO:  Check that file $1 is gone?
   requireFile "$2"
@@ -232,4 +232,3 @@ pathnameNotExists () {
   return "$BO_E_Ok"
 }
 DisabledContent
-

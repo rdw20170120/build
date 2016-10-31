@@ -30,7 +30,7 @@
 # THE SOFTWARE.
 # ----------------------------------------------------------------------------
 # TODO: Clean up with here documents
-_Self=$(basename $0)
+Self=$(basename $0)
 
 COLORS=( black red green yellow blue magenta cyan white );
 NUM_COLORS=${#COLORS[@]};
@@ -42,48 +42,48 @@ NUM_EFFECTS=${#EFFECTS[@]};
 
 function help {
 	echo;
-	echo "$(${_Self} bd)Color and format your shell script output with minimal effort.$(${_Self})";
+	echo "$(${Self} bd)Color and format your shell script output with minimal effort.$(${Self})";
 	echo;
 	echo 'Usage:';
-	echo "$(${_Self} bd)${_Self}$(${_Self}) [ $(${_Self} ul)effect$(${_Self}) ] [ [lt]$(${_Self} ul)fg${_Self}$(${_Self}) ] [ $(${_Self} ul)bg${_Self}$(${_Self}) ]";
-	echo "$(${_Self} bd)${_Self}$(${_Self}) list";
-	echo "$(${_Self} bd)${_Self}$(${_Self}) [ -h | --help ]";
+	echo "$(${Self} bd)${Self}$(${Self}) [ $(${Self} ul)effect$(${Self}) ] [ [lt]$(${Self} ul)fg${Self}$(${Self}) ] [ $(${Self} ul)bg${Self}$(${Self}) ]";
+	echo "$(${Self} bd)${Self}$(${Self}) list";
+	echo "$(${Self} bd)${Self}$(${Self}) [ -h | --help ]";
 	echo;
 	echo 'where:';
-	echo -n "$(${_Self} ul)fg${_Self}$(${_Self}) and $(${_Self} ul)bg${_Self}$(${_Self}) are one of ";
+	echo -n "$(${Self} ul)fg${Self}$(${Self}) and $(${Self} ul)bg${Self}$(${Self}) are one of ";
 	for ((i=0;i<${NUM_COLORS};i++)); do
-		echo -n "$(${_Self} ${COLORS[${i}]})${COLORS[${i}]}$(${_Self}) ";
+		echo -n "$(${Self} ${COLORS[${i}]})${COLORS[${i}]}$(${Self}) ";
 	done;
 	echo;
-	echo -n "$(${_Self} ul)effect$(${_Self}) can be any of ";
+	echo -n "$(${Self} ul)effect$(${Self}) can be any of ";
 	for ((i=0;i<${NUM_EFFECTS};i++)); do
-		echo -n "$(${_Self} ${EFFECTS[${i}]})${EFFECTS[${i}]}$(${_Self}) ";
+		echo -n "$(${Self} ${EFFECTS[${i}]})${EFFECTS[${i}]}$(${Self}) ";
 	done;
 	echo;
-	echo "Preceed the $(${_Self} ul)fg${_Self}$(${_Self}) with $(${_Self} bd)lt$(${_Self}) to use a light ${_Self}."
-	echo "$(${_Self} bd)${_Self} off$(${_Self}) or $(${_Self} bd)${_Self}$(${_Self}) resets to default ${_Self}s and text effect.";
-	echo "$(${_Self} bd)${_Self} list$(${_Self}) displays all possible ${_Self} combinations.";
+	echo "Preceed the $(${Self} ul)fg${Self}$(${Self}) with $(${Self} bd)lt$(${Self}) to use a light ${Self}."
+	echo "$(${Self} bd)${Self} off$(${Self}) or $(${Self} bd)${Self}$(${Self}) resets to default ${Self}s and text effect.";
+	echo "$(${Self} bd)${Self} list$(${Self}) displays all possible ${Self} combinations.";
 	echo;
 	echo 'Examples:';
-	echo '  echo "$(${_Self} ul)Underlined text$(${_Self} off)"';
+	echo '  echo "$(${Self} ul)Underlined text$(${Self} off)"';
 	echo 'results in:';
-	echo "  $(${_Self} ul)Underlined text$(${_Self} off)";
+	echo "  $(${Self} ul)Underlined text$(${Self} off)";
 	echo;
-	echo '  echo "Make $(${_Self} rv)this$(${_Self} nm) reverse video text$(${_Self} off)"';
+	echo '  echo "Make $(${Self} rv)this$(${Self} nm) reverse video text$(${Self} off)"';
 	echo 'results in:';
-	echo "  Make $(${_Self} rv)this$(${_Self} nm) reverse video text$(${_Self} off)";
+	echo "  Make $(${Self} rv)this$(${Self} nm) reverse video text$(${Self} off)";
 	echo;
-	echo '  echo "$(${_Self} white blue) White text on a blue background $(${_Self})"';
+	echo '  echo "$(${Self} white blue) White text on a blue background $(${Self})"';
 	echo 'results in:';
-	echo "  $(${_Self} white blue) White text on a blue background $(${_Self})";
+	echo "  $(${Self} white blue) White text on a blue background $(${Self})";
 	echo;
-	echo '  echo "$(${_Self} ltyellow green) lt prefix on the yellow text text $(${_Self} off)"';
+	echo '  echo "$(${Self} ltyellow green) lt prefix on the yellow text text $(${Self} off)"';
 	echo 'results in:';
-	echo "  $(${_Self} ltyellow green) lt prefix on the yellow text text $(${_Self} off)";
+	echo "  $(${Self} ltyellow green) lt prefix on the yellow text text $(${Self} off)";
 	echo;
-	echo '  echo "$(${_Self} bold blink red yellow) Blinking bold red text on a yellow background $(${_Self})"';
+	echo '  echo "$(${Self} bold blink red yellow) Blinking bold red text on a yellow background $(${Self})"';
 	echo 'results in:';
-	echo "  $(${_Self} bold blink red yellow) Blinking bold red text on a yellow background $(${_Self})";
+	echo "  $(${Self} bold blink red yellow) Blinking bold red text on a yellow background $(${Self})";
 	echo;
 	echo;
 	echo -n "Note that results may vary with these standard ANSI escape sequences because of the different configurations of terminal emulators. ";
@@ -97,14 +97,14 @@ function help {
 function list {
 
 	echo;
-	echo "$(${_Self} bd)These are the possible combinations of colors I can generate. ";
-	echo "$(${_Self} nm)Since terminal ${_Self} settings vary, $(${_Self} ul)the expected output may vary$(${_Self}).";
+	echo "$(${Self} bd)These are the possible combinations of colors I can generate. ";
+	echo "$(${Self} nm)Since terminal ${Self} settings vary, $(${Self} ul)the expected output may vary$(${Self}).";
 	echo;
 	
 	for ((bg=0;bg<${NUM_COLORS};bg++)); do
 		echo "${COLORS[${bg}]}:";
 			for ((fg=0;fg<${NUM_COLORS};fg++)); do
-				echo -n "$(${_Self} ${COLORS[${fg}]} ${COLORS[${bg}]}) ${COLORS[${fg}]} $(${_Self}) ";
+				echo -n "$(${Self} ${COLORS[${fg}]} ${COLORS[${bg}]}) ${COLORS[${fg}]} $(${Self}) ";
 			done;
 			echo;
 		echo;
@@ -166,7 +166,7 @@ while (( "$#" )); do
 		  if [ "$BG" = '' ]; then
 		  	BG=$1;
 		  else
-		  	error="I see more than two colors. Type ${_Self} -h for more information.";
+		  	error="I see more than two colors. Type ${Self} -h for more information.";
 		  fi;
 		fi;
 	else
@@ -174,7 +174,7 @@ while (( "$#" )); do
 		if [ $? -eq 1 ]; then
 			TE=("${TE[@]}" $1);
 		else
-			error="I don't recognize '$1'. Type ${_Self} -h for more information.";
+			error="I don't recognize '$1'. Type ${Self} -h for more information.";
 		fi;
 	fi;
 	
@@ -183,7 +183,7 @@ while (( "$#" )); do
 done;
 
 if [ "$error" != '' ]; then
-	echo $(${_Self} bold red)${_Self}: $error$(${_Self}); exit 1;
+	echo $(${Self} bold red)${Self}: $error$(${Self}); exit 1;
 fi;
 
 # Insert text effects into the escape sequence
@@ -246,4 +246,3 @@ done;
 echo -en '\033['${seq}m;
 
 exit 0;
-

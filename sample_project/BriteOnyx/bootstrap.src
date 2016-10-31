@@ -11,65 +11,65 @@ boVariableRequire 'BO_Project' || boFailed "$BASH_SOURCE" "$LINENO" $? || return
 ###################################################################################################
 # Configure for BriteOnyx
 
-_Script="$BO_Project/BriteOnyx/env.src"
-boScriptRequire "${_Script}" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
-source          "${_Script}" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
+Script="$BO_Project/BriteOnyx/env.src"
+boScriptRequire "${Script}" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
+source          "${Script}" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
 
 ###################################################################################################
 # Configure for this project
 
-_Script="$BO_Project/project-env.src"
-boScriptRequire "${_Script}" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
-source          "${_Script}" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
+Script="$BO_Project/project-env.src"
+boScriptRequire "${Script}" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
+source          "${Script}" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
 
 ###################################################################################################
 # Configure for this user
 
-_Script="$HOME/BriteOnyx-env.src"
-[[ ! -f ${_Script} ]] && cp "$BO_Project/BriteOnyx/sample-BriteOnyx-env.src" "${_Script}"
-boScriptRequire "${_Script}" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
-source          "${_Script}" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
+Script="$HOME/BriteOnyx-env.src"
+[[ ! -f ${Script} ]] && cp "$BO_Project/BriteOnyx/sample-BriteOnyx-env.src" "${Script}"
+boScriptRequire "${Script}" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
+source          "${Script}" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
 
 ###################################################################################################
 # Verify BriteOnyx bootstrap configuration
 
 boVariableRequire 'BO_Parent'  || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
-boVariableRequire 'BO_Url'     || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
-boVariableRequire 'BO_Version' || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
+boVariableRequire 'BOUrl'     || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
+boVariableRequire 'BOVersion' || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
 
 ###################################################################################################
 # Checkout the BriteOnyx source
 
 boDirectoryCreate "$BO_Parent" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
 
-[[ -z "$BO_Home" ]] && export BO_Home=$(boNodeCanonical "$BO_Parent/$BO_Version")
+[[ -z "$BO_Home" ]] && export BO_Home=$(boNodeCanonical "$BO_Parent/$BOVersion")
 boVariableRequire 'BO_Home' || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
 
 if boDirectoryExists "$BO_Home"; then
   boLogDebug "Directory '$BO_Home' already exists, skipping Mercurial clone."
-elif [[ "$BO_Version" == "predeployed" ]]; then
-  boLogWarn "Ignoring Mercurial clone of version '$BO_Version'"
+elif [[ "$BOVersion" == "predeployed" ]]; then
+  boLogWarn "Ignoring Mercurial clone of version '$BOVersion'"
 else
-  boLogInfo "Cloning version '$BO_Version' from '$BO_Url' into '$BO_Home'..."
-  _Cmd="hg clone"
-  _Cmd+=" --rev $BO_Version"
-  _Cmd+=" $BO_Url"
-  _Cmd+=" $BO_Home"
-  _Msg="Mercurial failed to clone into directory '$BO_Home'!"
-  boExecute "${_Cmd}" "${_Msg}" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
+  boLogInfo "Cloning version '$BOVersion' from '$BOUrl' into '$BO_Home'..."
+  Cmd="hg clone"
+  Cmd+=" --rev $BOVersion"
+  Cmd+=" $BOUrl"
+  Cmd+=" $BO_Home"
+  Msg="Mercurial failed to clone into directory '$BO_Home'!"
+  boExecute "${Cmd}" "${Msg}" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
 fi
 
 boDirectoryRequire "$BO_Home" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
 
-if [[ "$BO_Version" == "tip" ]]; then
+if [[ "$BOVersion" == "tip" ]]; then
   # Update Mercurial clone of 'tip' to support development of BriteOnyx framework
-  boLogInfo "Updating clone of version '$BO_Version' from '$BO_Url' into '$BO_Home'..."
+  boLogInfo "Updating clone of version '$BOVersion' from '$BOUrl' into '$BO_Home'..."
   cd "$BO_Home" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
-  _Cmd="hg pull --update"
-  _Msg="Mercurial failed to update clone in directory '$BO_Home'!"
-  boExecute "${_Cmd}" "${_Msg}" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
+  Cmd="hg pull --update"
+  Msg="Mercurial failed to update clone in directory '$BO_Home'!"
+  boExecute "${Cmd}" "${Msg}" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
 else
-  boLogDebug "BriteOnyx version '$BO_Version' should be stable, skipping update of clone."
+  boLogDebug "BriteOnyx version '$BOVersion' should be stable, skipping update of clone."
 fi
 
 ###################################################################################################

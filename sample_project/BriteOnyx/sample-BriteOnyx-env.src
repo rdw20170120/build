@@ -2,7 +2,7 @@
 echo "TRACE: Executing '$BASH_SOURCE'"
 ###################################################################################################
 
-export BO_Version=tip
+export BOVersion=tip
 
 ###################################################################################################
 # Return, but do NOT exit, with a success code
@@ -10,5 +10,5 @@ return 0
 
 ###################################################################################################
 : <<'DisabledContent'
-export BO_Version=predeployed
+export BOVersion=predeployed
 DisabledContent
