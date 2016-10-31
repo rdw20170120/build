@@ -28,7 +28,7 @@ boNodeCanonical () {
   declare Result
   # NOTE: This call to "readlink" is not supported on Apple Mac OS X, so deal with it...
   Result="$(readlink -m $1)"
-  [[ $? -eq 0   ]] && echo "${Result}" && return 0
+  [[ $? -eq 0   ]] && echo "$Result" && return 0
   [[ "$1" = "." ]] && echo "$PWD"       && return 0
   echo "$1"
 } && export -f boNodeCanonical
@@ -64,7 +64,7 @@ boTraceVariable () {
   # $1 = name of environment variable
   declare -r Name="$1"
   declare -r Value="${!Name}"
-  boTraceValue "Variable '${Name}'" "${Value}"
+  boTraceValue "Variable '$Name'" "$Value"
 } && export -f boTraceVariable
 
 ###################################################################################################
@@ -105,7 +105,7 @@ boVariableIsMissing () {
   # $1 = name of environment variable
   declare -r Name="$1"
   declare -r Value="${!Name}"
-  [[ -z "${Value}" ]]
+  [[ -z "$Value" ]]
 } && export -f boVariableIsMissing
 
 ###################################################################################################
@@ -176,7 +176,7 @@ boArgsRequire () {
   # $3 = actual argument count ($#)
   # $4 = expected argument count
   declare -r Msg="Expected $4 arguments but got $3!"
-  [[ $3 -eq $4 ]] || boAbort "$1" "$2" $? 100 "${Msg}" || return $?
+  [[ $3 -eq $4 ]] || boAbort "$1" "$2" $? 100 "$Msg" || return $?
 } && export -f boArgsRequire
 
 ###################################################################################################
@@ -188,10 +188,10 @@ boDirectoryCreate () {
   boArgsRequire "$FUNCNAME" "$LINENO" $# 1 || return $?
   # $1 = directory pathname
   declare Msg="Directory '$1' already exists, skipping creation."
-  boNodeIsDirectory "$1" && boLogDebug "${Msg}"                            && return $?
+  boNodeIsDirectory "$1" && boLogDebug "$Msg"                            && return $?
   Msg="Unable to create directory '$1', failed!"
-  mkdir -p "$1"           || boAbort "$FUNCNAME" "$LINENO" $? 100 "${Msg}" || return $?
-  boDirectoryRequire "$1" || boAbort "$FUNCNAME" "$LINENO" $? 100 "${Msg}" || return $?
+  mkdir -p "$1"           || boAbort "$FUNCNAME" "$LINENO" $? 100 "$Msg" || return $?
+  boDirectoryRequire "$1" || boAbort "$FUNCNAME" "$LINENO" $? 100 "$Msg" || return $?
 } && export -f boDirectoryCreate
 
 boDirectoryRequire () {
@@ -201,9 +201,9 @@ boDirectoryRequire () {
   # $1 = pathname of required directory
   boNodeIsDirectory "$1" && return $?
   Msg="Directory '$1' is required but is missing!"
-  boNodeExists "$1" || boAbort "$FUNCNAME" "$LINENO" $? 100 "${Msg}" || return $?
+  boNodeExists "$1" || boAbort "$FUNCNAME" "$LINENO" $? 100 "$Msg" || return $?
   Msg="Directory '$1' is required but is blocked by a non-directory!"
-  boAbort "$FUNCNAME" "$LINENO" 100 100 "${Msg}" || return $?
+  boAbort "$FUNCNAME" "$LINENO" 100 100 "$Msg" || return $?
 } && export -f boDirectoryRequire
 
 boFileRequire () {
@@ -213,7 +213,7 @@ boFileRequire () {
   boArgsRequire "$FUNCNAME" "$LINENO" $# 1 || return $?
   # $1 = required script file pathname
   declare -r Msg="File '$1' is required but missing!"
-  boNodeIsFile "$1" || boAbort "$FUNCNAME" "$LINENO" $? 100 "${Msg}" || return $?
+  boNodeIsFile "$1" || boAbort "$FUNCNAME" "$LINENO" $? 100 "$Msg" || return $?
 } && export -f boFileRequire
 
 boScriptRequire () {
@@ -228,7 +228,7 @@ boVariableRequire () {
   boArgsRequire "$FUNCNAME" "$LINENO" $# 1 || return $?
   # $1 = name of required environment variable
   declare -r Msg="Variable '$1' is required but is undefined or empty!"
-  ! boVariableIsMissing "$1" || boAbort "$FUNCNAME" "$LINENO" $? 100 "${Msg}" || return $?
+  ! boVariableIsMissing "$1" || boAbort "$FUNCNAME" "$LINENO" $? 100 "$Msg" || return $?
 } && export -f boVariableRequire
 
 ###################################################################################################

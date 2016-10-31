@@ -4,12 +4,12 @@
 # Declare project-specific functionality
 
 Script="$BO_Project/bin/Linux/helper/declare-BASH.src"
-boScriptRequire "${Script}" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
-source          "${Script}" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
+boScriptRequire "$Script" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
+source          "$Script" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
 
 Script="$BO_Project/bin/Linux/helper/declare-SSH.src"
-boScriptRequire "${Script}" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
-source          "${Script}" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
+boScriptRequire "$Script" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
+source          "$Script" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
 
 ###################################################################################################
 # Return, but do NOT exit, with a success code

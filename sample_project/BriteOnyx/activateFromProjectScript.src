@@ -6,16 +6,16 @@
 # Skip if BriteOnyx is already activated
 
 Msg='$BO_Home is defined, assuming BriteOnyx already activated'
-[[ -n "$BO_Home" ]] && logDebug "${Msg}" && return 63
+[[ -n "$BO_Home" ]] && logDebug "$Msg" && return 63
 
 ####################################################################################################
 # Activate BriteOnyx
 
 Script="$(dirname "$BASH_SOURCE")/../activate.src"
-[[ ! -f "${Script}" ]] && echo "FATAL: Missing script '${Script}'" && return 63
-source "${Script}"; Status=$?
-Msg="FATAL: Status ${Status} at '$BASH_SOURCE:$LINENO'"
-[[ ${Status} -ne 0 ]] && echo "${Msg}" && return ${Status}
+[[ ! -f "$Script" ]] && echo "FATAL: Missing script '$Script'" && return 63
+source "$Script"; Status=$?
+Msg="FATAL: Status $Status at '$BASH_SOURCE:$LINENO'"
+[[ $Status -ne 0 ]] && echo "$Msg" && return $Status
 
 ####################################################################################################
 # Verify post-conditions
