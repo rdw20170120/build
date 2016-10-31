@@ -45,6 +45,13 @@ Status=$?
 [[ ${Status} -ne 0 ]] && echo "FATAL: Exit code ${Status} at '$BASH_SOURCE':$LINENO" && return ${Status}
 
 ###################################################################################################
+Script="${Dir}/declare-string.src"
+[[ ! -f "${Script}" ]] && echo "FATAL: Missing script '${Script}'" && return "$BO_E_Unavailable"
+source "${Script}"
+Status=$?
+[[ ${Status} -ne 0 ]] && echo "FATAL: Exit code ${Status} at '$BASH_SOURCE':$LINENO" && return ${Status}
+
+###################################################################################################
 Script="${Dir}/declare-POSIX.src"
 [[ ! -f "${Script}" ]] && echo "FATAL: Missing script '${Script}'" && return "$BO_E_Unavailable"
 source "${Script}"

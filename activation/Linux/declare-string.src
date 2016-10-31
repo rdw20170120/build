@@ -1,0 +1,62 @@
+#!/bin/cat
+[[ -n "$BO_Trace" ]] && echo "TRACE: Executing '$BASH_SOURCE'"
+
+###################################################################################################
+# Verify pre-conditions
+
+[[ -z "$BO_E_Config" ]] && echo 'FATAL: Missing $BO_E_Config' && return 63
+[[ -z "$BO_E_Ok"     ]] && echo 'FATAL: Missing $BO_E_Ok'     && return "$BO_E_Config"
+[[ -z "$BO_E_Usage"  ]] && echo 'FATAL: Missing $BO_E_Usage'  && return "$BO_E_Config"
+
+###################################################################################################
+
+stringContains () {
+  # Return whether string $1 contains substring $2
+  parametersRequire 2 "$#"
+  parameterRequire "$1" 1 'string'
+  parameterRequire "$2" 2 'substring'
+
+  local -ir Length=${#2}
+  local     Partial=$1
+  local -i  Result=1
+
+  while [[ -n "$Partial" ]] ; do
+    Start=${Partial:0:$Length}
+    if [[ "$Start" == "$2" ]] ; then
+      Result=0
+      break
+    else
+      Partial=${Partial:1}
+    fi
+  done
+  return $Result
+} && export -f stringContains 
+
+stringLength () {
+  # Return length of string $1
+  parametersRequire 1 "$#"
+  parameterRequire "$1" 1 'string'
+
+  local -ir Result=${#1}
+  return $Result
+} && export -f stringLength 
+
+stringSub () {
+  # Return substring of string $1 starting at (one-based) index $2 for length $3
+  parametersRequire 3 "$#"
+  parameterRequire "$1" 1 'string'
+  parameterRequire "$2" 2 'starting (one-based) index'
+  parameterRequire "$3" 3 'substring length'
+
+  # Convert starting index from one-based to zero-based
+  local -ir Start=$(( $2 - 1 ))
+  echo "${1:$Start:$3}"
+} && export -f stringSub 
+
+###################################################################################################
+# Return, but do NOT exit, with a success code
+return "$BO_E_Ok"
+
+###################################################################################################
+: <<'DisabledContent'
+DisabledContent
