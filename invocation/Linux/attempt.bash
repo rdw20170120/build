@@ -23,7 +23,7 @@ cd $Dir ; abortOnFail $?
 # set -o xtrace
 
 logInfo "Searching directory '$Dir' for regex '$1'"
-for File in $(grep -Elr "$1" $Dir --include='*.bash' --include='*.src' | sort) ; do
+for File in $(grep -Elr $1 $Dir --include='*.bash' --include='*.src' | sort) ; do
   logInfo "Attempt replacing '$1' with '$2' in '$File'"
   sed -n "/$1/ { s/$1/$2/ ; p }" $File
 done

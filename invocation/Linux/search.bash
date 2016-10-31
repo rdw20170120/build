@@ -22,7 +22,7 @@ cd $Dir ; abortOnFail $?
 # set -o xtrace
 
 logInfo "Searching directory '$Dir' for regex '$1'"
-for File in $(grep -Elr "$1" $Dir --include='*.bash' --include='*.src' | sort) ; do
+for File in $(grep -Elr $1 $Dir --include='*.bash' --include='*.src' | sort) ; do
   logInfo "Searching for '$1' in '$File'"
   sed -n "/$1/ {p}" $File
 done
