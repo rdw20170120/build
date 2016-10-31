@@ -4,18 +4,19 @@
 # Declare project-specific functionality
 
 _Script="$BO_Project/bin/Linux/helper/declare-BASH.src"
-requireFile "${_Script}"
-source      "${_Script}"
-abortOnFail "$?"
+boScriptRequire "${_Script}" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
+source          "${_Script}" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
 
 _Script="$BO_Project/bin/Linux/helper/declare-SSH.src"
-requireFile "${_Script}"
-source      "${_Script}"
-abortOnFail "$?"
+boScriptRequire "${_Script}" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
+source          "${_Script}" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
+
+###################################################################################################
+# Return, but do NOT exit, with a success code
+return 0
 
 ###################################################################################################
 : <<'DisabledContent'
-###################################################################################################
 # Use Resty tool
 
 requireVariable 'BO_Project'

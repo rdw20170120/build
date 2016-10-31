@@ -11,7 +11,7 @@ _Msg='$BO_Home is defined, assuming BriteOnyx already activated'
 ####################################################################################################
 # Activate BriteOnyx
 
-_Script="$(dirname "$BASH_SOURCE")/../activate"
+_Script="$(dirname "$BASH_SOURCE")/../activate.src"
 [[ ! -f "${_Script}" ]] && echo "FATAL: Missing script '${_Script}'" && return 63
 source "${_Script}"; _Status=$?
 _Msg="FATAL: Status ${_Status} at '$BASH_SOURCE:$LINENO'"

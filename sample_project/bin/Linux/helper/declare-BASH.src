@@ -8,6 +8,9 @@
 #   terminate the user's shell (terminal).
 
 ###################################################################################################
+# Return, but do NOT exit, with a success code
+return 0
+
+###################################################################################################
 : <<'DisabledContent'
 DisabledContent
-
