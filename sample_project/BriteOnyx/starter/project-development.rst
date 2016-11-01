@@ -2,7 +2,7 @@
 Development
 ===========
 
-In order to support development of this project within a lab environment (VM or cloud instance), the following steps are needed for setup.
+In order to support development of this project, the following steps are needed for setup.
 
 #. Optionally install Dropbox client (to reference shared files used below)
 #. Install the Mercurial client
@@ -12,7 +12,7 @@ In order to support development of this project within a lab environment (VM or 
 #. Install SSH user configuration (BB-SSH-config)
 #. Install Mercurial user configuration file (.hgrc), see sample content below
 #. Clone the Mercurial repository
-  hg clone ssh://hg@bb/robwilliams/couchbase ~/inBB/couchbase/code
+  hg clone ssh://hg@bb/robwilliams/PROJECT ~/inBB/PROJECT/code
 
 BB-SSH-config
 -------------

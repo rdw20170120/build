@@ -33,4 +33,14 @@ abortOnFail $?
 
 ###################################################################################################
 : <<'DisabledContent'
+# Use Resty tool
+
+variableRequire 'BO_Project'
+export ScriptResty="$BO_Project/lib/Resty-2.2.src"
+fileRequire "$ScriptResty"
+chmod u+x   "$ScriptResty"
+abortOnFail $?
+
+# Do not 'source' Resty here, do it upon actual use
+# source "$ScriptResty"
 DisabledContent

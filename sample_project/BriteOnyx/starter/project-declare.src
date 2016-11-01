@@ -1,13 +1,13 @@
 #!/bin/cat
 [[ -n "$BO_Trace" ]] && echo "TRACE: Executing '$BASH_SOURCE'"
 ###################################################################################################
-# Declare project-specific functionality
+# NOTE: Assumes that this project has been activated using the BriteOnyx framework.
+# NOTE: We MUST NOT EVER invoke the BASH 'exit' command from these functions
+
+###################################################################################################
+# Declare needed BASH functions to support this project
 
 Script="$BO_Project/bin/Linux/helper/declare-BASH.src"
-boScriptRequire "$Script" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
-source          "$Script" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
-
-Script="$BO_Project/bin/Linux/helper/declare-SSH.src"
 boScriptRequire "$Script" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
 source          "$Script" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
 
@@ -17,15 +17,4 @@ return 0
 
 ###################################################################################################
 : <<'DisabledContent'
-# Use Resty tool
-
-variableRequire 'BO_Project'
-export ScriptResty="$BO_Project/lib/Resty-2.2.src"
-fileRequire "$ScriptResty"
-chmod u+x   "$ScriptResty"
-abortOnFail $?
-
-# Do not 'source' Resty here, do it upon actual use
-# source "$ScriptResty"
-
 DisabledContent

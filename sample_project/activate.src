@@ -1,8 +1,5 @@
 #!/bin/cat
 [[ -n "$BO_Trace" ]] && echo "TRACE: Executing '$BASH_SOURCE'"
-echo "INFO: Activating the BriteOnyx framework for this project..."
-echo "WARN: This script MUST be executed as 'source ./activate.src', WAS IT?"
-
 ###################################################################################################
 # Activate the BriteOnyx framework to manage this project directory tree
 #
@@ -17,11 +14,15 @@ echo "WARN: This script MUST be executed as 'source ./activate.src', WAS IT?"
 # TODO: Verify that $BO_Project does indeed point to the root of our project directory tree
 
 ###################################################################################################
-# Dump incoming environment for potential troubleshooting
+# Startup
+
+echo "INFO:  Activating the BriteOnyx framework for this project..."
+echo "WARN:  This script MUST be executed as 'source ./activate.src', WAS IT?"
 env | sort > "./BO-env-incoming.out"
 
 ###################################################################################################
 # Remember the directory containing this script as our project root
+
 export BO_Project="$(dirname $BASH_SOURCE[0])"
 cd "$BO_Project" || return $?
 
@@ -72,12 +73,13 @@ if [[ -f "$Script" ]] ; then
 fi
 
 ###################################################################################################
-# Dump outgoing environment for potential troubleshooting
+# Shutdown
+
+logInfo "Project '$BO_Project' is now activated, done."
 env | sort > "./BO-env-outgoing.out"
 
 ###################################################################################################
 # Return, but do NOT exit, with a success code
-logInfo "Project '$BO_Project' is now activated, done."
 return 0
 
 ###################################################################################################

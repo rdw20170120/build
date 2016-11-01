@@ -1,11 +1,11 @@
 #!/bin/cat
 [[ -n "$BO_Trace" ]] && echo "TRACE: Executing '$BASH_SOURCE'"
+###################################################################################################
+# NOTE: Assumes that this project has been activated using the BriteOnyx framework.
+# NOTE: We MUST NOT EVER invoke the BASH 'exit' command from these functions
 
 ###################################################################################################
-# Declare needed BASH functionality to support this project
-#
-# NOTE: We MUST NOT EVER invoke the BASH 'exit' command from these functions since it will
-#   terminate the user's shell (terminal).
+# Declare needed BASH functions to support this project
 
 ###################################################################################################
 # Return, but do NOT exit, with a success code

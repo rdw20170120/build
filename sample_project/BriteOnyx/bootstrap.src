@@ -1,12 +1,40 @@
 #!/bin/cat
 [[ -n "$BO_Trace" ]] && echo "TRACE: Executing '$BASH_SOURCE'"
-
 ###################################################################################################
 # NOTE: By convention, BriteOnyx is configured via environment variables prefixed by 'BO_'.
 #
 # TODO: Ensure that we do not clone a Mercurial repository inside another
 
 boVariableRequire 'BO_Project' || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
+
+###################################################################################################
+# Copy starter files into place as necessary
+
+FileTgt=$BO_Project/.hgignore
+[[ ! -f $FileTgt ]] && cp $BO_Project/BriteOnyx/starter/project.hgignore $FileTgt
+
+FileTgt=$BO_Project/declare.src
+[[ ! -f $FileTgt ]] && cp $BO_Project/BriteOnyx/starter/project-declare.src $FileTgt
+
+FileTgt=$BO_Project/development.rst
+[[ ! -f $FileTgt ]] && cp $BO_Project/BriteOnyx/starter/project-development.rst $FileTgt
+
+FileTgt=$BO_Project/env.src
+[[ ! -f $FileTgt ]] && cp $BO_Project/BriteOnyx/starter/project-env.src $FileTgt
+
+FileTgt=$BO_Project/README.rst
+[[ ! -f $FileTgt ]] && cp $BO_Project/BriteOnyx/starter/project-README.rst $FileTgt
+
+FileTgt=$HOME/BriteOnyx.src
+# Move previous scripts to new path
+[[   -f $HOME/BriteOnyx-env.bash ]] && mv $HOME/BriteOnyx-env.bash $FileTgt
+[[   -f $HOME/BriteOnyx-env.src  ]] && mv $HOME/BriteOnyx-env.src  $FileTgt
+[[ ! -f $FileTgt ]] && cp $BO_Project/BriteOnyx/starter/user-BriteOnyx.src $FileTgt
+
+DirTgt $BO_Project/bin/Linux/helper
+[[ ! -e $DirTgt ]] && mkdir -p $DirTgt
+FileTgt=$DirTgt/declare-BASH.src
+[[ ! -f $FileTgt ]] && cp $BO_Project/BriteOnyx/starter/project-declare-BASH.src $FileTgt
 
 ###################################################################################################
 # Configure for BriteOnyx
@@ -18,15 +46,14 @@ source          "$Script" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
 ###################################################################################################
 # Configure for this project
 
-Script="$BO_Project/project-env.src"
-boScriptRequire "$Script" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
-source          "$Script" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
+Script=$BO_Project/env.src
+boScriptRequire $Script || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
+source          $Script || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
 
 ###################################################################################################
 # Configure for this user
 
-Script="$HOME/BriteOnyx-env.src"
-[[ ! -f $Script ]] && cp "$BO_Project/BriteOnyx/sample-BriteOnyx-env.src" "$Script"
+Script=$HOME/BriteOnyx.src
 boScriptRequire "$Script" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
 source          "$Script" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
 
@@ -45,7 +72,7 @@ boDirectoryCreate "$BO_Parent" || boFailed "$BASH_SOURCE" "$LINENO" $? || return
 [[ -z "$BO_Home" ]] && export BO_Home=$(boNodeCanonical "$BO_Parent/$BO_Version")
 boVariableRequire 'BO_Home' || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
 
-if boDirectoryExists "$BO_Home"; then
+if boDirectoryExists "$BO_Home" ; then
   boLogDebug "Directory '$BO_Home' already exists, skipping Mercurial clone."
 elif [[ "$BO_Version" == "predeployed" ]]; then
   boLogWarn "Ignoring Mercurial clone of version '$BO_Version'"
