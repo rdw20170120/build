@@ -1,9 +1,9 @@
-###############################################################################
+################################################################################
 syntax: glob
 
-# project
-work-in-progress
- 
+# Apple Mac OSX
+.DS_Store
+
 # archive
 *.gz
 *.tgz
@@ -11,9 +11,6 @@ work-in-progress
 
 # editor temporaries
 *~
-
-# Apple Mac OSX
-.DS_Store
 
 # Mercurial
 *.orig
@@ -23,11 +20,19 @@ work-in-progress
 *.log
 *.out
 
+# Python
+# *.pyc
+
 # Vim
 .*.swp
 
-###############################################################################
+################################################################################
 syntax: regexp
 
 # output
-^out$
+# ^out$
+
+# Python
+# ^dist$
+# ^MANIFEST$
+# ^PVE$

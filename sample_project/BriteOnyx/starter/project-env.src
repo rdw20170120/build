@@ -3,7 +3,7 @@
 ###################################################################################################
 # Configure this project for the BriteOnyx framework
 
-export BO_Version=0.4
+export BO_Version=0.5
 
 ###################################################################################################
 # Return, but do NOT exit, with a success code
@@ -12,7 +12,7 @@ return 0
 ###################################################################################################
 : <<'DisabledContent'
 # For a stable version:
-export BO_Version=0.4
+export BO_Version=0.5
 
 # For BriteOnyx development:
 export BO_Version=tip
