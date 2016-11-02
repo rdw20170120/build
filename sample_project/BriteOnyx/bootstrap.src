@@ -31,7 +31,7 @@ FileTgt=$HOME/BriteOnyx.src
 [[   -f $HOME/BriteOnyx-env.src  ]] && mv $HOME/BriteOnyx-env.src  $FileTgt
 [[ ! -f $FileTgt ]] && cp $BO_Project/BriteOnyx/starter/user-BriteOnyx.src $FileTgt
 
-DirTgt $BO_Project/bin/Linux/helper
+DirTgt=$BO_Project/bin/Linux/helper
 [[ ! -e $DirTgt ]] && mkdir -p $DirTgt
 FileTgt=$DirTgt/declare-BASH.src
 [[ ! -f $FileTgt ]] && cp $BO_Project/BriteOnyx/starter/project-declare-BASH.src $FileTgt
