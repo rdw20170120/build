@@ -32,8 +32,8 @@ main () {
   fileRequire      $FileSrc
   directoryRequire $DirTgt
   fileRequire      $FileTgt
-  cp -R $DirSrc  $DirTgt
-  cp    $FileSrc $FileTgt
+  cp -R $DirSrc  $DirTgt  ; abortOnFail $?
+  cp    $FileSrc $FileTgt ; abortOnFail $?
 }
 
 ####################################################################################################
