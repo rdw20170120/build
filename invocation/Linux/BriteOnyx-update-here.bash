@@ -16,17 +16,18 @@ main () {
   parametersRequire 0 $#
   # TODO: SOMEDAY accept target directory as parameter
 
-  variableRequire   This
-  directoryRequire $This
+  local -r DirHere=$PWD
+  variableRequire   DirHere
+  directoryRequire $DirHere
   variableRequire   BO_Home
   directoryRequire $BO_Home
 
   local -r DirSrc=$BO_Home/sample_project/BriteOnyx
-  local -r DirTgt=$This/BriteOnyx
+  local -r DirTgt=$DirHere/BriteOnyx
   local -r FileSrc=$BO_Home/sample_project/activate.src
-  local -r FileTgt=$This/activate.src
+  local -r FileTgt=$DirHere/activate.src
 
-  logInfo "Updating BriteOnyx activation content here in directory '$This', from '$BO_Home'"
+  logInfo "Updating BriteOnyx activation content here in directory '$DirHere', from '$BO_Home'"
   directoryRequire $DirSrc
   fileRequire      $FileSrc
   directoryRequire $DirTgt
