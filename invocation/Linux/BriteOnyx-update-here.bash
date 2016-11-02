@@ -23,7 +23,7 @@ main () {
   directoryRequire $BO_Home
 
   local -r DirSrc=$BO_Home/sample_project/BriteOnyx
-  local -r DirTgt=$DirHere/
+  local -r DirTgt=$DirHere/BriteOnyx
   local -r FileSrc=$BO_Home/sample_project/activate.src
   local -r FileTgt=$DirHere/activate.src
 
@@ -32,6 +32,7 @@ main () {
   fileRequire      $FileSrc
   directoryRequire $DirTgt
   fileRequire      $FileTgt
+  rm -r          $DirTgt  ; abortOnFail $?
   cp -R $DirSrc  $DirTgt  ; abortOnFail $?
   cp    $FileSrc $FileTgt ; abortOnFail $?
 }
