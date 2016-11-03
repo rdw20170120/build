@@ -4,6 +4,7 @@
 # NOTE: Apple Mac OSX BASH find does not support -perm with "/" syntax
 # TODO: SOMEDAY FIX: Make this work on OSX (unrecognized syntax)
 # TODO: SOMEDAY Refactor individual commands into BASH functions
+# TODO: SOMEDAY Make this work against contents of BO_Project, safely
 ###################################################################################################
 
 variableRequire   BO_Project
