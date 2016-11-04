@@ -17,35 +17,38 @@ boVariableRequire 'BO_Project' || boFailed "$BASH_SOURCE" "$LINENO" $? || return
 ###################################################################################################
 # Copy starter files into place as necessary
 
-FileTgt=$BO_Project/.hgignore
-[[ ! -f $FileTgt ]] && cp $BO_Project/BriteOnyx/starter/project.hgignore $FileTgt
+DirSrc=$BO_Project/BriteOnyx/starter
+DirTgt=$BO_Project
 
-FileTgt=$BO_Project/declare.src
-[[ ! -f $FileTgt ]] && cp $BO_Project/BriteOnyx/starter/project-declare.src $FileTgt
+[[ ! -f $DirTgt/.hgignore ]] && cp $DirSrc/project.hgignore $DirTgt/sample.hgignore
 
-FileTgt=$BO_Project/development.rst
-[[ ! -f $FileTgt ]] && cp $BO_Project/BriteOnyx/starter/project-development.rst $FileTgt
+FileTgt=$DirTgt/declare.src
+[[ ! -f $FileTgt ]] && cp $DirSrc/project-declare.src $FileTgt
 
-FileTgt=$BO_Project/env.src
-[[ ! -f $FileTgt ]] && cp $BO_Project/BriteOnyx/starter/project-env.src $FileTgt
+FileTgt=$DirTgt/development.rst
+[[ ! -f $FileTgt ]] && cp $DirSrc/project-development.rst $FileTgt
 
-FileTgt=$BO_Project/README.rst
-[[ ! -f $FileTgt ]] && cp $BO_Project/BriteOnyx/starter/project-README.rst $FileTgt
+FileTgt=$DirTgt/env.src
+[[ ! -f $FileTgt ]] && cp $DirSrc/project-env.src $FileTgt
 
-FileTgt=$HOME/BriteOnyx.src
-# Move previous scripts to new path
-[[   -f $HOME/BriteOnyx-env.bash ]] && mv $HOME/BriteOnyx-env.bash $FileTgt
-[[   -f $HOME/BriteOnyx-env.src  ]] && mv $HOME/BriteOnyx-env.src  $FileTgt
-[[ ! -f $FileTgt ]] && cp $BO_Project/BriteOnyx/starter/user-BriteOnyx.src $FileTgt
+FileTgt=$DirTgt/README.rst
+[[ ! -f $FileTgt ]] && cp $DirSrc/project-README.rst $FileTgt
 
 DirTgt=$BO_Project/bin/Linux/helper
 [[ ! -e $DirTgt ]] && mkdir -p $DirTgt
 FileTgt=$DirTgt/declare-BASH.src
-[[ ! -f $FileTgt ]] && cp $BO_Project/BriteOnyx/starter/project-declare-BASH.src $FileTgt
+[[ ! -f $FileTgt ]] && cp $DirSrc/project-declare-BASH.src $FileTgt
 
 DirTgt=$BO_Project/bin/Linux
 FileTgt=$DirTgt/all-fix-permissions.bash
-[[ ! -f $FileTgt ]] && cp $BO_Project/BriteOnyx/starter/project-all-fix-permissions.bash $FileTgt
+[[ ! -f $FileTgt ]] && cp $DirSrc/project-all-fix-permissions.bash $FileTgt
+
+DirTgt=$HOME
+FileTgt=$DirTgt/BriteOnyx.src
+# Move previous scripts to new path
+[[   -f $DirTgt/BriteOnyx-env.bash ]] && mv $DirTgt/BriteOnyx-env.bash $FileTgt
+[[   -f $DirTgt/BriteOnyx-env.src  ]] && mv $DirTgt/BriteOnyx-env.src  $FileTgt
+[[ ! -f $FileTgt ]] && cp $DirSrc/user-BriteOnyx.src $FileTgt
 
 ###################################################################################################
 # Configure for BriteOnyx
