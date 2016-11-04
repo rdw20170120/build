@@ -43,6 +43,10 @@ DirTgt=$BO_Project/bin/Linux/helper
 FileTgt=$DirTgt/declare-BASH.src
 [[ ! -f $FileTgt ]] && cp $BO_Project/BriteOnyx/starter/project-declare-BASH.src $FileTgt
 
+DirTgt=$BO_Project/bin/Linux
+FileTgt=$DirTgt/all-fix-permissions.bash
+[[ ! -f $FileTgt ]] && cp $BO_Project/BriteOnyx/starter/project-all-fix-permissions.bash $FileTgt
+
 ###################################################################################################
 # Configure for BriteOnyx
 

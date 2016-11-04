@@ -21,7 +21,7 @@ Dir="$BO_Home/activation/Linux"
 [[ ! -d "${Dir}" ]] && echo "FATAL: Missing directory '${Dir}'" && return 63
 
 ###################################################################################################
-# Configure the Linux environment
+# Configure Linux environment
 
 Script="${Dir}/declare.src"
 [[ ! -f "${Script}" ]] && echo "FATAL: Missing script '${Script}'" && return 63
@@ -52,12 +52,13 @@ export PATH
 # Configure TMPDIR
 
 if [[ -z "$TMPDIR" ]]; then
-  echo 'WARN: Missing $TMPDIR'
+  echo 'WARN:  Missing $TMPDIR'
+  [[ -z "$TMPDIR" ]] && [[ -n "$HOME"     ]] && export TMPDIR="$HOME/tmp"
   [[ -z "$TMPDIR" ]] && [[ -n "$USER"     ]] && export TMPDIR="/tmp/$USER"
   [[ -z "$TMPDIR" ]] && [[ -n "$USERNAME" ]] && export TMPDIR="/tmp/$USERNAME"
   [[ -z "$TMPDIR" ]] && echo 'FATAL: Missing $TMPDIR' && return 63
 # TODO: return "$BO_E_Config"
-  echo "INFO: Remembering TMPDIR='$TMPDIR'"
+  echo "INFO:  Remembering TMPDIR='$TMPDIR'"
 fi
 [[ ! -d "$TMPDIR" ]] && mkdir -p "$TMPDIR"
 [[ ! -d "$TMPDIR" ]] && echo "FATAL: Missing directory '$TMPDIR'" && return 63

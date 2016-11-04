@@ -69,6 +69,13 @@ source          "$Script" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
 cd "$BO_Project" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
 
 ###################################################################################################
+# Fix file permissions throughout project
+
+Script="$BO_Project/bin/Linux/all-fix-permissions.bash"
+boScriptRequire "$Script" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
+                "$Script" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
+
+###################################################################################################
 # Declare optional project functionality
 
 Script="$BO_Project/declare.src"
