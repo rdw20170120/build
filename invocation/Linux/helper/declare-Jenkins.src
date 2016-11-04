@@ -1,4 +1,14 @@
 #!/bin/cat
+[[ -n "$BO_Trace" ]] && echo "TRACE: Executing '$BASH_SOURCE'"
+####################################################################################################
+# NOTE: Assumes this project has been activated using the BriteOnyx framework.
+# NOTE: We MUST NOT EVER invoke the 'exit' command from BASH functions
+####################################################################################################
+# NOTE: Uncomment the following two lines for debugging
+# set -o verbose
+# set -o xtrace
+
+####################################################################################################
 # Declare BASH functionality for the Jenkins continuous integration server
 # TODO: Integrate with latest framework
 

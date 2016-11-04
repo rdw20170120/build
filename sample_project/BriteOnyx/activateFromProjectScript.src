@@ -1,6 +1,11 @@
 #!/bin/cat
 [[ -n "$BO_Trace" ]] && echo "TRACE: Executing '$BASH_SOURCE'"
-# NOTE: This script MUST be 'source'd from scripts in this BriteOnyx project
+####################################################################################################
+# NOTE: We MUST NOT EVER invoke the 'exit' command from BASH functions
+####################################################################################################
+# NOTE: Uncomment the following two lines for debugging
+# set -o verbose
+# set -o xtrace
 
 ####################################################################################################
 # Skip if BriteOnyx is already activated

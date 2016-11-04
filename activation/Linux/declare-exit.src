@@ -1,6 +1,14 @@
 #!/bin/cat
-echo "TRACE: Executing '$BASH_SOURCE'"
+[[ -n "$BO_Trace" ]] && echo "TRACE: Executing '$BASH_SOURCE'"
+####################################################################################################
+# NOTE: Assumes this project has been activated using the BriteOnyx framework.
+# NOTE: We MUST NOT EVER invoke the 'exit' command from BASH functions
+####################################################################################################
+# NOTE: Uncomment the following two lines for debugging
+# set -o verbose
+# set -o xtrace
 
+####################################################################################################
 # Declare exit status codes for use in BASH scripts
 
 ###################################################################################################

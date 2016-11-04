@@ -1,5 +1,12 @@
 #!/bin/cat
 [[ -n "$BO_Trace" ]] && echo "TRACE: Executing '$BASH_SOURCE'"
+####################################################################################################
+# NOTE: We MUST NOT EVER invoke the 'exit' command from BASH functions
+####################################################################################################
+# NOTE: Uncomment the following two lines for debugging
+# set -o verbose
+# set -o xtrace
+
 ###################################################################################################
 # Activate the BriteOnyx framework to manage this project directory tree
 #

@@ -1,11 +1,16 @@
 #!/bin/cat
 [[ -n "$BO_Trace" ]] && echo "TRACE: Executing '$BASH_SOURCE'"
+####################################################################################################
+# NOTE: Assumes this project has been activated using the BriteOnyx framework.
+# NOTE: We MUST NOT EVER invoke the 'exit' command from BASH functions
+####################################################################################################
+# NOTE: Uncomment the following two lines for debugging
+# set -o verbose
+# set -o xtrace
+
 ###################################################################################################
 # Declare needed functionality to support the BriteOnyx framework
-#
 # NOTE: We use the 'bo' prefix by convention for all our BriteOnyx support functions.
-#
-# NOTE: We MUST NOT EVER invoke the BASH 'exit' command from these functions
 
 ###################################################################################################
 # Functions in this section should NOT call functions from following sections
