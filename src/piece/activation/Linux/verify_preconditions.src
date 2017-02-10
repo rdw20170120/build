@@ -1,0 +1,79 @@
+#!/bin/cat
+[[ -n "$BO_Trace" ]] && echo "TRACE: Executing '$BASH_SOURCE'"
+####################################################################################################
+# NOTE: Assumes this project has been activated using the BriteOnyx framework.
+# NOTE: We MUST NOT EVER invoke the 'exit' command from BASH functions
+####################################################################################################
+# NOTE: Uncomment the following two lines for debugging
+# set -o verbose
+# set -o xtrace
+
+####################################################################################################
+# Verify pre-conditions
+
+[[   -z "$BO_Home"       ]] && echo 'FATAL: Missing $BO_Home'                && return 63
+[[ ! -d "$BO_Home"       ]] && echo "FATAL: Missing directory '$BO_Home'"    && return 63
+[[   -z "$BO_Project"    ]] && echo 'FATAL: Missing $BO_Project'             && return 63
+[[ ! -d "$BO_Project"    ]] && echo "FATAL: Missing directory '$BO_Project'" && return 63
+[[   -z "$BO_PathSystem" ]] && echo 'FATAL: Missing $BO_PathSystem'          && return 63
+
+Dir="$BO_Home/activation/Linux"
+[[ ! -d "${Dir}" ]] && echo "FATAL: Missing directory '${Dir}'" && return 63
+
+###################################################################################################
+# Configure Linux environment
+
+Script="${Dir}/declare.src"
+[[ ! -f "${Script}" ]] && echo "FATAL: Missing script '${Script}'" && return 63
+
+source "${Script}"
+
+Status=$?
+[[ ${Status} -ne 0 ]] && echo "FATAL: Exit code ${Status} at '$BASH_SOURCE':$LINENO" && return ${Status}
+
+###################################################################################################
+# Verify post-conditions
+
+[[ -z "$BO_E_Config" ]] && echo 'FATAL: Missing $BO_E_Config' && return 63
+[[ -z "$BO_E_Ok"     ]] && echo 'FATAL: Missing $BO_E_Ok'     && return "$BO_E_Config"
+
+###################################################################################################
+# Configure PATH
+
+export BO_PathLinux="$BO_Home/invocation/Linux"
+export BO_PathProject="$BO_Project/bin/Linux"
+
+PATH="${BO_PathProject}"
+PATH="$PATH:${BO_PathLinux}"
+PATH="$PATH:${BO_PathSystem}"
+export PATH
+
+###################################################################################################
+# Configure TMPDIR
+
+if [[ -z "$TMPDIR" ]]; then
+  echo 'WARN:  Missing $TMPDIR'
+  [[ -z "$TMPDIR" ]] && [[ -n "$HOME"     ]] && export TMPDIR="$HOME/tmp"
+  [[ -z "$TMPDIR" ]] && [[ -n "$USER"     ]] && export TMPDIR="/tmp/$USER"
+  [[ -z "$TMPDIR" ]] && [[ -n "$USERNAME" ]] && export TMPDIR="/tmp/$USERNAME"
+  [[ -z "$TMPDIR" ]] && echo 'FATAL: Missing $TMPDIR' && return 63
+# TODO: return "$BO_E_Config"
+  echo "INFO:  Remembering TMPDIR='$TMPDIR'"
+fi
+[[ ! -d "$TMPDIR" ]] && mkdir -p "$TMPDIR"
+[[ ! -d "$TMPDIR" ]] && echo "FATAL: Missing directory '$TMPDIR'" && return 63
+
+###################################################################################################
+# Define common aliases
+
+alias ignored='hg status --ignored | grep -v work-in-progress | grep -v wip'
+alias someday='grep -Einrw TODO . --include=*.bash --include=*.src --include=*.txt | sort | grep -v work-in-progress'
+alias todo='grep -Einrw TODO . --include=*.bash --include=*.src --include=*.txt | sort | grep -v work-in-progress | grep -v SOMEDAY'
+
+###################################################################################################
+# Return, but do NOT exit, with a success code
+return "$BO_E_Ok"
+
+###################################################################################################
+: <<'DisabledContent'
+DisabledContent
