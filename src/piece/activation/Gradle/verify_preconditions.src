@@ -1,0 +1,13 @@
+# Verify pre-conditions
+
+[[   -z "$BO_Home"          ]] && echo 'FATAL: Missing $BO_Home'                && return 63
+[[ ! -d "$BO_Home"          ]] && echo "FATAL: Missing directory '$BO_Home'"    && return 63
+[[   -z "$BO_Project"       ]] && echo 'FATAL: Missing $BO_Project'             && return 63
+[[ ! -d "$BO_Project"       ]] && echo "FATAL: Missing directory '$BO_Project'" && return 63
+[[   -z "$BO_GradleVersion" ]] && echo 'FATAL: Missing $BO_GradleVersion'       && return 63
+[[   -z "$BO_PathSystem"    ]] && echo 'FATAL: Missing $BO_PathSystem'          && return 63
+[[   -z "$JAVA_HOME"        ]] && echo 'FATAL: Missing $JAVA_HOME'              && return 63
+
+Dir=$BO_Home/activation/Linux
+[[ ! -d "${Dir}" ]] && echo "FATAL: Missing directory '${Dir}'" && return 63
+

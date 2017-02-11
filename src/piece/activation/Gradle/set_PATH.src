@@ -1,0 +1,10 @@
+# Configure environment for Gradle on Linux
+
+export BO_PathGradle=$JAVA_HOME/bin
+
+PATH=${BO_PathProject}
+PATH=$PATH:${BO_PathGradle}
+PATH=$PATH:${BO_PathLinux}
+PATH=$PATH:${BO_PathSystem}
+export PATH
+

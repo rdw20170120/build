@@ -1,0 +1,10 @@
+# Configure environment for Linux
+
+Script=${Dir}/activate.src
+[[ ! -f "${Script}" ]] && echo "FATAL: Missing script '${Script}'" && return 63
+
+source ${Script}
+
+Status=$?
+[[ ${Status} -ne 0 ]] && echo "FATAL: Exit code ${Status} at '$BASH_SOURCE':$LINENO" && return ${Status}
+
