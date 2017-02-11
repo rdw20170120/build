@@ -21,7 +21,7 @@
 Dir=$BO_Home/activation/Linux
 [[ ! -d "${Dir}" ]] && echo "FATAL: Missing directory '${Dir}'" && return 63
 
-###################################################################################################
+####################################################################################################
 # Configure environment for Linux
 
 Script=${Dir}/activate.src
@@ -32,14 +32,14 @@ source ${Script}
 Status=$?
 [[ ${Status} -ne 0 ]] && echo "FATAL: Exit code ${Status} at '$BASH_SOURCE':$LINENO" && return ${Status}
 
-###################################################################################################
+####################################################################################################
 # Verify post-conditions
 
 [[ -z "$BO_E_Config"  ]] && echo 'FATAL: Missing $BO_E_Config'  && return 63
 [[ -z "$BO_E_Ok"      ]] && echo 'FATAL: Missing $BO_E_Ok'      && return "$BO_E_Config"
 [[ -z "$BO_PathLinux" ]] && echo 'FATAL: Missing $BO_PathLinux' && return "$BO_E_Config"
 
-###################################################################################################
+####################################################################################################
 # Configure environment for Python on Linux
 
 DirPVE=$BO_Project/PVE
@@ -52,7 +52,7 @@ PATH=$PATH:${BO_PathLinux}
 PATH=$PATH:${BO_PathSystem}
 export PATH
 
-###################################################################################################
+####################################################################################################
 # Configure PIP_DOWNLOAD_CACHE
 
 if [[ -z "$PIP_DOWNLOAD_CACHE" ]]; then
@@ -64,7 +64,7 @@ fi
 [[ ! -d "$PIP_DOWNLOAD_CACHE" ]] && mkdir -p "$PIP_DOWNLOAD_CACHE"
 [[ ! -d "$PIP_DOWNLOAD_CACHE" ]] && echo "FATAL: Missing directory '$PIP_DOWNLOAD_CACHE'" && return 63
 
-###################################################################################################
+####################################################################################################
 # Configure Python virtual environment (PVE)
 
 export PIP_REQUIRE_VIRTUALENV=true
@@ -98,10 +98,9 @@ export PYTHONHOME=$VIRTUAL_ENV
 echo "INFO: Activated Python virtual environment (PVE) in '${DirPVE}'"
 echo "INFO: Found '$(python --version 2>&1)' at '$(which python)'"
 
-###################################################################################################
+####################################################################################################
 # Return, but do NOT exit, with a success code
 return "$BO_E_Ok"
-
-###################################################################################################
+####################################################################################################
 : <<'DisabledContent'
 DisabledContent

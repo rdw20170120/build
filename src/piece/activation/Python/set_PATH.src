@@ -1,0 +1,12 @@
+# Configure environment for Python on Linux
+
+DirPVE=$BO_Project/PVE
+export BO_PathProject=$BO_Project/bin/Linux:${DirPVE}/bin
+export BO_PathPython=$BO_Home/invocation/Python
+
+PATH=${BO_PathProject}
+PATH=$PATH:${BO_PathPython}
+PATH=$PATH:${BO_PathLinux}
+PATH=$PATH:${BO_PathSystem}
+export PATH
+
