@@ -11,20 +11,15 @@ Self="$BASH_SOURCE"
 This="$(dirname $Self)"
 
 ################################################################################
-echo 'Build BriteOnyx scripts from source'
+[[ -z "$1" ]] && echo 'ABORT: Missing argument: Source directory' && exit 1
+[[ -z "$2" ]] && echo 'ABORT: Missing argument: Target directory' && exit 2
 
-[[ -z "$TMPDIR" ]] && TMPDIR=$HOME/tmp
+DirSrc=$1
+DirTgt=$2
 
-DirSrc=$This/src
-DirTgt=$TMPDIR/BriteOnyx/tgt
-Script=$DirSrc/build-all.bash
+echo "Build Python activate script"
 
-# Clean old output
-[[ -d "$DirTgt" ]] && rm -fr "$DirTgt"
-
-# Build new output
-mkdir -p "$DirTgt"
-[[ -f "$Script" ]] && "$Script" "$DirSrc" "$DirTgt"
+# TODO: Implement
 
 ################################################################################
 : <<'DisabledContent'

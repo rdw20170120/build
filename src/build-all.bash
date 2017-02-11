@@ -6,12 +6,19 @@
 # set -o xtrace
 
 ################################################################################
-[[ -z "$1" ]] && abort 1 'Source directory'
-[[ -z "$2" ]] && abort 1 'Target directory'
+# Reference our script context
+Self="$BASH_SOURCE"
+This="$(dirname $Self)"
+
+################################################################################
+[[ -z "$1" ]] && echo 'ABORT: Missing argument: Source directory' && exit 1
+[[ -z "$2" ]] && echo 'ABORT: Missing argument: Target directory' && exit 2
 
 echo "Build whole scripts in directory '$2' from script pieces in directory '$1'"
 
-# TODO: Implement
+$This/Gradle/build-all.bash "$1" "$2"
+$This/Linux/build-all.bash  "$1" "$2"
+$This/Python/build-all.bash "$1" "$2"
 
 ################################################################################
 : <<'DisabledContent'

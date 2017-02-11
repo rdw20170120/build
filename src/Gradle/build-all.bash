@@ -11,20 +11,12 @@ Self="$BASH_SOURCE"
 This="$(dirname $Self)"
 
 ################################################################################
-echo 'Build BriteOnyx scripts from source'
+[[ -z "$1" ]] && echo 'ABORT: Missing argument: Source directory' && exit 1
+[[ -z "$2" ]] && echo 'ABORT: Missing argument: Target directory' && exit 2
 
-[[ -z "$TMPDIR" ]] && TMPDIR=$HOME/tmp
+echo "Build all Gradle scripts"
 
-DirSrc=$This/src
-DirTgt=$TMPDIR/BriteOnyx/tgt
-Script=$DirSrc/build-all.bash
-
-# Clean old output
-[[ -d "$DirTgt" ]] && rm -fr "$DirTgt"
-
-# Build new output
-mkdir -p "$DirTgt"
-[[ -f "$Script" ]] && "$Script" "$DirSrc" "$DirTgt"
+$This/build-activate.bash "$1" "$2"
 
 ################################################################################
 : <<'DisabledContent'

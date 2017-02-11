@@ -20,7 +20,7 @@
 Dir="$BO_Home/activation/Linux"
 [[ ! -d "${Dir}" ]] && echo "FATAL: Missing directory '${Dir}'" && return 63
 
-###################################################################################################
+####################################################################################################
 # Configure Linux environment
 
 Script="${Dir}/declare.src"
@@ -31,13 +31,13 @@ source "${Script}"
 Status=$?
 [[ ${Status} -ne 0 ]] && echo "FATAL: Exit code ${Status} at '$BASH_SOURCE':$LINENO" && return ${Status}
 
-###################################################################################################
+####################################################################################################
 # Verify post-conditions
 
 [[ -z "$BO_E_Config" ]] && echo 'FATAL: Missing $BO_E_Config' && return 63
 [[ -z "$BO_E_Ok"     ]] && echo 'FATAL: Missing $BO_E_Ok'     && return "$BO_E_Config"
 
-###################################################################################################
+####################################################################################################
 # Configure PATH
 
 export BO_PathLinux="$BO_Home/invocation/Linux"
@@ -48,7 +48,7 @@ PATH="$PATH:${BO_PathLinux}"
 PATH="$PATH:${BO_PathSystem}"
 export PATH
 
-###################################################################################################
+####################################################################################################
 # Configure TMPDIR
 
 if [[ -z "$TMPDIR" ]]; then
@@ -63,17 +63,16 @@ fi
 [[ ! -d "$TMPDIR" ]] && mkdir -p "$TMPDIR"
 [[ ! -d "$TMPDIR" ]] && echo "FATAL: Missing directory '$TMPDIR'" && return 63
 
-###################################################################################################
+####################################################################################################
 # Define common aliases
 
 alias ignored='hg status --ignored | grep -v work-in-progress | grep -v wip'
 alias someday='grep -Einrw TODO . --include=*.bash --include=*.src --include=*.txt | sort | grep -v work-in-progress'
 alias todo='grep -Einrw TODO . --include=*.bash --include=*.src --include=*.txt | sort | grep -v work-in-progress | grep -v SOMEDAY'
 
-###################################################################################################
+####################################################################################################
 # Return, but do NOT exit, with a success code
 return "$BO_E_Ok"
-
-###################################################################################################
+####################################################################################################
 : <<'DisabledContent'
 DisabledContent
