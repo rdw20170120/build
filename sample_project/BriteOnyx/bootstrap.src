@@ -7,14 +7,14 @@
 # set -o verbose
 # set -o xtrace
 
-###################################################################################################
+####################################################################################################
 # NOTE: By convention, BriteOnyx is configured via environment variables prefixed by 'BO_'.
 #
 # TODO: Ensure that we do not clone a Mercurial repository inside another
 
 boVariableRequire 'BO_Project' || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
 
-###################################################################################################
+####################################################################################################
 # Copy starter files into place as necessary
 
 DirSrc=$BO_Project/BriteOnyx/starter
@@ -50,35 +50,35 @@ FileTgt=$DirTgt/BriteOnyx.src
 [[   -f $DirTgt/BriteOnyx-env.src  ]] && mv $DirTgt/BriteOnyx-env.src  $FileTgt
 [[ ! -f $FileTgt ]] && cp $DirSrc/user-BriteOnyx.src $FileTgt
 
-###################################################################################################
+####################################################################################################
 # Configure for BriteOnyx
 
 Script="$BO_Project/BriteOnyx/env.src"
 boScriptRequire "$Script" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
 source          "$Script" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
 
-###################################################################################################
+####################################################################################################
 # Configure for this project
 
 Script=$BO_Project/env.src
 boScriptRequire $Script || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
 source          $Script || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
 
-###################################################################################################
+####################################################################################################
 # Configure for this user
 
 Script=$HOME/BriteOnyx.src
 boScriptRequire "$Script" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
 source          "$Script" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
 
-###################################################################################################
+####################################################################################################
 # Verify BriteOnyx bootstrap configuration
 
 boVariableRequire 'BO_Parent'  || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
 boVariableRequire 'BO_Url'     || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
 boVariableRequire 'BO_Version' || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
 
-###################################################################################################
+####################################################################################################
 # Checkout the BriteOnyx source
 
 boDirectoryCreate "$BO_Parent" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
@@ -113,11 +113,10 @@ else
   boLogDebug "BriteOnyx version '$BO_Version' should be stable, skipping update of clone."
 fi
 
-###################################################################################################
+####################################################################################################
 # Return, but do NOT exit, with a success code
 return 0
 
-###################################################################################################
+####################################################################################################
 : <<'DisabledContent'
 DisabledContent
-

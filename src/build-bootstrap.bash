@@ -17,36 +17,38 @@ This="$(dirname $Self)"
 DirSrc=$1
 DirTgt=$2
 
-echo "Build Linux activate script"
+echo "Build bootstrap script"
 
-Dir=$DirTgt/activation/Linux
+Dir=$DirTgt/sample_project/BriteOnyx
 [[ ! -e "$Dir" ]] && echo "Creating directory '$Dir'" && mkdir -p "$Dir"
 
-File=$Dir/activate.src
+File=$Dir/bootstrap.src
 
 echo "Creating file '$File'"
 
 cat  >"$File" <"$DirSrc/piece/header.src"
 cat >>"$File" <"$DirSrc/piece/header-executing.bash"
 cat >>"$File" <"$DirSrc/piece/comment-separator.bash"
-cat >>"$File" <"$DirSrc/piece/comment-assumes.bash"
 cat >>"$File" <"$DirSrc/piece/comment-no_exit.bash"
 cat >>"$File" <"$DirSrc/piece/comment-separator.bash"
 cat >>"$File" <"$DirSrc/piece/comment-debugging.bash"
 cat >>"$File" <"$DirSrc/piece/comment-separator.bash"
-cat >>"$File" <"$DirSrc/piece/activation/Linux/verify_preconditions.src"
+cat >>"$File" <"$DirSrc/piece/bootstrap/sample_project/BriteOnyx/bootstrap/comment.bash"
+cat >>"$File" <"$DirSrc/piece/bootstrap/sample_project/BriteOnyx/bootstrap/verify-preconditions.bash"
 cat >>"$File" <"$DirSrc/piece/comment-separator.bash"
-cat >>"$File" <"$DirSrc/piece/activation/Linux/source_declare.src"
+cat >>"$File" <"$DirSrc/piece/bootstrap/sample_project/BriteOnyx/bootstrap/copy_starter_files.bash"
 cat >>"$File" <"$DirSrc/piece/comment-separator.bash"
-cat >>"$File" <"$DirSrc/piece/activation/Linux/verify_postconditions.src"
+cat >>"$File" <"$DirSrc/piece/bootstrap/sample_project/BriteOnyx/bootstrap/source-env-BriteOnyx.src"
 cat >>"$File" <"$DirSrc/piece/comment-separator.bash"
-cat >>"$File" <"$DirSrc/piece/activation/Linux/set_PATH.src"
+cat >>"$File" <"$DirSrc/piece/bootstrap/sample_project/BriteOnyx/bootstrap/source-env-project.src"
 cat >>"$File" <"$DirSrc/piece/comment-separator.bash"
-cat >>"$File" <"$DirSrc/piece/activation/Linux/set_TMPDIR.src"
+cat >>"$File" <"$DirSrc/piece/bootstrap/sample_project/BriteOnyx/bootstrap/source-env-user.src"
 cat >>"$File" <"$DirSrc/piece/comment-separator.bash"
-cat >>"$File" <"$DirSrc/piece/activation/Linux/define_aliases.src"
+cat >>"$File" <"$DirSrc/piece/bootstrap/sample_project/BriteOnyx/bootstrap/verify-bootstrap.bash"
 cat >>"$File" <"$DirSrc/piece/comment-separator.bash"
-cat >>"$File" <"$DirSrc/piece/activation/footer-return.bash"
+cat >>"$File" <"$DirSrc/piece/bootstrap/sample_project/BriteOnyx/bootstrap/grab-source.bash"
+cat >>"$File" <"$DirSrc/piece/comment-separator.bash"
+cat >>"$File" <"$DirSrc/piece/bootstrap/footer-return.bash"
 cat >>"$File" <"$DirSrc/piece/comment-separator.bash"
 cat >>"$File" <"$DirSrc/piece/footer-disabled_content.bash"
 
