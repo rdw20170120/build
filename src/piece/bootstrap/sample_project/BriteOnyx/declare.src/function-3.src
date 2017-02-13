@@ -1,0 +1,22 @@
+# Functions in this section should NOT call functions from following sections
+
+boLogDebug () {
+  boLog "DEBUG: $1"
+} && export -f boLogDebug
+
+boLogError () {
+  boLog "ERROR: $1"
+} && export -f boLogError
+
+boLogFatal () {
+  boLog "FATAL: $1"
+} && export -f boLogFatal
+
+boLogInfo () {
+  boLog "INFO:  $1"
+} && export -f boLogInfo
+
+boLogWarn () {
+  boLog "WARN:  $1"
+} && export -f boLogWarn
+

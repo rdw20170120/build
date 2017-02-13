@@ -1,0 +1,31 @@
+# Functions in this section should NOT call functions from following sections
+
+boAbort () {
+  boTraceEntry "$FUNCNAME" "$LINENO" $# "$*"
+  # Abort execution due to previous command's status $3 while reporting fatal log message $5
+  #   (including source location name $1 and line $2) and propagating outgoing status code $4
+  # TODO: Rename to boFail?
+  [[ $# -eq 5 ]] || return 100
+  # $1 = caller source location name ($FUNCNAME or $BASH_SOURCE)
+  # $2 = caller source location line ($LINENO)
+  # $3 = incoming status code from previous command ($?, non-zero)
+  # $4 = outgoing status code (repeat $? unless overriding)
+  # $5 = message
+  [[ "$3" -eq 0 ]] && return 100
+  boLogFatal "ABORT: Status $3 at '$1:$2' -> status $4: $5"
+  return "$4"
+} && export -f boAbort
+
+boFailed () {
+  boTraceEntry "$FUNCNAME" "$LINENO" $# "$*"
+  # Log failed execution due to previous command's status $3 as reported at source location name
+  #   $1 and line $2, then propagate the failed status
+  [[ $# -eq 3 ]] || return 100
+  # $1 = caller source location name ($FUNCNAME or $BASH_SOURCE)
+  # $2 = caller source location line ($LINENO)
+  # $3 = incoming status code from previous command ($?, non-zero)
+  [[ "$3" -eq 0 ]] && return 100
+  boLogFatal "FAILED: Status $3 at '$1:$2'"
+  return "$3"
+} && export -f boFailed
+

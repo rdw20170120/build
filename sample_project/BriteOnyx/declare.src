@@ -8,11 +8,11 @@
 # set -o verbose
 # set -o xtrace
 
-###################################################################################################
+####################################################################################################
 # Declare needed functionality to support the BriteOnyx framework
 # NOTE: We use the 'bo' prefix by convention for all our BriteOnyx support functions.
 
-###################################################################################################
+####################################################################################################
 # Functions in this section should NOT call functions from following sections
 
 boLog () {
@@ -70,7 +70,7 @@ boTraceVariable () {
   boTraceValue "Variable '$Name'" "$Value"
 } && export -f boTraceVariable
 
-###################################################################################################
+####################################################################################################
 # Functions in this section should NOT call functions from following sections
 
 boDirectoryExists () {
@@ -111,7 +111,7 @@ boVariableIsMissing () {
   [[ -z "$Value" ]]
 } && export -f boVariableIsMissing
 
-###################################################################################################
+####################################################################################################
 # Functions in this section should NOT call functions from following sections
 
 boLogDebug () {
@@ -134,7 +134,7 @@ boLogWarn () {
   boLog "WARN:  $1"
 } && export -f boLogWarn
 
-###################################################################################################
+####################################################################################################
 # Functions in this section should NOT call functions from following sections
 
 boAbort () {
@@ -166,7 +166,7 @@ boFailed () {
   return "$3"
 } && export -f boFailed
 
-###################################################################################################
+####################################################################################################
 # Functions in this section should NOT call functions from following sections
 
 boArgsRequire () {
@@ -182,7 +182,7 @@ boArgsRequire () {
   [[ $3 -eq $4 ]] || boAbort "$1" "$2" $? 100 "$Msg" || return $?
 } && export -f boArgsRequire
 
-###################################################################################################
+####################################################################################################
 # Functions in this section should NOT call functions from following sections
 
 boDirectoryCreate () {
@@ -234,7 +234,7 @@ boVariableRequire () {
   ! boVariableIsMissing "$1" || boAbort "$FUNCNAME" "$LINENO" $? 100 "$Msg" || return $?
 } && export -f boVariableRequire
 
-###################################################################################################
+####################################################################################################
 # Functions in this section should NOT call functions from following sections
 
 boExecute () {
@@ -247,10 +247,10 @@ boExecute () {
   $1 || boAbort "$FUNCNAME" "$LINENO" $? $? "$2" || return $?
 } && export -f boExecute
 
-###################################################################################################
+####################################################################################################
 # Return, but do NOT exit, with a success code
 return 0
 
-###################################################################################################
+####################################################################################################
 : <<'DisabledContent'
 DisabledContent

@@ -1,0 +1,15 @@
+# Functions in this section should NOT call functions from following sections
+
+boArgsRequire () {
+  boTraceEntry "$FUNCNAME" "$LINENO" $# "$*"
+  # Require that the actual argument count $3 equal the expected argument count $4 in the caller
+  #   with source location name $1 and line $2
+  [[ $# -eq 4 ]] || return 100
+  # $1 = caller source location name ($FUNCNAME or $BASH_SOURCE)
+  # $2 = caller source location line ($LINENO)
+  # $3 = actual argument count ($#)
+  # $4 = expected argument count
+  declare -r Msg="Expected $4 arguments but got $3!"
+  [[ $3 -eq $4 ]] || boAbort "$1" "$2" $? 100 "$Msg" || return $?
+} && export -f boArgsRequire
+

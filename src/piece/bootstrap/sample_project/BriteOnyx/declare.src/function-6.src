@@ -1,0 +1,51 @@
+# Functions in this section should NOT call functions from following sections
+
+boDirectoryCreate () {
+  boTraceEntry "$FUNCNAME" "$LINENO" $# "$*"
+  # Create directory $1, if it does not already exist
+  boArgsRequire "$FUNCNAME" "$LINENO" $# 1 || return $?
+  # $1 = directory pathname
+  declare Msg="Directory '$1' already exists, skipping creation."
+  boNodeIsDirectory "$1" && boLogDebug "$Msg"                            && return $?
+  Msg="Unable to create directory '$1', failed!"
+  mkdir -p "$1"           || boAbort "$FUNCNAME" "$LINENO" $? 100 "$Msg" || return $?
+  boDirectoryRequire "$1" || boAbort "$FUNCNAME" "$LINENO" $? 100 "$Msg" || return $?
+} && export -f boDirectoryCreate
+
+boDirectoryRequire () {
+  boTraceEntry "$FUNCNAME" "$LINENO" $# "$*"
+  # Require directory $1, abort if it is missing
+  boArgsRequire "$FUNCNAME" "$LINENO" $# 1 || return $?
+  # $1 = pathname of required directory
+  boNodeIsDirectory "$1" && return $?
+  Msg="Directory '$1' is required but is missing!"
+  boNodeExists "$1" || boAbort "$FUNCNAME" "$LINENO" $? 100 "$Msg" || return $?
+  Msg="Directory '$1' is required but is blocked by a non-directory!"
+  boAbort "$FUNCNAME" "$LINENO" 100 100 "$Msg" || return $?
+} && export -f boDirectoryRequire
+
+boFileRequire () {
+  boTraceEntry "$FUNCNAME" "$LINENO" $# "$*"
+  # Require that file $1 exists, abort if it is missing
+  # TODO: Should we check other characteristics like readability or executability?
+  boArgsRequire "$FUNCNAME" "$LINENO" $# 1 || return $?
+  # $1 = required script file pathname
+  declare -r Msg="File '$1' is required but missing!"
+  boNodeIsFile "$1" || boAbort "$FUNCNAME" "$LINENO" $? 100 "$Msg" || return $?
+} && export -f boFileRequire
+
+boScriptRequire () {
+  # Require that script file $1 exists, abort if it is missing
+  # TODO: Should we check other characteristics like readability or executability?
+  boFileRequire "$1" || boFailed "$FUNCNAME" "$LINENO" $? || return $?
+} && export -f boScriptRequire
+
+boVariableRequire () {
+  boTraceEntry "$FUNCNAME" "$LINENO" $# "$*"
+  # Require environment variable $1, abort if it is missing
+  boArgsRequire "$FUNCNAME" "$LINENO" $# 1 || return $?
+  # $1 = name of required environment variable
+  declare -r Msg="Variable '$1' is required but is undefined or empty!"
+  ! boVariableIsMissing "$1" || boAbort "$FUNCNAME" "$LINENO" $? 100 "$Msg" || return $?
+} && export -f boVariableRequire
+

@@ -1,0 +1,40 @@
+# Functions in this section should NOT call functions from following sections
+
+boDirectoryExists () {
+  boNodeIsDirectory "$1"
+} && export -f boDirectoryExists
+
+boFileExists () {
+  boNodeIsFile "$1"
+} && export -f boFileExists
+
+boNodeExists () {
+  # Return whether node $1 exists
+  [[ $# -eq 1 ]] || return 100
+  # $1 = node pathname
+  [[ -e "$1" ]]
+} && export -f boNodeExists
+
+boNodeIsDirectory () {
+  # Return whether node $1 is a directory
+  [[ $# -eq 1 ]] || return 100
+  # $1 = node pathname
+  [[ -d "$1" ]]
+} && export -f boNodeIsDirectory
+
+boNodeIsFile () {
+  # Return whether node $1 is a file
+  [[ $# -eq 1 ]] || return 100
+  # $1 = node pathname
+  [[ -f "$1" ]]
+} && export -f boNodeIsFile
+
+boVariableIsMissing () {
+  # Return whether environment variable $1 is missing (undefined or empty)
+  [[ $# -eq 1 ]] || return 100
+  # $1 = name of environment variable
+  declare -r Name="$1"
+  declare -r Value="${!Name}"
+  [[ -z "$Value" ]]
+} && export -f boVariableIsMissing
+

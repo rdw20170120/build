@@ -1,0 +1,57 @@
+# Functions in this section should NOT call functions from following sections
+
+boLog () {
+  # Log the message $1 to STDERR
+  # NOTE:  Should only be called from this script
+  # $1 = message
+  echo -e "$1" >&2
+} && export -f boLog
+
+boNodeCanonical () {
+  # Return the canonical pathname for file system node $1
+  # NOTE: Must be called via command substitution, e.g.:
+  #   "$(boNodeCanonical '$1')"
+  [[ $# -eq 1 ]] || return 100
+  # $1 = pathname of file system node
+  declare Result
+  # NOTE: This call to "readlink" is not supported on Apple Mac OS X, so deal with it...
+  Result="$(readlink -m $1)"
+  [[ $? -eq 0   ]] && echo "$Result" && return 0
+  [[ "$1" = "." ]] && echo "$PWD"       && return 0
+  echo "$1"
+} && export -f boNodeCanonical
+
+boTrace () {
+  # Trace message $1
+  # $1 = message
+  [[ -n "$BO_Trace" ]] && boLog "TRACE: $1"
+} && export -f boTrace
+
+boTraceEntry () {
+  # Trace the entry of execution into caller with source location name $1 and line $2 called with
+  #   argument count $3 and arguments $4
+  [[ $# -eq 4 ]] || return 100
+  # $1 = caller source location name ($FUNCNAME or $BASH_SOURCE)
+  # $2 = caller source location line ($LINENO)
+  # $3 = caller argument count ($#)
+  # $4 = caller arguments ($*)
+  boTrace "'$1:$2' called with $3 args: '$4'"
+} && export -f boTraceEntry
+
+boTraceValue () {
+  # Trace value $2 described as $1
+  [[ $# -eq 2 ]] || return 100
+  # $1 = description of value
+  # $2 = value
+  boTrace "$1 = '$2'"
+} && export -f boTraceValue
+
+boTraceVariable () {
+  # Trace environment variable $1
+  [[ $# -eq 1 ]] || return 100
+  # $1 = name of environment variable
+  declare -r Name="$1"
+  declare -r Value="${!Name}"
+  boTraceValue "Variable '$Name'" "$Value"
+} && export -f boTraceVariable
+
