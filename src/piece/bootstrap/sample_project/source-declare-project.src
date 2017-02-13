@@ -1,0 +1,8 @@
+# Declare optional project functionality
+
+Script="$BO_Project/declare.src"
+if [[ -f "$Script" ]] ; then
+  source "$Script" ; Status=$?
+  [[ "${Status}" -ne 0 ]] && echo "FATAL: Script exited with '${Status}'" && return ${Status}
+fi
+

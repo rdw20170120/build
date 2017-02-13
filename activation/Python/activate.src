@@ -101,6 +101,7 @@ echo "INFO: Found '$(python --version 2>&1)' at '$(which python)'"
 ####################################################################################################
 # Return, but do NOT exit, with a success code
 return "$BO_E_Ok"
+
 ####################################################################################################
 : <<'DisabledContent'
 DisabledContent
