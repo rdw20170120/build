@@ -25,6 +25,7 @@ $This/build-bootstrap.bash             "$1" "$2"
 $This/build-declare.bash               "$1" "$2"
 $This/build-env.bash                   "$1" "$2"
 $This/build-env-project.bash           "$1" "$2"
+$This/build-env-user.bash              "$1" "$2"
 
 ################################################################################
 : <<'DisabledContent'
