@@ -16,14 +16,15 @@ This="$(dirname $Self)"
 
 echo "Build whole scripts in directory '$2' from script pieces in directory '$1'"
 
+$This/build-activate-from-project.bash "$1" "$2"
 $This/build-activate-Gradle.bash       "$1" "$2"
 $This/build-activate-Linux.bash        "$1" "$2"
-$This/build-activate-Python.bash       "$1" "$2"
 $This/build-activate-project.bash      "$1" "$2"
-$This/build-activate-from-project.bash "$1" "$2"
+$This/build-activate-Python.bash       "$1" "$2"
 $This/build-bootstrap.bash             "$1" "$2"
 $This/build-declare.bash               "$1" "$2"
 $This/build-env.bash                   "$1" "$2"
+$This/build-env-project.bash           "$1" "$2"
 
 ################################################################################
 : <<'DisabledContent'
