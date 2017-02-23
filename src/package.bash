@@ -16,31 +16,25 @@ echo 'Package BriteOnyx scripts'
 [[ -z "$TMPDIR" ]] && TMPDIR=$HOME/tmp/BriteOnyx
 
 DirSrc=$This/..
-DirPackage=$TMPDIR/package
 FileArchive=$TMPDIR/BriteOnyx.tb2
 
 # Clean old output
-[[ -d "$DirPackage"  ]] && rm -fr $DirPackage
-[[ -f "$FileArchive" ]] && rm -f  $FileArchive
-
-# Build new output
-mkdir -p $DirPackage
-cp -R $DirSrc $DirPackage
-rm -fr $DirPackage/.hg
-rm -f  $DirPackage/.hgignore
-rm -f  $DirPackage/.hgtags
-rm -fr $DirPackage/src
+[[ -f "$FileArchive" ]] && rm -f $FileArchive
 
 # Generate archive file
+cd $DirSrc
 Cmd='tar'
-Cmd+=' cvp'
+Cmd+=' cvv'
 Cmd+=' --anchored'
 Cmd+=' --auto-compress'
-Cmd+=" --directory=$DirPackage"
 Cmd+=" --file=$FileArchive"
 Cmd+=' --owner=bo'
 Cmd+=' --show-stored-names'
-Cmd+=" $DirPackage"
+Cmd+=" activation"
+Cmd+=" doc"
+Cmd+=" invocation"
+Cmd+=" sample_project"
+Cmd+=" README.rst"
 $Cmd
 
 ################################################################################
