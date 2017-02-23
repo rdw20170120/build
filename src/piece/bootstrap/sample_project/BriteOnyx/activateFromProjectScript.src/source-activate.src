@@ -1,8 +1,0 @@
-# Activate BriteOnyx
-
-Script="$(dirname "$BASH_SOURCE")/../activate.src"
-[[ ! -f "$Script" ]] && echo "FATAL: Missing script '$Script'" && return 63
-source "$Script"; Status=$?
-Msg="FATAL: Status $Status at '$BASH_SOURCE:$LINENO'"
-[[ $Status -ne 0 ]] && echo "$Msg" && return $Status
-

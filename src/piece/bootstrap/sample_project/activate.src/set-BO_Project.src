@@ -1,5 +1,0 @@
-# Remember the directory containing this script as our project root
-
-export BO_Project="$(dirname $BASH_SOURCE[0])"
-cd "$BO_Project" || return $?
-

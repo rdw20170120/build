@@ -1,3 +1,4 @@
+[[ -n "$BO_Sequence" ]] && echo 'Sequence ??? - configure PIP download cache'
 # Configure PIP_DOWNLOAD_CACHE
 
 if [[ -z "$PIP_DOWNLOAD_CACHE" ]]; then

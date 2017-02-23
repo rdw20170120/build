@@ -2,13 +2,15 @@
 [[ -n "$BO_Trace" ]] && echo "TRACE: Executing '$BASH_SOURCE'"
 ####################################################################################################
 # NOTE: Assumes this project has been activated using the BriteOnyx framework.
-# NOTE: We MUST NOT EVER invoke the 'exit' command from BASH functions
+# NOTE: We MUST NOT EVER 'exit' during BriteOnyx bootstrap or activation
 ####################################################################################################
 # NOTE: Uncomment the following two lines for debugging
 # set -o verbose
 # set -o xtrace
+# TODO: SOMEDAY: Add inverse commands to isolate debugging
 
 ####################################################################################################
+[[ -n "$BO_Sequence" ]] && echo 'Sequence ??? - verify preconditions'
 # Verify pre-conditions
 
 [[   -z "$BO_Home"          ]] && echo 'FATAL: Missing $BO_Home'                && return 63
@@ -23,6 +25,7 @@ Dir=$BO_Home/activation/Linux
 [[ ! -d "${Dir}" ]] && echo "FATAL: Missing directory '${Dir}'" && return 63
 
 ####################################################################################################
+[[ -n "$BO_Trace" ]] && echo 'Sequence ??? - source activate Linux'
 # Configure environment for Linux
 
 Script=${Dir}/activate.src
@@ -34,6 +37,7 @@ Status=$?
 [[ ${Status} -ne 0 ]] && echo "FATAL: Exit code ${Status} at '$BASH_SOURCE':$LINENO" && return ${Status}
 
 ####################################################################################################
+[[ -n "$BO_Sequence" ]] && echo 'Sequence ??? - verify postconditions'
 # Verify post-conditions
 
 [[ -z "$BO_E_Config"  ]] && echo 'FATAL: Missing $BO_E_Config'  && return 63
@@ -41,6 +45,7 @@ Status=$?
 [[ -z "$BO_PathLinux" ]] && echo 'FATAL: Missing $BO_PathLinux' && return "$BO_E_Config"
 
 ####################################################################################################
+[[ -n "$BO_Sequence" ]] && echo 'Sequence ??? - set PATH'
 # Configure environment for Gradle on Linux
 
 export BO_PathGradle=$JAVA_HOME/bin

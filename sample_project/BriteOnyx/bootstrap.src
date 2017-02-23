@@ -1,20 +1,21 @@
 #!/bin/cat
 [[ -n "$BO_Trace" ]] && echo "TRACE: Executing '$BASH_SOURCE'"
 ####################################################################################################
-# NOTE: We MUST NOT EVER invoke the 'exit' command from BASH functions
+# NOTE: We MUST NOT EVER 'exit' during BriteOnyx bootstrap or activation
 ####################################################################################################
 # NOTE: Uncomment the following two lines for debugging
 # set -o verbose
 # set -o xtrace
+# TODO: SOMEDAY: Add inverse commands to isolate debugging
 
 ####################################################################################################
 # NOTE: By convention, BriteOnyx is configured via environment variables prefixed by 'BO_'.
-#
-# TODO: Ensure that we do not clone a Mercurial repository inside another
 
+[[ -n "$BO_Sequence" ]] && echo 'Sequence 005 - verify preconditions'
 boVariableRequire 'BO_Project' || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
 
 ####################################################################################################
+[[ -n "$BO_Sequence" ]] && echo 'Sequence 006 - copy starter files'
 # Copy starter files into place as necessary
 
 DirSrc=$BO_Project/BriteOnyx/starter
@@ -51,6 +52,7 @@ FileTgt=$DirTgt/BriteOnyx.src
 [[ ! -f $FileTgt ]] && cp $DirSrc/user-BriteOnyx.src $FileTgt
 
 ####################################################################################################
+[[ -n "$BO_Sequence" ]] && echo 'Sequence 007 - source env BriteOnyx'
 # Configure for BriteOnyx
 
 Script="$BO_Project/BriteOnyx/env.src"
@@ -58,6 +60,7 @@ boScriptRequire "$Script" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
 source          "$Script" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
 
 ####################################################################################################
+[[ -n "$BO_Sequence" ]] && echo 'Sequence 010 - source env project'
 # Configure for this project
 
 Script=$BO_Project/env.src
@@ -65,6 +68,7 @@ boScriptRequire $Script || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
 source          $Script || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
 
 ####################################################################################################
+[[ -n "$BO_Sequence" ]] && echo 'Sequence 012 - source env user'
 # Configure for this user
 
 Script=$HOME/BriteOnyx.src
@@ -72,6 +76,7 @@ boScriptRequire "$Script" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
 source          "$Script" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
 
 ####################################################################################################
+[[ -n "$BO_Sequence" ]] && echo 'Sequence 014 - verify bootstrap'
 # Verify BriteOnyx bootstrap configuration
 
 boVariableRequire 'BO_Parent'  || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
@@ -79,6 +84,8 @@ boVariableRequire 'BO_Url'     || boFailed "$BASH_SOURCE" "$LINENO" $? || return
 boVariableRequire 'BO_Version' || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
 
 ####################################################################################################
+[[ -n "$BO_Sequence" ]] && echo 'Sequence 015 - grab source'
+: <<'DisabledContent'
 # Checkout the BriteOnyx source
 
 boDirectoryCreate "$BO_Parent" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
@@ -112,9 +119,10 @@ if [[ "$BO_Version" == "tip" ]]; then
 else
   boLogDebug "BriteOnyx version '$BO_Version' should be stable, skipping update of clone."
 fi
+DisabledContent
 
 ####################################################################################################
-# Return, but do NOT exit, with a success code
+# Successfully 'return', but do NOT 'exit'
 return 0
 
 ####################################################################################################

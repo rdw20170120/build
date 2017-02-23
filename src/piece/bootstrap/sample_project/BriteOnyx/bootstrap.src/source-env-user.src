@@ -1,6 +1,0 @@
-# Configure for this user
-
-Script=$HOME/BriteOnyx.src
-boScriptRequire "$Script" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
-source          "$Script" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
-

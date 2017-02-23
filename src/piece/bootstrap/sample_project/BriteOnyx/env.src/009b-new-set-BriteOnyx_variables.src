@@ -1,0 +1,9 @@
+[[ -n "$BO_Sequence" ]] && echo 'Sequence 009b - new set BriteOnyx variables'
+# Configure BriteOnyx deployment
+
+# TODO: Update BO_Version to actual revision, once tagged & published
+export BO_Parent=$HOME/.BriteOnyx
+export BO_Version=tip
+
+export BO_Home=$BO_Parent/$BO_Version
+

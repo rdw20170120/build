@@ -1,9 +1,0 @@
-# NOTE: Now that we have our support functionality declared, we can use it from here on
-
-boVariableRequire 'BO_Project' || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
-boTraceVariable 'BO_Project'
-export BO_Project="$(boNodeCanonical $BO_Project)"
-boTraceVariable 'BO_Project'
-boLogInfo "Canonical form of BO_Project directory pathname is '$BO_Project'"
-boDirectoryRequire "$BO_Project" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
-

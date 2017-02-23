@@ -1,0 +1,7 @@
+[[ -n "$BO_Sequence" ]] && echo 'Sequence 004 - source bootstrap'
+# Bootstrap BriteOnyx
+
+Script="$BO_Project/BriteOnyx/bootstrap.src"
+boScriptRequire "$Script" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
+source          "$Script" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
+

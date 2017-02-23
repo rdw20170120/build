@@ -1,0 +1,7 @@
+[[ -n "$BO_Sequence" ]] && echo 'Sequence 022 - define aliases'
+# Define common aliases
+
+alias ignored='hg status --ignored | grep -v work-in-progress | grep -v wip'
+alias someday='grep -Einrw TODO . --include=*.bash --include=*.src --include=*.txt | sort | grep -v work-in-progress'
+alias todo='grep -Einrw TODO . --include=*.bash --include=*.src --include=*.txt | sort | grep -v work-in-progress | grep -v SOMEDAY'
+

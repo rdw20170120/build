@@ -1,0 +1,4 @@
+[[ -n "$BO_Sequence" ]] && echo 'Sequence 009c - set BO_PathSystem'
+
+[[ -z "$BO_PathSystem" ]] && export BO_PathSystem=$PATH
+

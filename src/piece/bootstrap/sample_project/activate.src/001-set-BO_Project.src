@@ -1,0 +1,10 @@
+[[ -n "$BO_Sequence" ]] && echo 'Sequence 001 - set BO_Project'
+# Remember the directory containing this script as our project root
+
+# TODO: Should we replicate this approach elsewhere for accessing $BASH_SOURCE?
+export BO_Project="$(dirname $BASH_SOURCE[0])"
+
+# TODO: REVIEW: Shall we NOT cd into our project directory since it changes
+# the caller's execution environment?
+# cd "$BO_Project" || return $?
+

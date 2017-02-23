@@ -1,6 +1,0 @@
-# Activate as a Linux project
-
-Script="$BO_Home/activation/Linux/activate.src"
-boScriptRequire "$Script" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
-source          "$Script" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
-

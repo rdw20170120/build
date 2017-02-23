@@ -2,11 +2,12 @@
 [[ -n "$BO_Trace" ]] && echo "TRACE: Executing '$BASH_SOURCE'"
 ####################################################################################################
 # NOTE: Assumes this project has been activated using the BriteOnyx framework.
-# NOTE: We MUST NOT EVER invoke the 'exit' command from BASH functions
+# NOTE: We MUST NOT EVER 'exit' during BriteOnyx bootstrap or activation
 ####################################################################################################
 # NOTE: Uncomment the following two lines for debugging
 # set -o verbose
 # set -o xtrace
+# TODO: SOMEDAY: Add inverse commands to isolate debugging
 
 ####################################################################################################
 # Declare needed functionality to support the BriteOnyx framework
@@ -248,7 +249,7 @@ boExecute () {
 } && export -f boExecute
 
 ####################################################################################################
-# Return, but do NOT exit, with a success code
+# Successfully 'return', but do NOT 'exit'
 return 0
 
 ####################################################################################################

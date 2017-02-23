@@ -1,3 +1,4 @@
+[[ -n "$BO_Sequence" ]] && echo 'Sequence ??? - set PATH'
 # Configure environment for Python on Linux
 
 DirPVE=$BO_Project/PVE

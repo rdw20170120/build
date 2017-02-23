@@ -1,3 +1,4 @@
+[[ -n "$BO_Trace" ]] && echo 'Sequence ??? - source activate Linux'
 # Configure environment for Linux
 
 Script=${Dir}/activate.src

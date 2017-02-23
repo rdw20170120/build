@@ -1,49 +1,46 @@
 #!/bin/bash
 [[ -n "$BO_Trace" ]] && echo "TRACE: Executing '$BASH_SOURCE'"
 ####################################################################################################
-# NOTE: Assumes this project has been activated using the BriteOnyx framework.
-
-# Update BriteOnyx activation content embedded here (in current directory) within active project.
-# BriteOnyx content is taken from $BO_Home, based on the project's configured BriteOnyx version.
-# Project must be re-activated to apply the new content.
-
-####################################################################################################
-# Reference our script context
-Self="$(getPathAbsolute $BASH_SOURCE)" ; abortOnFail $?
-This="$(dirname $Self)"                ; abortOnFail $?
-
-main () {
-  parametersRequire 0 $#
-  # TODO: SOMEDAY accept target directory as parameter
-
-  local -r DirHere=$PWD
-  variableRequire   DirHere
-  directoryRequire $DirHere
-  variableRequire   BO_Home
-  directoryRequire $BO_Home
-
-  local -r DirSrc=$BO_Home/sample_project/BriteOnyx
-  local -r DirTgt=$DirHere/BriteOnyx
-  local -r FileSrc=$BO_Home/sample_project/activate.src
-  local -r FileTgt=$DirHere/activate.src
-
-  logInfo "Updating BriteOnyx activation content here in directory '$DirHere', from '$BO_Home'"
-  directoryRequire $DirSrc
-  fileRequire      $FileSrc
-  directoryRequire $DirTgt
-  fileRequire      $FileTgt
-  rm -r          $DirTgt  ; abortOnFail $?
-  cp -R $DirSrc  $DirTgt  ; abortOnFail $?
-  cp    $FileSrc $FileTgt ; abortOnFail $?
-}
-
+# Update (install) BriteOnyx content in current directory, so that this directory becomes the root
+# of a BriteOnyx-enabled project.  BriteOnyx content is taken from $BO_Home, if configured.  Use
+# first argument as $BO_Home, if provided.  Project must be re-activated to apply the new content.
 ####################################################################################################
 # NOTE: Uncomment the following two lines for debugging
 # set -o verbose
 # set -o xtrace
 
-main
+####################################################################################################
+main () {
+  # Optional parameter 1 is source directory to be used as BO_Home
+  [[ -n "$1" ]] && BO_Home=$1
+  [[ -z "$BO_Home" ]] && echo 'FATAL: source directory was not provided' && exit 1
+
+  local -r DirHere=$PWD
+  local -r DirSrc=$BO_Home/sample_project/BriteOnyx
+  local -r DirTgt=$DirHere/BriteOnyx
+  local -r FileSrc=$BO_Home/sample_project/activate.src
+  local -r FileTgt=$DirHere/activate.src
+
+  echo "Updating/installing BriteOnyx content here in directory '$DirHere', from directory '$BO_Home'"
+  rm -r $DirTgt
+  cp    $FileSrc $FileTgt
+
+  # Handle new content
+  mkdir                         $DirTgt
+  cp $DirSrc/declare.src        $DirTgt
+  cp $DirSrc/env.src            $DirTgt
+  cp $DirSrc/maybeActivate.src  $DirTgt
+  mkdir                                               $DirTgt/starter
+  cp $DirSrc/starter/project.hgignore                 $DirTgt/starter
+  cp $DirSrc/starter/project-all-fix-permissions.bash $DirTgt/starter
+  cp $DirSrc/starter/project-env.src                  $DirTgt/starter
+  cp $DirSrc/starter/user-BriteOnyx.src               $DirTgt/starter
+}
+
+main $@
 
 ####################################################################################################
 : <<'DisabledContent'
+  # Handle old content
+  cp -R $DirSrc  $DirTgt
 DisabledContent

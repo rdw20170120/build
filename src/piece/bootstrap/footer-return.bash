@@ -1,3 +1,3 @@
-# Return, but do NOT exit, with a success code
+# Successfully 'return', but do NOT 'exit'
 return 0
 

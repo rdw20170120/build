@@ -1,1 +1,1 @@
-# NOTE: We MUST NOT EVER invoke the 'exit' command from BASH functions
+# NOTE: We MUST NOT EVER 'exit' during BriteOnyx bootstrap or activation

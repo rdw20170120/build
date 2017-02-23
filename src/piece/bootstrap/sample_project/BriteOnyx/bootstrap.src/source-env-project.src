@@ -1,6 +1,0 @@
-# Configure for this project
-
-Script=$BO_Project/env.src
-boScriptRequire $Script || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
-source          $Script || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
-

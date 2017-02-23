@@ -1,20 +1,30 @@
 #!/bin/cat
 [[ -n "$BO_Trace" ]] && echo "TRACE: Executing '$BASH_SOURCE'"
 ####################################################################################################
-# NOTE: We MUST NOT EVER invoke the 'exit' command from BASH functions
+# NOTE: We MUST NOT EVER 'exit' during BriteOnyx bootstrap or activation
 ####################################################################################################
 # NOTE: Uncomment the following two lines for debugging
 # set -o verbose
 # set -o xtrace
+# TODO: SOMEDAY: Add inverse commands to isolate debugging
 
 ####################################################################################################
 # NOTE: Declare needed environment variables here
 
+[[ -n "$BO_Sequence" ]] && echo 'Sequence 013 - TODO'
+
+# TODO: Implement as needed, but defer to $BO_Project/BriteOnyx/env.src for now
+
 ####################################################################################################
-# Return, but do NOT exit, with a success code
+# Successfully 'return', but do NOT 'exit'
 return 0
 
 ####################################################################################################
 : <<'DisabledContent'
-export BO_Version=predeployed
+# NOTE: Copy this content above, to override system portion of final PATH
+export BO_PathSystem=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
+# NOTE: Copy this content above, to override for BriteOnyx development
+export BO_Home=PATH_TO_ROOT_OF_LOCAL_BriteOnyx_REPOSITORY
+export BO_Version=tip
 DisabledContent
