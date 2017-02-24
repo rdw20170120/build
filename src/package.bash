@@ -28,7 +28,8 @@ Cmd+=' cvv'
 Cmd+=' --anchored'
 Cmd+=' --auto-compress'
 Cmd+=" --file=$FileArchive"
-Cmd+=' --owner=bo'
+# NOTE: Owner is verified and rejected on CentOS
+# Cmd+=' --owner=bo'
 Cmd+=' --show-stored-names'
 Cmd+=" activation"
 Cmd+=" doc"
