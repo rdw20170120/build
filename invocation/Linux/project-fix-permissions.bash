@@ -11,9 +11,10 @@ variableRequire   BO_Project
 directoryRequire $BO_Project
 
 fixPermissions () {
-  logInfo "Fixing POSIX permissions within path '$1'"
   parametersRequire 1 "$#"
   valueRequire "$1" 'path'
+
+  logInfo "Fixing POSIX permissions within path '$1'"
 
   # Make all directories accessible by the owner
   find "$1" -type d \! -perm -u+rw -exec ls -al     '{}' \;
@@ -27,9 +28,17 @@ fixPermissions () {
   find "$1" -type f \! -perm -u+x -name '*.bash' -exec ls -al    '{}' \;
   find "$1" -type f \! -perm -u+x -name '*.bash' -exec chmod u+x '{}' \;
 
+  # Make Python scripts executable by the owner
+  find "$1" -type f \! -perm -u+x -name '*.py' -exec ls -al    '{}' \;
+  find "$1" -type f \! -perm -u+x -name '*.py' -exec chmod u+x '{}' \;
+
   # Make Sed scripts NOT executable by the owner
   find "$1" -type f    -perm -u+x -name '*.sed' -exec ls -al    '{}' \;
   find "$1" -type f    -perm -u+x -name '*.sed' -exec chmod u-x '{}' \;
+
+  # Make SH scripts executable by the owner
+  find "$1" -type f \! -perm -u+x -name '*.sh' -exec ls -al    '{}' \;
+  find "$1" -type f \! -perm -u+x -name '*.sh' -exec chmod u+x '{}' \;
 
   # Make BASH source files NOT executable by the owner
   find "$1" -type f    -perm -u+x -name '*.src' -exec ls -al    '{}' \;
@@ -46,8 +55,7 @@ fixPermissions () {
   find "$1" -type f -perm /g+rwx -exec chmod g= '{}' \;
   find "$1" -type f -perm /o+rwx -exec ls -al   '{}' \;
   find "$1" -type f -perm /o+rwx -exec chmod o= '{}' \;
-
-} && export -f fixPermissions
+}
 
 ###################################################################################################
 logInfo "Fixing POSIX permissions in project '$BO_Project'"
@@ -57,3 +65,4 @@ fixPermissions $1
 ###################################################################################################
 : <<'DisabledContent'
 DisabledContent
+
