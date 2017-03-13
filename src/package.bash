@@ -24,11 +24,11 @@ FileArchive=$TMPDIR/BriteOnyx.tb2
 # Generate archive file
 cd $DirSrc
 Cmd='tar'
-Cmd+=' cvv'
+Cmd+=' cv'
 Cmd+=' --anchored'
 Cmd+=' --auto-compress'
 Cmd+=" --file=$FileArchive"
-# NOTE: Owner is verified and rejected on CentOS
+# NOTE: DISABLED: Owner is verified and rejected on CentOS
 # Cmd+=' --owner=bo'
 Cmd+=' --show-stored-names'
 Cmd+=" activation"
