@@ -1,4 +1,3 @@
-[[ -n "$BO_Sequence" ]] && echo 'Sequence 006 - new copy starter files'
 # Copy starter files into place as necessary
 
 DirSrc=$BO_Project/BriteOnyx/starter

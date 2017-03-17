@@ -1,4 +1,3 @@
-[[ -n "$BO_Sequence" ]] && echo 'Sequence 020 - set PATH'
 # Configure PATH
 
 export BO_PathLinux="$BO_Home/invocation/Linux"

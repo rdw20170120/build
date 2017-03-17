@@ -9,14 +9,12 @@
 # TODO: SOMEDAY: Add inverse commands to isolate debugging
 
 ####################################################################################################
-[[ -n "$BO_Sequence" ]] && echo 'Sequence 000 - skip'
 # Skip if BriteOnyx is already activated
 
 Msg='$BO_Home is defined, assuming BriteOnyx already activated'
 [[ -n "$BO_Home" ]] && logDebug "$Msg" && return 0
 
 ####################################################################################################
-[[ -n "$BO_Sequence" ]] && echo 'Sequence 001 - source new_activate'
 # Activate BriteOnyx
 
 Script="$(dirname "$BASH_SOURCE")/../activate.src"
@@ -26,7 +24,6 @@ Msg="FATAL: Status $Status at '$BASH_SOURCE:$LINENO'"
 [[ $Status -ne 0 ]] && echo "$Msg" && return $Status
 
 ####################################################################################################
-[[ -n "$BO_Sequence" ]] && echo 'Sequence ??? - verify postconditions'
 # Verify post-conditions
 
 boVariableRequire   BO_Home || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?

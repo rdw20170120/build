@@ -1,4 +1,3 @@
-[[ -n "$BO_Sequence" ]] && echo 'Sequence 015 - grab source'
 : <<'DisabledContent'
 # Checkout the BriteOnyx source
 

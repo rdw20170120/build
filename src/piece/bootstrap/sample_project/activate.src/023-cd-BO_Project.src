@@ -1,4 +1,3 @@
-[[ -n "$BO_Sequence" ]] && echo 'Sequence 023 - cd BO_Project'
 # Ensure that we are in our project root directory
 
 cd "$BO_Project" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?

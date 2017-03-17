@@ -1,4 +1,3 @@
-[[ -n "$BO_Sequence" ]] && echo 'Sequence ??? - set PATH'
 # Configure environment for Gradle on Linux
 
 export BO_PathGradle=$JAVA_HOME/bin

@@ -1,4 +1,3 @@
-[[ -n "$BO_Sequence" ]] && echo 'Sequence 004 - source bootstrap'
 # Bootstrap BriteOnyx
 
 Script="$BO_Project/BriteOnyx/bootstrap.src"

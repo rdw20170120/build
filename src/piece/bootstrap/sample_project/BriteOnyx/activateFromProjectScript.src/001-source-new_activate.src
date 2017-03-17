@@ -1,4 +1,3 @@
-[[ -n "$BO_Sequence" ]] && echo 'Sequence 001 - source new_activate'
 # Activate BriteOnyx
 
 Script="$(dirname "$BASH_SOURCE")/../activate.src"

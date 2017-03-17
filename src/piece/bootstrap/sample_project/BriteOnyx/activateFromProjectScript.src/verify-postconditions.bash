@@ -1,4 +1,3 @@
-[[ -n "$BO_Sequence" ]] && echo 'Sequence ??? - verify postconditions'
 # Verify post-conditions
 
 boVariableRequire   BO_Home || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?

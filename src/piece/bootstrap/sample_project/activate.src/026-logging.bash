@@ -1,4 +1,3 @@
-[[ -n "$BO_Sequence" ]] && echo 'Sequence 026 - logging'
 # Demonstrate logging
 
 logDebug  "EXAMPLE: This is a debugging message"

@@ -1,3 +1,2 @@
-[[ -n "$BO_Sequence" ]] && echo 'Sequence 009a - alias'
 alias functions='declare -F | sort'
 

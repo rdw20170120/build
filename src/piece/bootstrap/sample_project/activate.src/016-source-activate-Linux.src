@@ -1,4 +1,3 @@
-[[ -n "$BO_Sequence" ]] && echo 'Sequence 016 - source activate Linux'
 # Activate as a Linux project
 
 Script="$BO_Home/activation/Linux/activate.src"

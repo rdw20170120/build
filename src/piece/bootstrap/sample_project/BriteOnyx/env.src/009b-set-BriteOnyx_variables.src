@@ -1,4 +1,3 @@
-[[ -n "$BO_Sequence" ]] && echo 'Sequence 009b - set BriteOnyx variables'
 # Configure BriteOnyx
 
 export BO_Url='ssh://hg@bb/robwilliams/build'

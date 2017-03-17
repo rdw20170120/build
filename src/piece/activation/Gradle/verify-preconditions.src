@@ -1,4 +1,3 @@
-[[ -n "$BO_Sequence" ]] && echo 'Sequence ??? - verify preconditions'
 # Verify pre-conditions
 
 [[   -z "$BO_Home"          ]] && echo 'FATAL: Missing $BO_Home'                && return 63

@@ -32,9 +32,11 @@ Cmd+=" --file=$FileArchive"
 # Cmd+=' --owner=bo'
 Cmd+=' --show-stored-names'
 Cmd+=" activation"
+Cmd+=" BriteOnyx"
 Cmd+=" doc"
 Cmd+=" invocation"
 Cmd+=" sample_project"
+Cmd+=" env.src"
 Cmd+=" README.rst"
 $Cmd
 

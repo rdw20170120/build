@@ -1,4 +1,3 @@
-[[ -n "$BO_Sequence" ]] && echo 'Sequence 018 - source declare'
 # Configure Linux environment
 
 Script="${Dir}/declare.src"

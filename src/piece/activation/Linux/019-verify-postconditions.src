@@ -1,4 +1,3 @@
-[[ -n "$BO_Sequence" ]] && echo 'Sequence 019 - verify postconditions'
 # Verify post-conditions
 
 [[ -z "$BO_E_Config" ]] && echo 'FATAL: Missing $BO_E_Config' && return 63

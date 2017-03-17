@@ -1,4 +1,3 @@
-[[ -n "$BO_Sequence" ]] && echo 'Sequence 000 - startup'
 # Startup
 
 echo "INFO:  Activating the BriteOnyx framework for this project..."
