@@ -65,6 +65,7 @@ export -f valueRequire
 
 variableRequire () {
   # Require variable $1, abort if it is missing
+  # TODO: Can variable be defined, but have no value (I think so)?
   parametersRequire 1 "$#"
   parameterRequire  "$1" 1 'name of variable that is required'
 
@@ -76,6 +77,21 @@ variableRequire () {
 }
 export -f variableRequire
 
+variableTrace () {
+  # Trace variable $1, showing its value or that it is missing
+  parametersRequire 1 "$#"
+  parameterRequire  "$1" 1 'name of variable to be traced'
+
+  declare Name=$1
+  declare Value="${!Name}"
+  if [[ -z "${Value}" ]] ; then
+    logWarn "Variable '$Name' is missing"
+  else
+    logInfo "Variable '$Name' = '$Value'"
+  fi
+}
+export -f variableTrace
+
 ###################################################################################################
 # Return, but do NOT exit, with a success code
 return "$BO_E_Ok"
@@ -83,3 +99,4 @@ return "$BO_E_Ok"
 ###################################################################################################
 : <<'DisabledContent'
 DisabledContent
+
