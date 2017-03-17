@@ -4,6 +4,7 @@
 DirSrc=$BO_Project/BriteOnyx/starter
 
 DirTgt=$HOME
+[[ ! -e "$DirTgt" ]] && mkdir -p $DirTgt
 FileTgt=$DirTgt/BriteOnyx.src
 # Move previous scripts to new path
 [[   -f $DirTgt/BriteOnyx-env.bash ]] && mv $DirTgt/BriteOnyx-env.bash $FileTgt
@@ -12,6 +13,7 @@ FileTgt=$DirTgt/BriteOnyx.src
 [[ ! -f $FileTgt ]] && cp $DirSrc/user-BriteOnyx.src $FileTgt
 
 DirTgt=$BO_Project
+[[ ! -e "$DirTgt" ]] && mkdir -p $DirTgt
 
 FileTgt=$DirTgt/env.src
 [[ ! -f $FileTgt ]] && cp $DirSrc/project-env.src $FileTgt
@@ -20,6 +22,7 @@ FileTgt=$DirTgt/.hgignore
 [[ ! -f $FileTgt ]] && cp $DirSrc/project.hgignore $FileTgt
 
 DirTgt=$BO_Project/bin/Linux
+[[ ! -e "$DirTgt" ]] && mkdir -p $DirTgt
 
 FileTgt=$DirTgt/all-fix-permissions.bash
 [[ ! -f $FileTgt ]] && cp $DirSrc/project-all-fix-permissions.bash $FileTgt

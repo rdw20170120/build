@@ -1,0 +1,24 @@
+#!/bin/cat
+[[ -n "$BO_Trace" ]] && echo "TRACE: Executing '$BASH_SOURCE'"
+####################################################################################################
+# NOTE: Assumes this project has been activated using the BriteOnyx framework.
+# NOTE: We MUST NOT EVER 'exit' during BriteOnyx bootstrap or activation
+####################################################################################################
+# NOTE: Uncomment the following two lines for debugging
+# set -o verbose
+# set -o xtrace
+# TODO: SOMEDAY: Add inverse commands to isolate debugging
+
+####################################################################################################
+# Configure this project using the BriteOnyx framework
+
+[[ -n "$BO_Sequence" ]] && echo 'Sequence 011 - TODO'
+# TODO: Implement
+
+####################################################################################################
+# Successfully 'return', but do NOT 'exit'
+return 0
+
+####################################################################################################
+: <<'DisabledContent'
+DisabledContent

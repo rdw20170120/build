@@ -1,0 +1,38 @@
+################################################################################
+syntax: glob
+
+# Apple Mac OSX
+.DS_Store
+
+# archive
+*.gz
+*.tgz
+*.zip
+
+# editor temporaries
+*~
+
+# Mercurial
+*.orig
+
+# output
+*.err
+*.log
+*.out
+
+# Python
+# *.pyc
+
+# Vim
+.*.swp
+
+################################################################################
+syntax: regexp
+
+# output
+# ^out$
+
+# Python
+# ^dist$
+# ^MANIFEST$
+# ^PVE$

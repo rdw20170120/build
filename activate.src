@@ -1,0 +1,193 @@
+#!/bin/cat
+[[ -n "$BO_Trace" ]] && echo "TRACE: Executing '$BASH_SOURCE'"
+####################################################################################################
+# NOTE: We MUST NOT EVER 'exit' during BriteOnyx bootstrap or activation
+####################################################################################################
+# NOTE: Uncomment the following two lines for debugging
+# set -o verbose
+# set -o xtrace
+# TODO: SOMEDAY: Add inverse commands to isolate debugging
+
+####################################################################################################
+# Activate the BriteOnyx framework to manage this project directory tree
+#
+# NOTE: This script, and EVERY script that it calls, must NOT invoke 'exit'!  The user calling this
+#   script must be allowed to preserve their shell and every effort must be made to inform the user
+#   of problems while continuing execution where possible.  Terminating the shell robs the user of
+#   useful feedback and interrupts their work, which is unacceptable.  Instead, the BASH 'return'
+#   statement should be invoked to end execution with an appropriate status code.
+#
+# TODO: Verify that $BO_Project does indeed point to the root of our project directory tree
+
+####################################################################################################
+[[ -n "$BO_Sequence" ]] && echo 'Sequence 000 - startup'
+# Startup
+
+echo "INFO:  Activating the BriteOnyx framework for this project..."
+echo "WARN:  This script MUST be executed as 'source activate.src', WAS IT?"
+env | sort > "./BO-env-incoming.out"
+
+####################################################################################################
+[[ -n "$BO_Sequence" ]] && echo 'Sequence 001 - set BO_Project'
+# Remember the directory containing this script as our project root
+
+# TODO: Should we replicate this approach elsewhere for accessing $BASH_SOURCE?
+export BO_Project="$(dirname $BASH_SOURCE[0])"
+
+# TODO: REVIEW: Shall we NOT cd into our project directory since it changes
+# the caller's execution environment?
+# cd "$BO_Project" || return $?
+
+####################################################################################################
+[[ -n "$BO_Sequence" ]] && echo 'Sequence 002 - source declare BriteOnyx'
+# Declare BriteOnyx support functionality
+
+Script="$BO_Project/BriteOnyx/declare.src"
+[[ ! -f "$Script" ]] && echo "FATAL: Missing script '$Script'" && return 63
+source "$Script" ; Status=$?
+[[ "${Status}" -ne 0 ]] && echo "FATAL: Script exited with '${Status}'" && return ${Status}
+
+####################################################################################################
+[[ -n "$BO_Sequence" ]] && echo 'Sequence 003 - reset BO_Project'
+# NOTE: Now that we have our support functionality declared, we can use it from here on
+
+boVariableRequire 'BO_Project' || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
+boTraceVariable 'BO_Project'
+export BO_Project="$(boNodeCanonical $BO_Project)"
+boTraceVariable 'BO_Project'
+boLogInfo "Canonical form of BO_Project directory pathname is '$BO_Project'"
+boDirectoryRequire "$BO_Project" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
+
+####################################################################################################
+[[ -n "$BO_Sequence" ]] && echo 'Sequence 006 - new copy starter files'
+# Copy starter files into place as necessary
+
+DirSrc=$BO_Project/BriteOnyx/starter
+
+DirTgt=$HOME
+FileTgt=$DirTgt/BriteOnyx.src
+# Move previous scripts to new path
+[[   -f $DirTgt/BriteOnyx-env.bash ]] && mv $DirTgt/BriteOnyx-env.bash $FileTgt
+[[   -f $DirTgt/BriteOnyx-env.src  ]] && mv $DirTgt/BriteOnyx-env.src  $FileTgt
+# Copy starter script, if necessary
+[[ ! -f $FileTgt ]] && cp $DirSrc/user-BriteOnyx.src $FileTgt
+
+DirTgt=$BO_Project
+
+FileTgt=$DirTgt/env.src
+[[ ! -f $FileTgt ]] && cp $DirSrc/project-env.src $FileTgt
+
+FileTgt=$DirTgt/.hgignore
+[[ ! -f $FileTgt ]] && cp $DirSrc/project.hgignore $FileTgt
+
+DirTgt=$BO_Project/bin/Linux
+
+FileTgt=$DirTgt/all-fix-permissions.bash
+[[ ! -f $FileTgt ]] && cp $DirSrc/project-all-fix-permissions.bash $FileTgt
+
+: <<'DisabledContent'
+FileTgt=$DirTgt/declare.src
+[[ ! -f $FileTgt ]] && cp $DirSrc/project-declare.src $FileTgt
+
+FileTgt=$DirTgt/development.rst
+[[ ! -f $FileTgt ]] && cp $DirSrc/project-development.rst $FileTgt
+
+FileTgt=$DirTgt/README.rst
+[[ ! -f $FileTgt ]] && cp $DirSrc/project-README.rst $FileTgt
+
+DirTgt=$BO_Project/bin/Linux/helper
+[[ ! -e $DirTgt ]] && mkdir -p $DirTgt
+FileTgt=$DirTgt/declare-BASH.src
+[[ ! -f $FileTgt ]] && cp $DirSrc/project-declare-BASH.src $FileTgt
+DisabledContent
+
+####################################################################################################
+[[ -n "$BO_Sequence" ]] && echo 'Sequence 007 - source env BriteOnyx'
+# Configure for BriteOnyx
+
+Script="$BO_Project/BriteOnyx/env.src"
+boScriptRequire "$Script" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
+source          "$Script" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
+
+####################################################################################################
+[[ -n "$BO_Sequence" ]] && echo 'Sequence 012 - source env user'
+# Configure for this user
+
+Script=$HOME/BriteOnyx.src
+boScriptRequire "$Script" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
+source          "$Script" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
+
+####################################################################################################
+[[ -n "$BO_Sequence" ]] && echo 'Sequence 009c - set BO_PathSystem'
+
+[[ -z "$BO_PathSystem" ]] && export BO_PathSystem=$PATH
+
+####################################################################################################
+[[ -n "$BO_Sequence" ]] && echo 'Sequence 014 - new verify bootstrap'
+# Verify BriteOnyx bootstrap configuration
+
+boVariableRequire   BO_Home || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
+boDirectoryRequire $BO_Home || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
+
+boVariableRequire BO_PathSystem || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
+
+# TODO: Implement additional verifications?
+
+####################################################################################################
+[[ -n "$BO_Sequence" ]] && echo 'Sequence 016 - source activate Linux'
+# Activate as a Linux project
+
+Script="$BO_Home/activation/Linux/activate.src"
+boScriptRequire "$Script" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
+source          "$Script" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
+
+####################################################################################################
+[[ -n "$BO_Sequence" ]] && echo 'Sequence 024 - call fix_permissions'
+# Fix file permissions throughout project
+
+Script="$BO_Project/bin/Linux/all-fix-permissions.bash"
+boScriptRequire "$Script" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
+                "$Script" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
+
+####################################################################################################
+[[ -n "$BO_Sequence" ]] && echo 'Sequence 025 - source declare project'
+# Declare optional project functionality
+
+Script="$BO_Project/declare.src"
+if [[ -f "$Script" ]] ; then
+  source "$Script" ; Status=$?
+  [[ "${Status}" -ne 0 ]] && echo "FATAL: Script exited with '${Status}'" && return ${Status}
+fi
+
+####################################################################################################
+[[ -n "$BO_Sequence" ]] && echo 'Sequence 010 - source env project'
+# Configure for this project
+
+Script=$BO_Project/env.src
+boScriptRequire $Script || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
+source          $Script || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
+
+####################################################################################################
+[[ -n "$BO_Sequence" ]] && echo 'Sequence 026 - logging'
+# Demonstrate logging
+
+logDebug  "EXAMPLE: This is a debugging message"
+logInfo   "EXAMPLE: This is an informational message"
+logWarn   "EXAMPLE: This is a warning message"
+logError  "EXAMPLE: This is an error message"
+_logFatal "EXAMPLE: This is a fatal message"
+
+####################################################################################################
+[[ -n "$BO_Sequence" ]] && echo 'Sequence 027 - shutdown'
+# Shutdown
+
+logInfo "Project '$BO_Project' is now activated, done."
+env | sort > "./BO-env-outgoing.out"
+
+####################################################################################################
+# Successfully 'return', but do NOT 'exit'
+return 0
+
+####################################################################################################
+: <<'DisabledContent'
+DisabledContent

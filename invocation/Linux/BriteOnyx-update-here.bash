@@ -18,12 +18,10 @@ main () {
   local -r DirHere=$PWD
   local -r DirSrc=$BO_Home/sample_project/BriteOnyx
   local -r DirTgt=$DirHere/BriteOnyx
-  local -r FileSrc=$BO_Home/sample_project/activate.src
-  local -r FileTgt=$DirHere/activate.src
 
   echo "Updating/installing BriteOnyx content here in directory '$DirHere', from directory '$BO_Home'"
-  rm -r $DirTgt
-  cp    $FileSrc $FileTgt
+  [[ -d "$DirTgt" ]] && rm -r $DirTgt
+  cp $BO_Home/sample_project/activate.src $DirHere/activate.src
 
   # Handle new content
   mkdir                         $DirTgt
