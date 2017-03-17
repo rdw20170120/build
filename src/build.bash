@@ -17,7 +17,7 @@ echo 'Build BriteOnyx scripts from source'
 
 DirSrc=$This
 DirTgt=$TMPDIR/BriteOnyx/tgt
-Script=$DirSrc/build-all.bash
+Script=$DirSrc/bin/build-all.bash
 
 # Clean old output
 [[ -d "$DirTgt" ]] && rm -fr $DirTgt
