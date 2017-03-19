@@ -28,11 +28,11 @@ main () {
   cp $DirSrc/declare.src        $DirTgt
   cp $DirSrc/env.src            $DirTgt
   cp $DirSrc/maybeActivate.src  $DirTgt
-  mkdir                                               $DirTgt/starter
-  cp $DirSrc/starter/project.hgignore                 $DirTgt/starter
-  cp $DirSrc/starter/project-all-fix-permissions.bash $DirTgt/starter
-  cp $DirSrc/starter/project-env.src                  $DirTgt/starter
-  cp $DirSrc/starter/user-BriteOnyx.src               $DirTgt/starter
+  mkdir                                           $DirTgt/starter
+  cp $DirSrc/starter/project.hgignore             $DirTgt/starter
+  cp $DirSrc/starter/project-fix-permissions.bash $DirTgt/starter
+  cp $DirSrc/starter/project-env.src              $DirTgt/starter
+  cp $DirSrc/starter/user-BriteOnyx.src           $DirTgt/starter
 }
 
 main $@

@@ -1,14 +1,12 @@
 #!/bin/bash
 [[ -n "$BO_Trace" ]] && echo "TRACE: Executing '$BASH_SOURCE'"
 # NOTE: Assumes that this project has been activated using the BriteOnyx framework.
-# NOTE: Apple Mac OSX BASH find does not support -perm with "/" syntax
+###################################################################################################
+# NOTE: Apple Mac OSX BASH 'find' does not support '-perm' with '/' syntax
 # TODO: SOMEDAY FIX: Make this work on OSX (unrecognized syntax)
 # TODO: SOMEDAY Refactor individual commands into BASH functions
 # TODO: SOMEDAY Make this work against contents of BO_Project, safely
 ###################################################################################################
-
-variableRequire   BO_Project
-directoryRequire $BO_Project
 
 fixPermissions () {
   parametersRequire 1 "$#"
@@ -58,9 +56,12 @@ fixPermissions () {
 }
 
 ###################################################################################################
-logInfo "Fixing POSIX permissions in project '$BO_Project'"
 
-fixPermissions $1
+if [[ -z "$BO_Project" ]] ; then
+  echo 'This project is not activated, aborting'
+else
+  fixPermissions $1
+fi
 
 ###################################################################################################
 : <<'DisabledContent'

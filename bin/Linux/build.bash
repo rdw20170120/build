@@ -11,35 +11,24 @@ Self="$BASH_SOURCE"
 This="$(dirname $Self)"
 
 ################################################################################
-echo 'Package BriteOnyx scripts'
 
-[[ -z "$TMPDIR" ]] && TMPDIR=$HOME/tmp/BriteOnyx
+if [[ -z "$BO_Project" ]] ; then
+    echo 'This project is not activated, aborting'
+else
+  variableRequire BO_ProjectName 
+  variableRequire TMPDIR
 
-DirSrc=$This/..
-FileArchive=$TMPDIR/BriteOnyx.tb2
+  logInfo "Build $BO_ProjectName scripts from source"
 
-# Clean old output
-[[ -f "$FileArchive" ]] && rm -f $FileArchive
+  DirSrc=$BO_Project/src
+  DirTgt=$TMPDIR/$BO_ProjectName/tgt
 
-# Generate archive file
-cd $DirSrc
-Cmd='tar'
-Cmd+=' cv'
-Cmd+=' --anchored'
-Cmd+=' --auto-compress'
-Cmd+=" --file=$FileArchive"
-# NOTE: DISABLED: Owner is verified and rejected on CentOS
-# Cmd+=' --owner=bo'
-Cmd+=' --show-stored-names'
-Cmd+=" activation"
-Cmd+=" BriteOnyx"
-Cmd+=" doc"
-Cmd+=" invocation"
-Cmd+=" sample_project"
-Cmd+=" env.src"
-Cmd+=" README.rst"
-$Cmd
+  # Build new output
+  directoryRecreate $DirTgt
+  scriptExecute $BO_Project/src/bin/build-all.bash $DirSrc $DirTgt
+fi
 
 ################################################################################
 : <<'DisabledContent'
 DisabledContent
+
