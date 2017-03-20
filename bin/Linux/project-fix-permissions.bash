@@ -14,6 +14,15 @@ main () {
   scriptExecute $Script $BO_Project/helper
   scriptExecute $Script $BO_Project/sample_project
   scriptExecute $Script $BO_Project/src
+  scriptExecute $Script $BO_Project/activate.src
+  scriptExecute $Script $BO_Project/BO-env-incoming.out
+  scriptExecute $Script $BO_Project/BO-env-outgoing.out
+  scriptExecute $Script $BO_Project/current_tag.txt
+  scriptExecute $Script $BO_Project/env.src
+  scriptExecute $Script $BO_Project/.hgignore
+  scriptExecute $Script $BO_Project/.hgtags
+  scriptExecute $Script $BO_Project/LICENSE.rst
+  scriptExecute $Script $BO_Project/README.rst
 }
 
 ################################################################################

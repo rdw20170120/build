@@ -6,7 +6,6 @@
 # NOTE: Uncomment the following two lines for debugging
 # set -o verbose
 # set -o xtrace
-# TODO: SOMEDAY: Add inverse commands to isolate debugging
 
 ####################################################################################################
 # Activate the BriteOnyx framework to manage this project directory tree
@@ -16,8 +15,6 @@
 #   of problems while continuing execution where possible.  Terminating the shell robs the user of
 #   useful feedback and interrupts their work, which is unacceptable.  Instead, the BASH 'return'
 #   statement should be invoked to end execution with an appropriate status code.
-#
-# TODO: Verify that $BO_Project does indeed point to the root of our project directory tree
 
 ####################################################################################################
 # Startup
@@ -59,6 +56,7 @@ boDirectoryRequire "$BO_Project" || boFailed "$BASH_SOURCE" "$LINENO" $? || retu
 
 DirSrc=$BO_Project/BriteOnyx/starter
 
+# TODO: variableRequire HOME
 DirTgt=$HOME
 [[ ! -e "$DirTgt" ]] && mkdir -p $DirTgt
 
@@ -105,9 +103,14 @@ FileTgt=$DirTgt/declare-BASH.src
 DisabledContent
 
 ####################################################################################################
-# Capture previous PATH
+# Remember PATH
 
 [[ -z "$BO_PathSystem" ]] && export BO_PathSystem=$PATH
+
+####################################################################################################
+# Set TMPDIR 
+
+[[ -z "$TMPDIR" ]] && export TMPDIR=$HOME/tmp
 
 ####################################################################################################
 # Configure for this user
@@ -133,10 +136,14 @@ source          "$Script" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
 ####################################################################################################
 # Verify BriteOnyx bootstrap configuration
 
+boVariableRequire TMPDIR || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
+
 boVariableRequire   BO_Home || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
 boDirectoryRequire $BO_Home || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
 
 boVariableRequire BO_PathSystem || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
+
+boVariableRequire BO_ProjectName || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
 
 ####################################################################################################
 # Activate as a Linux project
@@ -175,10 +182,6 @@ _logFatal "EXAMPLE: This is a fatal message"
 
 logInfo "Project '$BO_Project' is now activated, done."
 env | sort >./BO-env-outgoing.out
-
-####################################################################################################
-# Successfully 'return', but do NOT 'exit'
-return 0
 
 ####################################################################################################
 : <<'DisabledContent'
