@@ -105,11 +105,9 @@ FileTgt=$DirTgt/declare-BASH.src
 DisabledContent
 
 ####################################################################################################
-# Configure for BriteOnyx
+# Capture previous PATH
 
-Script="$BO_Project/BriteOnyx/env.src"
-boScriptRequire "$Script" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
-source          "$Script" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
+[[ -z "$BO_PathSystem" ]] && export BO_PathSystem=$PATH
 
 ####################################################################################################
 # Configure for this user
@@ -119,8 +117,18 @@ boScriptRequire "$Script" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
 source          "$Script" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
 
 ####################################################################################################
+# Configure for this project
 
-[[ -z "$BO_PathSystem" ]] && export BO_PathSystem=$PATH
+Script=$BO_Project/env.src
+boScriptRequire $Script || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
+source          $Script || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
+
+####################################################################################################
+# Configure for BriteOnyx
+
+Script="$BO_Project/BriteOnyx/env.src"
+boScriptRequire "$Script" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
+source          "$Script" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
 
 ####################################################################################################
 # Verify BriteOnyx bootstrap configuration
@@ -130,21 +138,12 @@ boDirectoryRequire $BO_Home || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
 
 boVariableRequire BO_PathSystem || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
 
-# TODO: Implement additional verifications?
-
 ####################################################################################################
 # Activate as a Linux project
 
 Script="$BO_Home/helper/activation/Linux/activate.src"
 boScriptRequire "$Script" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
 source          "$Script" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
-
-####################################################################################################
-# Fix file permissions throughout project
-
-Script="$BO_Project/bin/Linux/project-fix-permissions.bash"
-boScriptRequire "$Script" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
-                "$Script" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
 
 ####################################################################################################
 # Declare optional project functionality
@@ -156,11 +155,11 @@ if [[ -f "$Script" ]] ; then
 fi
 
 ####################################################################################################
-# Configure for this project
+# Fix file permissions throughout project
 
-Script=$BO_Project/env.src
-boScriptRequire $Script || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
-source          $Script || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
+Script="$BO_Project/bin/Linux/project-fix-permissions.bash"
+boScriptRequire "$Script" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
+                "$Script" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
 
 ####################################################################################################
 # Demonstrate logging
@@ -184,3 +183,4 @@ return 0
 ####################################################################################################
 : <<'DisabledContent'
 DisabledContent
+

@@ -50,9 +50,9 @@ FileTgt=$DirTgt/BriteOnyx.src
 [[ ! -f $FileTgt ]] && cp $DirSrc/user-BriteOnyx.src $FileTgt
 
 ####################################################################################################
-# Configure for BriteOnyx
+# Configure for this user
 
-Script="$BO_Project/BriteOnyx/env.src"
+Script=$HOME/BriteOnyx.src
 boScriptRequire "$Script" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
 source          "$Script" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
 
@@ -64,9 +64,9 @@ boScriptRequire $Script || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
 source          $Script || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
 
 ####################################################################################################
-# Configure for this user
+# Configure for BriteOnyx
 
-Script=$HOME/BriteOnyx.src
+Script="$BO_Project/BriteOnyx/env.src"
 boScriptRequire "$Script" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
 source          "$Script" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
 

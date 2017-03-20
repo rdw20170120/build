@@ -25,9 +25,11 @@ else
   FileTag=current_tag.txt
   Tag=$(cat $BO_Project/$FileTag)
   FileArchive=$DirTgt/${BO_ProjectName}-${Tag}.tb2
+  FileSig=${FileArchive}.md5
 
   # Clean old output
   [[ -f "$FileArchive" ]] && rm -f $FileArchive
+  [[ -f "$FileSig"     ]] && rm -f $FileSig
 
   # Generate archive file
   cd $DirSrc
@@ -45,6 +47,11 @@ else
   Cmd+=" README.rst"
   Cmd+=" $FileTag"
   $Cmd
+  abortOnFail $?
+
+  # Generate signature
+  md5sum --tag $FileArchive >$FileSig
+  abortOnFail $?
 fi
 
 ################################################################################
