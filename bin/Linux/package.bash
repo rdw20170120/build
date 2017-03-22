@@ -24,12 +24,12 @@ else
   directoryCreate $DirTgt
   FileTag=current_tag.txt
   Tag=$(cat $BO_Project/$FileTag)
-  FileArchive=$DirTgt/${BO_ProjectName}-${Tag}.tb2
+  FileArchive=${BO_ProjectName}-${Tag}.tb2
   FileSig=${FileArchive}.md5
 
   # Clean old output
-  [[ -f "$FileArchive" ]] && rm -f $FileArchive
-  [[ -f "$FileSig"     ]] && rm -f $FileSig
+  [[ -f "$DirTgt/$FileArchive" ]] && rm -f $DirTgt/$FileArchive
+  [[ -f "$DirTgt/$FileSig"     ]] && rm -f $DirTgt/$FileSig
 
   # Generate archive file
   cd $DirSrc
@@ -37,7 +37,7 @@ else
   Cmd+=' cv'
   Cmd+=' --anchored'
   Cmd+=' --auto-compress'
-  Cmd+=" --file=$FileArchive"
+  Cmd+=" --file=$DirTgt/$FileArchive"
   # NOTE: DISABLED: Owner is verified and rejected on CentOS
   # Cmd+=' --owner=bo'
   Cmd+=' --show-stored-names'
@@ -50,6 +50,7 @@ else
   abortOnFail $?
 
   # Generate signature
+  cd $DirTgt
   md5sum --tag $FileArchive >$FileSig
   abortOnFail $?
 fi
