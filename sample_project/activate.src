@@ -103,16 +103,6 @@ FileTgt=$DirTgt/declare-BASH.src
 DisabledContent
 
 ####################################################################################################
-# Remember PATH
-
-[[ -z "$BO_PathSystem" ]] && export BO_PathSystem=$PATH
-
-####################################################################################################
-# Set TMPDIR 
-
-[[ -z "$TMPDIR" ]] && export TMPDIR=$HOME/tmp
-
-####################################################################################################
 # Configure for this user
 
 Script=$HOME/BriteOnyx.src
@@ -136,14 +126,17 @@ source          "$Script" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
 ####################################################################################################
 # Verify BriteOnyx bootstrap configuration
 
-boVariableRequire TMPDIR || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
-
 boVariableRequire   BO_Home || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
 boDirectoryRequire $BO_Home || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
 
-boVariableRequire BO_PathSystem || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
-
 boVariableRequire BO_ProjectName || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
+
+####################################################################################################
+# Remember PATH
+
+[[ -z "$BO_PathSystem" ]] && \
+  export BO_PathSystem=$PATH && \
+  echo "INFO:  Remembering BO_PathSystem='$BO_PathSystem'"
 
 ####################################################################################################
 # Activate as a Linux project
@@ -153,6 +146,12 @@ boScriptRequire "$Script" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
 source          "$Script" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
 
 ####################################################################################################
+# Set TMPDIR 
+
+export TMPDIR=$TMPDIR/$BO_ProjectName
+echo "INFO:  Remembering TMPDIR='$TMPDIR'"
+
+####################################################################################################
 # Declare optional project functionality
 
 Script="$BO_Project/declare.src"
@@ -160,13 +159,6 @@ if [[ -f "$Script" ]] ; then
   source "$Script" ; Status=$?
   [[ "${Status}" -ne 0 ]] && echo "FATAL: Script exited with '${Status}'" && return ${Status}
 fi
-
-####################################################################################################
-# Fix file permissions throughout project
-
-Script="$BO_Project/bin/Linux/project-fix-permissions.bash"
-boScriptRequire "$Script" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
-                "$Script" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
 
 ####################################################################################################
 # Demonstrate logging
@@ -180,10 +172,14 @@ _logFatal "EXAMPLE: This is a fatal message"
 ####################################################################################################
 # Shutdown
 
-logInfo "Project '$BO_Project' is now activated, done."
+logInfo "Project '$BO_ProjectName' in directory '$BO_Project' is now activated, done."
 env | sort >./BO-env-outgoing.out
 
 ####################################################################################################
 : <<'DisabledContent'
+# Fix file permissions throughout project
+Script="$BO_Project/bin/Linux/project-fix-permissions.bash"
+boScriptRequire "$Script" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
+                "$Script" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
 DisabledContent
 

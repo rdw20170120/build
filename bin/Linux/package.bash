@@ -20,7 +20,7 @@ else
   logInfo "Package $BO_ProjectName scripts"
 
   DirSrc=$BO_Project
-  DirTgt=$TMPDIR/$BO_ProjectName
+  DirTgt=$TMPDIR
   directoryCreate $DirTgt
   FileTag=current_tag.txt
   Tag=$(cat $BO_Project/$FileTag)

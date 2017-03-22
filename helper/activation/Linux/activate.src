@@ -1,13 +1,11 @@
 #!/bin/cat
 [[ -n "$BO_Trace" ]] && echo "TRACE: Executing '$BASH_SOURCE'"
 ####################################################################################################
-# NOTE: Assumes this project has been activated using the BriteOnyx framework.
 # NOTE: We MUST NOT EVER 'exit' during BriteOnyx bootstrap or activation
 ####################################################################################################
 # NOTE: Uncomment the following two lines for debugging
 # set -o verbose
 # set -o xtrace
-# TODO: SOMEDAY: Add inverse commands to isolate debugging
 
 ####################################################################################################
 # Verify pre-conditions
@@ -26,9 +24,7 @@ Dir="$BO_Home/helper/activation/Linux"
 
 Script="${Dir}/declare.src"
 [[ ! -f "${Script}" ]] && echo "FATAL: Missing script '${Script}'" && return 63
-
 source "${Script}"
-
 Status=$?
 [[ ${Status} -ne 0 ]] && echo "FATAL: Exit code ${Status} at '$BASH_SOURCE':$LINENO" && return ${Status}
 
@@ -70,10 +66,6 @@ fi
 alias ignored='hg status --ignored | grep -v work-in-progress | grep -v wip'
 alias someday='grep -Einrw TODO . --include=*.bash --include=*.src --include=*.txt | sort | grep -v work-in-progress'
 alias todo='grep -Einrw TODO . --include=*.bash --include=*.src --include=*.txt | sort | grep -v work-in-progress | grep -v SOMEDAY'
-
-####################################################################################################
-# Return, but do NOT exit, with a success code
-return "$BO_E_Ok"
 
 ####################################################################################################
 : <<'DisabledContent'
