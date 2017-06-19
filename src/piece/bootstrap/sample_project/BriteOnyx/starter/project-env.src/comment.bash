@@ -1,2 +1,2 @@
-# Configure this project using the BriteOnyx framework
+# Configure this project
 

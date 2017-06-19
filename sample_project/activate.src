@@ -6,6 +6,7 @@
 # NOTE: Uncomment the following two lines for debugging
 # set -o verbose
 # set -o xtrace
+# TODO: SOMEDAY: Add inverse commands to isolate debugging
 
 ####################################################################################################
 # Activate the BriteOnyx framework to manage this project directory tree
@@ -15,6 +16,8 @@
 #   of problems while continuing execution where possible.  Terminating the shell robs the user of
 #   useful feedback and interrupts their work, which is unacceptable.  Instead, the BASH 'return'
 #   statement should be invoked to end execution with an appropriate status code.
+#
+# TODO: SOMEDAY: Verify that $BO_Project does indeed point to the root of our project directory tree
 
 ####################################################################################################
 # Startup
@@ -56,7 +59,7 @@ boDirectoryRequire "$BO_Project" || boFailed "$BASH_SOURCE" "$LINENO" $? || retu
 
 DirSrc=$BO_Project/BriteOnyx/starter
 
-# TODO: variableRequire HOME
+variableRequire HOME
 DirTgt=$HOME
 [[ ! -e "$DirTgt" ]] && mkdir -p $DirTgt
 
@@ -177,9 +180,4 @@ env | sort >./BO-env-outgoing.out
 
 ####################################################################################################
 : <<'DisabledContent'
-# Fix file permissions throughout project
-Script="$BO_Project/bin/Linux/project-fix-permissions.bash"
-boScriptRequire "$Script" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
-                "$Script" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
 DisabledContent
-

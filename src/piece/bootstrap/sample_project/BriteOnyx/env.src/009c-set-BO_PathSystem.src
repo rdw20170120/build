@@ -1,3 +1,6 @@
+# Remember PATH
 
-[[ -z "$BO_PathSystem" ]] && export BO_PathSystem=$PATH
+[[ -z "$BO_PathSystem" ]] && \
+  export BO_PathSystem=$PATH && \
+  echo "INFO:  Remembering BO_PathSystem='$BO_PathSystem'"
 

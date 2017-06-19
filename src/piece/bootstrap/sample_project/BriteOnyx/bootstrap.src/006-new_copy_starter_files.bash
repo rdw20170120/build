@@ -2,8 +2,10 @@
 
 DirSrc=$BO_Project/BriteOnyx/starter
 
+variableRequire HOME
 DirTgt=$HOME
 [[ ! -e "$DirTgt" ]] && mkdir -p $DirTgt
+
 FileTgt=$DirTgt/BriteOnyx.src
 # Move previous scripts to new path
 [[   -f $DirTgt/BriteOnyx-env.bash ]] && mv $DirTgt/BriteOnyx-env.bash $FileTgt
@@ -23,8 +25,11 @@ FileTgt=$DirTgt/.hgignore
 DirTgt=$BO_Project/bin/Linux
 [[ ! -e "$DirTgt" ]] && mkdir -p $DirTgt
 
-FileTgt=$DirTgt/all-fix-permissions.bash
-[[ ! -f $FileTgt ]] && cp $DirSrc/project-all-fix-permissions.bash $FileTgt
+FileTgt=$DirTgt/project-fix-permissions.bash
+# Move previous scripts to new path
+[[   -f $DirTgt/all-fix-permissions.bash ]] && mv $DirTgt/all-fix-permissions.bash $FileTgt
+# Copy starter script, if necessary
+[[ ! -f $FileTgt ]] && cp $DirSrc/project-fix-permissions.bash $FileTgt
 
 : <<'DisabledContent'
 FileTgt=$DirTgt/declare.src
@@ -38,6 +43,7 @@ FileTgt=$DirTgt/README.rst
 
 DirTgt=$BO_Project/bin/Linux/helper
 [[ ! -e $DirTgt ]] && mkdir -p $DirTgt
+
 FileTgt=$DirTgt/declare-BASH.src
 [[ ! -f $FileTgt ]] && cp $DirSrc/project-declare-BASH.src $FileTgt
 DisabledContent

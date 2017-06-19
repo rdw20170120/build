@@ -1,8 +1,9 @@
 #!/bin/cat
 [[ -n "$BO_Trace" ]] && echo "TRACE: Executing '$BASH_SOURCE'"
 ####################################################################################################
-# Configure this project using the BriteOnyx framework
+# Configure this project
 
+# TODO: Implement
 export BO_ProjectName=TODO
 
 ####################################################################################################

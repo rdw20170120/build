@@ -1,0 +1,5 @@
+# Set TMPDIR 
+
+export TMPDIR=$TMPDIR/$BO_ProjectName
+echo "INFO:  Remembering TMPDIR='$TMPDIR'"
+

@@ -53,6 +53,7 @@ cat >>$File <$Dir/003-reset-BO_Project.src
 
 # NOTE: Separate script pulled into this one
 # cat >>$File <$Dir/004-source-bootstrap.src
+
 Dir=$DirSrc/piece/bootstrap/sample_project/BriteOnyx/bootstrap.src
 
 # TODO: REMOVE: 005 is redundant of 003
@@ -63,19 +64,13 @@ cat >>$File <$DirSrc/piece/comment-separator.bash
 cat >>$File <$Dir/006-new_copy_starter_files.bash
 
 cat >>$File <$DirSrc/piece/comment-separator.bash
-cat >>$File <$Dir/007-source-env-BriteOnyx.src
-
-cat >>$File <$DirSrc/piece/comment-separator.bash
 cat >>$File <$Dir/012-source-env-user.src
 
-Dir=$DirSrc/piece/bootstrap/sample_project/BriteOnyx/env.src
-
-# TODO: REMOVE: 008 is redundant of 003
-# cat >>$File <$DirSrc/piece/comment-separator.bash
-# cat >>$File <$Dir/008-verify-preconditions.bash
+cat >>$File <$DirSrc/piece/comment-separator.bash
+cat >>$File <$Dir/010-source-env-project.src
 
 cat >>$File <$DirSrc/piece/comment-separator.bash
-cat >>$File <$Dir/009c-set-BO_PathSystem.src
+cat >>$File <$Dir/007-source-env-BriteOnyx.src
 
 Dir=$DirSrc/piece/bootstrap/sample_project/BriteOnyx/bootstrap.src
 
@@ -87,26 +82,32 @@ cat >>$File <$Dir/014-new-verify-bootstrap.bash
 # cat >>$File <$DirSrc/piece/comment-separator.bash
 # cat >>$File <$Dir/015-grab-source.bash
 
+Dir=$DirSrc/piece/bootstrap/sample_project/BriteOnyx/env.src
+
+# TODO: REMOVE: 008 is redundant of 003
+# cat >>$File <$DirSrc/piece/comment-separator.bash
+# cat >>$File <$Dir/008-verify-preconditions.bash
+
+cat >>$File <$DirSrc/piece/comment-separator.bash
+cat >>$File <$Dir/009c-set-BO_PathSystem.src
+
 Dir=$DirSrc/piece/bootstrap/sample_project/activate.src
 
 cat >>$File <$DirSrc/piece/comment-separator.bash
 cat >>$File <$Dir/016-source-activate-Linux.src
 
+cat >>$File <$DirSrc/piece/comment-separator.bash
+cat >>$File <$Dir/017-set-TMPDIR.src
+
 # NOTE: Do NOT cd, since it unacceptably changes the caller's environment
 # cat >>$File <$DirSrc/piece/comment-separator.bash
 # cat >>$File <$Dir/023-cd-BO_Project.src
 
-cat >>$File <$DirSrc/piece/comment-separator.bash
-cat >>$File <$Dir/024-call-fix_permissions.bash
+# cat >>$File <$DirSrc/piece/comment-separator.bash
+# cat >>$File <$Dir/024-call-fix_permissions.bash
 
 cat >>$File <$DirSrc/piece/comment-separator.bash
 cat >>$File <$Dir/025-source-declare-project.src
-
-Dir=$DirSrc/piece/bootstrap/sample_project/BriteOnyx/bootstrap.src
-
-# NOTE: Source the project environment script almost-last
-cat >>$File <$DirSrc/piece/comment-separator.bash
-cat >>$File <$Dir/010-source-env-project.src
 
 Dir=$DirSrc/piece/bootstrap/sample_project/activate.src
 
@@ -117,8 +118,8 @@ cat >>$File <$DirSrc/piece/comment-separator.bash
 cat >>$File <$Dir/027-shutdown.bash
 
 Dir=$DirSrc/piece/bootstrap
-cat >>$File <$DirSrc/piece/comment-separator.bash
-cat >>$File <$Dir/footer-return.bash
+# cat >>$File <$DirSrc/piece/comment-separator.bash
+# cat >>$File <$Dir/footer-return.bash
 
 Dir=$DirSrc/piece
 cat >>$File <$DirSrc/piece/comment-separator.bash

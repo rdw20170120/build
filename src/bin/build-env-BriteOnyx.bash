@@ -30,15 +30,15 @@ cat  >"$File" <"$DirSrc/piece/header.src"
 cat >>"$File" <"$DirSrc/piece/header-executing.bash"
 cat >>"$File" <"$DirSrc/piece/comment-separator.bash"
 # cat >>"$File" <"$DirSrc/piece/comment-assumes.bash"
-cat >>"$File" <"$DirSrc/piece/comment-no_exit.bash"
-cat >>"$File" <"$DirSrc/piece/comment-separator.bash"
-cat >>"$File" <"$DirSrc/piece/comment-debugging.bash"
+# cat >>"$File" <"$DirSrc/piece/comment-no_exit.bash"
+# cat >>"$File" <"$DirSrc/piece/comment-separator.bash"
+# cat >>"$File" <"$DirSrc/piece/comment-debugging.bash"
 
 # NOTE: Step 008 is redundant
 # cat >>"$File" <"$DirSrc/piece/comment-separator.bash"
 # cat >>"$File" <"$DirSrc/piece/bootstrap/sample_project/BriteOnyx/env.src/008-verify-preconditions.bash"
 
-cat >>"$File" <"$DirSrc/piece/comment-separator.bash"
+# cat >>"$File" <"$DirSrc/piece/comment-separator.bash"
 cat >>"$File" <"$DirSrc/piece/bootstrap/sample_project/BriteOnyx/env.src/009b-new-set-BriteOnyx_variables.src"
 cat >>"$File" <"$DirSrc/piece/bootstrap/sample_project/BriteOnyx/env.src/009a-alias.src"
 
@@ -46,8 +46,8 @@ cat >>"$File" <"$DirSrc/piece/bootstrap/sample_project/BriteOnyx/env.src/009a-al
 # cat >>"$File" <"$DirSrc/piece/comment-separator.bash"
 # cat >>"$File" <"$DirSrc/piece/bootstrap/sample_project/BriteOnyx/env.src/009c-set-BO_PathSystem.src"
 
-cat >>"$File" <"$DirSrc/piece/comment-separator.bash"
-cat >>"$File" <"$DirSrc/piece/bootstrap/footer-return.bash"
+# cat >>"$File" <"$DirSrc/piece/comment-separator.bash"
+# cat >>"$File" <"$DirSrc/piece/bootstrap/footer-return.bash"
 cat >>"$File" <"$DirSrc/piece/comment-separator.bash"
 cat >>"$File" <"$DirSrc/piece/footer-disabled_content.bash"
 

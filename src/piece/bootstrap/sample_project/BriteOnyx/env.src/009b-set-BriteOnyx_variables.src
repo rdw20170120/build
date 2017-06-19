@@ -1,6 +1,6 @@
 # Configure BriteOnyx
 
 export BO_Url='ssh://hg@bb/robwilliams/build'
-export BO_Parent="$HOME/.BriteOnyx"
+export BO_Parent="$HOME/.BO"
 [[ -z "$BO_Version" ]] && export BO_Version=tip
 

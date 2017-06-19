@@ -6,5 +6,5 @@
 #   useful feedback and interrupts their work, which is unacceptable.  Instead, the BASH 'return'
 #   statement should be invoked to end execution with an appropriate status code.
 #
-# TODO: Verify that $BO_Project does indeed point to the root of our project directory tree
+# TODO: SOMEDAY: Verify that $BO_Project does indeed point to the root of our project directory tree
 
