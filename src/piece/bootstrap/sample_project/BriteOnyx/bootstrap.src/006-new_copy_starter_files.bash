@@ -6,8 +6,9 @@ variableRequire HOME
 DirTgt=$HOME
 [[ ! -e "$DirTgt" ]] && mkdir -p $DirTgt
 
-FileTgt=$DirTgt/BriteOnyx.src
+FileTgt=$DirTgt/.BriteOnyx.src
 # Move previous scripts to new path
+[[   -f $DirTgt/BriteOnyx.src      ]] && mv $DirTgt/BriteOnyx.src      $FileTgt
 [[   -f $DirTgt/BriteOnyx-env.bash ]] && mv $DirTgt/BriteOnyx-env.bash $FileTgt
 [[   -f $DirTgt/BriteOnyx-env.src  ]] && mv $DirTgt/BriteOnyx-env.src  $FileTgt
 # Copy starter script, if necessary

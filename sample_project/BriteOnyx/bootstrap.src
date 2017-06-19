@@ -1,14 +1,6 @@
 #!/bin/cat
 [[ -n "$BO_Trace" ]] && echo "TRACE: Executing '$BASH_SOURCE'"
 ####################################################################################################
-# NOTE: We MUST NOT EVER 'exit' during BriteOnyx bootstrap or activation
-####################################################################################################
-# NOTE: Uncomment the following two lines for debugging
-# set -o verbose
-# set -o xtrace
-# TODO: SOMEDAY: Add inverse commands to isolate debugging
-
-####################################################################################################
 # NOTE: By convention, BriteOnyx is configured via environment variables prefixed by 'BO_'.
 
 boVariableRequire 'BO_Project' || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
@@ -43,7 +35,7 @@ FileTgt=$DirTgt/declare-BASH.src
 [[ ! -f $FileTgt ]] && cp $DirSrc/project-declare-BASH.src $FileTgt
 
 DirTgt=$HOME
-FileTgt=$DirTgt/BriteOnyx.src
+FileTgt=$DirTgt/.BriteOnyx.src
 # Move previous scripts to new path
 [[   -f $DirTgt/BriteOnyx-env.bash ]] && mv $DirTgt/BriteOnyx-env.bash $FileTgt
 [[   -f $DirTgt/BriteOnyx-env.src  ]] && mv $DirTgt/BriteOnyx-env.src  $FileTgt
@@ -52,7 +44,7 @@ FileTgt=$DirTgt/BriteOnyx.src
 ####################################################################################################
 # Configure for this user
 
-Script=$HOME/BriteOnyx.src
+Script=$HOME/.BriteOnyx.src
 boScriptRequire "$Script" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
 source          "$Script" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
 
@@ -113,10 +105,6 @@ else
   boLogDebug "BriteOnyx version '$BO_Version' should be stable, skipping update of clone."
 fi
 DisabledContent
-
-####################################################################################################
-# Successfully 'return', but do NOT 'exit'
-return 0
 
 ####################################################################################################
 : <<'DisabledContent'

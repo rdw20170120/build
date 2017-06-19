@@ -27,7 +27,7 @@ FileTgt=$DirTgt/declare-BASH.src
 [[ ! -f $FileTgt ]] && cp $DirSrc/project-declare-BASH.src $FileTgt
 
 DirTgt=$HOME
-FileTgt=$DirTgt/BriteOnyx.src
+FileTgt=$DirTgt/.BriteOnyx.src
 # Move previous scripts to new path
 [[   -f $DirTgt/BriteOnyx-env.bash ]] && mv $DirTgt/BriteOnyx-env.bash $FileTgt
 [[   -f $DirTgt/BriteOnyx-env.src  ]] && mv $DirTgt/BriteOnyx-env.src  $FileTgt
