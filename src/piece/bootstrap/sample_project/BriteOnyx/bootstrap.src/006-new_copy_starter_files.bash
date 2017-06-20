@@ -2,7 +2,7 @@
 
 DirSrc=$BO_Project/BriteOnyx/starter
 
-variableRequire HOME
+boVariableRequire HOME
 DirTgt=$HOME
 [[ ! -e "$DirTgt" ]] && mkdir -p $DirTgt
 
