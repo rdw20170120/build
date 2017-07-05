@@ -19,7 +19,7 @@
 [[   -z "$BO_HomePackage" ]] && echo 'FATAL: Missing $BO_HomePackage'         && return 63
 [[   -z "$BO_PathSystem"  ]] && echo 'FATAL: Missing $BO_PathSystem'          && return 63
 
-Dir=$BO_Home/activation/Linux
+Dir=$BO_Home/activation
 [[ ! -d "${Dir}" ]] && echo "FATAL: Missing directory '${Dir}'" && return 63
 
 ####################################################################################################
@@ -44,8 +44,8 @@ Status=$?
 # Configure environment for Python on Linux
 
 DirPVE=$BO_Project/PVE
-export BO_PathProject=$BO_Project/bin/Linux:${DirPVE}/bin
-export BO_PathPython=$BO_Home/invocation/Python
+export BO_PathProject=$BO_Project/bin:${DirPVE}/bin
+export BO_PathPython=$BO_Home/invocation
 
 PATH=${BO_PathProject}
 PATH=$PATH:${BO_PathPython}

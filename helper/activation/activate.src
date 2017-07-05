@@ -16,7 +16,7 @@
 [[ ! -d "$BO_Project"    ]] && echo "FATAL: Missing directory '$BO_Project'" && return 63
 [[   -z "$BO_PathSystem" ]] && echo 'FATAL: Missing $BO_PathSystem'          && return 63
 
-Dir="$BO_Home/helper/activation/Linux"
+Dir="$BO_Home/helper/activation"
 [[ ! -d "${Dir}" ]] && echo "FATAL: Missing directory '${Dir}'" && return 63
 
 ####################################################################################################
@@ -37,8 +37,8 @@ Status=$?
 ####################################################################################################
 # Configure PATH
 
-export BO_PathLinux="$BO_Home/helper/invocation/Linux"
-export BO_PathProject="$BO_Project/bin/Linux"
+export BO_PathLinux="$BO_Home/helper/invocation"
+export BO_PathProject="$BO_Project/bin"
 
 PATH="${BO_PathProject}"
 PATH="$PATH:${BO_PathLinux}"

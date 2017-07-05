@@ -13,7 +13,7 @@
 
 [[ -z "$BO_Home" ]] && echo 'FATAL: Missing $BO_Home' && return 63 
 
-Dir="$BO_Home/helper/activation/Linux"
+Dir="$BO_Home/helper/activation"
 [[ ! -d "${Dir}" ]] && echo "FATAL: Missing directory '${Dir}'" && return 63
 
 ###################################################################################################

@@ -6,7 +6,7 @@ main () {
   parametersRequire 0 $#
 
   variableRequire BO_Home
-  local -r Script=$BO_Home/helper/invocation/Linux/project-fix-permissions.bash
+  local -r Script=$BO_Home/helper/invocation/project-fix-permissions.bash
   variableRequire BO_Project
   scriptExecute $Script $BO_Project/bin
   scriptExecute $Script $BO_Project/BriteOnyx
@@ -19,10 +19,10 @@ main () {
   scriptExecute $Script $BO_Project/BO-env-outgoing.out
   scriptExecute $Script $BO_Project/current_tag.txt
   scriptExecute $Script $BO_Project/env.src
-  scriptExecute $Script $BO_Project/.hgignore
-  scriptExecute $Script $BO_Project/.hgtags
   scriptExecute $Script $BO_Project/LICENSE.rst
   scriptExecute $Script $BO_Project/README.rst
+  scriptExecute $Script $BO_Project/.hgignore
+  scriptExecute $Script $BO_Project/.hgtags
 }
 
 ################################################################################

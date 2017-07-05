@@ -23,7 +23,7 @@ FileTgt=$DirTgt/env.src
 FileTgt=$DirTgt/.hgignore
 [[ ! -f $FileTgt ]] && cp $DirSrc/project.hgignore $FileTgt
 
-DirTgt=$BO_Project/bin/Linux
+DirTgt=$BO_Project/bin
 [[ ! -e "$DirTgt" ]] && mkdir -p $DirTgt
 
 FileTgt=$DirTgt/project-fix-permissions.bash
@@ -42,7 +42,7 @@ FileTgt=$DirTgt/development.rst
 FileTgt=$DirTgt/README.rst
 [[ ! -f $FileTgt ]] && cp $DirSrc/project-README.rst $FileTgt
 
-DirTgt=$BO_Project/bin/Linux/helper
+DirTgt=$BO_Project/bin/helper/Linux
 [[ ! -e $DirTgt ]] && mkdir -p $DirTgt
 
 FileTgt=$DirTgt/declare-BASH.src

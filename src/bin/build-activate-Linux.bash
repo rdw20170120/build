@@ -19,7 +19,7 @@ DirTgt=$2
 
 echo "Build Linux activate script"
 
-Dir=$DirTgt/activation/Linux
+Dir=$DirTgt/activation
 [[ ! -e "$Dir" ]] && echo "Creating directory '$Dir'" && mkdir -p "$Dir"
 
 File=$Dir/activate.src

@@ -11,7 +11,7 @@
 ###################################################################################################
 # Declare needed BASH functions to support this project
 
-Script="$BO_Project/bin/Linux/helper/declare-BASH.src"
+Script="$BO_Project/bin/helper/Linux/declare-BASH.src"
 boScriptRequire "$Script" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
 source          "$Script" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
 

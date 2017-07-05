@@ -17,11 +17,11 @@ FileTgt=$DirTgt/env.src
 FileTgt=$DirTgt/README.rst
 [[ ! -f $FileTgt ]] && cp $DirSrc/project-README.rst $FileTgt
 
-DirTgt=$BO_Project/bin/Linux
+DirTgt=$BO_Project/bin
 FileTgt=$DirTgt/all-fix-permissions.bash
 [[ ! -f $FileTgt ]] && cp $DirSrc/project-all-fix-permissions.bash $FileTgt
 
-DirTgt=$BO_Project/bin/Linux/helper
+DirTgt=$BO_Project/bin/helper/Linux
 [[ ! -e $DirTgt ]] && mkdir -p $DirTgt
 FileTgt=$DirTgt/declare-BASH.src
 [[ ! -f $FileTgt ]] && cp $DirSrc/project-declare-BASH.src $FileTgt
