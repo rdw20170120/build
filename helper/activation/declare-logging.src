@@ -25,7 +25,7 @@
 ###################################################################################################
 # Remember ANSI color escape sequences for our logging priorities
 
-Script="$(dirname $BASH_SOURCE)/../../invocation/color.bash"
+Script="$(dirname $BASH_SOURCE)/../invocation/color.bash"
 [[ ! -f "${Script}" ]] && echo "FATAL: Missing script '${Script}'" && return "$BO_E_Unavailable"
 export BO_ColorOff="$(${Script} off)"
 export BO_ColorDebug="$(${Script} magenta black)"
