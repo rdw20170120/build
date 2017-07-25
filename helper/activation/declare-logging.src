@@ -44,6 +44,7 @@ _log () {
 
   declare -r Msg="${1:-No message provided.}"
   echo -e "${Msg}" >&2
+  echo -e "${Msg}" >>$BO_Home/BO.log
 }
 export -f _log
 
@@ -206,6 +207,7 @@ Oops () {
   # other higher-level code.
 
   echo "Oops!" >&2
+  echo "Oops!" >>$BO_Home/BO.log
 }
 export -f Oops
 
