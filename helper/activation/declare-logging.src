@@ -44,7 +44,6 @@ _log () {
 
   declare -r Msg="${1:-No message provided.}"
   echo -e "${Msg}" >&2
-  echo -e "${Msg}" >>$BO_Home/BO.log
 }
 export -f _log
 
@@ -67,6 +66,11 @@ _logWithPriority () {
   # $3 = ANSI color specification
 
   _log "$3$2$1$BO_ColorOff"
+  if [[ -n "$BO_Project" ]] ; then
+    echo -e "$1" >>$BO_Project/BO.log
+  else
+    echo -e "$1" >>$PWD/BO.log
+  fi
 }
 export -f _logWithPriority
 
@@ -207,6 +211,11 @@ Oops () {
   # other higher-level code.
 
   echo "Oops!" >&2
+  if [[ -n "$BO_Project" ]] ; then
+    echo "Oops!" >>$BO_Project/BO.log
+  else
+    echo "Oops!" >>$PWD/BO.log
+  fi
   echo "Oops!" >>$BO_Home/BO.log
 }
 export -f Oops

@@ -22,8 +22,8 @@
 ####################################################################################################
 # Startup
 
-if [[ -n "$BO_Home" ]] ; then
-  echo "Activating..." >$BO_Home/BO.log
+if [[ -n "$BO_Project" ]] ; then
+  echo "Activating..." >$BO_Project/BO.log
 else
   echo "Activating..." >$PWD/BO.log
 fi
