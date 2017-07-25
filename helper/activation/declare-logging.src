@@ -67,9 +67,9 @@ _logWithPriority () {
 
   _log "$3$2$1$BO_ColorOff"
   if [[ -n "$BO_Project" ]] ; then
-    echo -e "$1" >>$BO_Project/BO.log
+    echo -e "$2$1" >>$BO_Project/BO.log
   else
-    echo -e "$1" >>$PWD/BO.log
+    echo -e "$2$1" >>$PWD/BO.log
   fi
 }
 export -f _logWithPriority
