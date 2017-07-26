@@ -1,7 +1,6 @@
 #!/bin/cat
 [[ -n "$BO_Trace" ]] && echo "TRACE: Executing '$BASH_SOURCE'"
 ####################################################################################################
-# NOTE: Assumes this project has been activated using the BriteOnyx framework.
 # NOTE: We MUST NOT EVER 'exit' during BriteOnyx bootstrap or activation
 ####################################################################################################
 # NOTE: Uncomment the following two lines for debugging
@@ -51,10 +50,6 @@ PATH=$PATH:${BO_PathGradle}
 PATH=$PATH:${BO_PathLinux}
 PATH=$PATH:${BO_PathSystem}
 export PATH
-
-####################################################################################################
-# Return, but do NOT exit, with a success code
-return "$BO_E_Ok"
 
 ####################################################################################################
 : <<'DisabledContent'

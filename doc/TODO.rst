@@ -1,15 +1,33 @@
 Things TODO for this project
 ============================
+* Remove old content left by recent refactor
+* Add `revision` script to report BriteOnyx revision
+* Apply permanent version tags to releases in Mercurial
+* Add `version` script to report BriteOnyx version tag from Mercurial
+* Automate release packaging
 * Add script to upload packaged distribution to Amazon S3
-* Fix invocation scripts to abort if project is not yet activated
 * Refactor scripts that fix filesystem permissions
 * Enhance scripts that fix file permissions to also force ownership to `$USER`
 
 Big Tasks
 =========
-* Refactor `search.bash`, `attempt.bash`, and `replace.bash` scripts into one
+* Create and configure support for easy use of source repository tools Mercurial and Git
+  ** `add`
+  ** `commit`
+  ** `ignored`
+  ** `log`
+  ** `pull`
+  ** `push`
+  ** `slog`
+  ** `status`
+* Enhance script(s) for bulk source changes
+  ** Refactor `search.bash`, `attempt.bash`, and `replace.bash` scripts into one
+  ** Enhance search/replace script(s) to better control which source files are affected
+  ** Enhance search/replace script(s) to exclude files private to source-control tool
 * Fix bootstrap/activation to remove all uses of `exit` and `return`
-* Fix invocation scripts to activate project if needed
+* Extend activation
+  ** Fix invocation scripts to abort if project is not yet activated
+  ** Enhance invocation scripts to activate project if needed
 * Refactor BriteOnyx so that it is bootstrapped into a using project, but
   afterwards leaves no residual other than the relevant BriteOnyx files needed
   to support that project

@@ -1,6 +1,6 @@
 # Configure PATH
 
-export BO_PathLinux="$BO_Home/invocation"
+export BO_PathLinux="$BO_Home/helper/invocation"
 export BO_PathProject="$BO_Project/bin"
 
 PATH="${BO_PathProject}"

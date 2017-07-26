@@ -1,7 +1,6 @@
 #!/bin/cat
 [[ -n "$BO_Trace" ]] && echo "TRACE: Executing '$BASH_SOURCE'"
 ####################################################################################################
-# NOTE: Assumes this project has been activated using the BriteOnyx framework.
 # NOTE: We MUST NOT EVER 'exit' during BriteOnyx bootstrap or activation
 ####################################################################################################
 # NOTE: Uncomment the following two lines for debugging
@@ -44,8 +43,8 @@ Status=$?
 # Configure environment for Python on Linux
 
 DirPVE=$BO_Project/PVE
-export BO_PathProject=$BO_Project/bin:${DirPVE}/bin
-export BO_PathPython=$BO_Home/invocation
+export BO_PathProject=$BO_PathProject:${DirPVE}/bin
+export BO_PathPython=$BO_Home/invocation/Python
 
 PATH=${BO_PathProject}
 PATH=$PATH:${BO_PathPython}
@@ -98,10 +97,6 @@ export PYTHONHOME=$VIRTUAL_ENV
 
 echo "INFO: Activated Python virtual environment (PVE) in '${DirPVE}'"
 echo "INFO: Found '$(python --version 2>&1)' at '$(which python)'"
-
-####################################################################################################
-# Return, but do NOT exit, with a success code
-return "$BO_E_Ok"
 
 ####################################################################################################
 : <<'DisabledContent'

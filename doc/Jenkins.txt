@@ -2,6 +2,9 @@
 # This project uses Jenkins for continuous integration.
 #
 # Here is how it is configured.
+#
+# NOTE: This has not been maintained recently
+# TODO: UPDATE: to restore continuous integration
 ###############################################################################
 # To install Jenkins on Ubuntu 10.10:
 

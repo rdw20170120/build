@@ -19,17 +19,17 @@ DirTgt=$2
 
 echo "Build Python activate script"
 
-Dir=$DirTgt/activation/Python
+Dir=$DirTgt/helper/activation/add_on
 [[ ! -e "$Dir" ]] && echo "Creating directory '$Dir'" && mkdir -p "$Dir"
 
-File=$Dir/activate.src
+File=$Dir/activate-Python.src
 
 echo "Creating file '$File'"
 
 cat  >"$File" <"$DirSrc/piece/header.src"
 cat >>"$File" <"$DirSrc/piece/header-executing.bash"
 cat >>"$File" <"$DirSrc/piece/comment-separator.bash"
-cat >>"$File" <"$DirSrc/piece/comment-assumes.bash"
+# cat >>"$File" <"$DirSrc/piece/comment-assumes.bash"
 cat >>"$File" <"$DirSrc/piece/comment-no_exit.bash"
 cat >>"$File" <"$DirSrc/piece/comment-separator.bash"
 cat >>"$File" <"$DirSrc/piece/comment-debugging.bash"
@@ -45,8 +45,8 @@ cat >>"$File" <"$DirSrc/piece/comment-separator.bash"
 cat >>"$File" <"$DirSrc/piece/activation/Python/configure-PIP-download_cache.src"
 cat >>"$File" <"$DirSrc/piece/comment-separator.bash"
 cat >>"$File" <"$DirSrc/piece/activation/Python/configure-PIP-virtual_environment.src"
-cat >>"$File" <"$DirSrc/piece/comment-separator.bash"
-cat >>"$File" <"$DirSrc/piece/activation/footer-return.bash"
+# cat >>"$File" <"$DirSrc/piece/comment-separator.bash"
+# cat >>"$File" <"$DirSrc/piece/activation/footer-return.bash"
 cat >>"$File" <"$DirSrc/piece/comment-separator.bash"
 cat >>"$File" <"$DirSrc/piece/footer-disabled_content.bash"
 

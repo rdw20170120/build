@@ -21,7 +21,7 @@ else
   logInfo "Build $BO_ProjectName scripts from source"
 
   DirSrc=$BO_Project/src
-  DirTgt=$TMPDIR/$BO_ProjectName/tgt
+  DirTgt=$TMPDIR/tgt
 
   # Build new output
   directoryRecreate $DirTgt
