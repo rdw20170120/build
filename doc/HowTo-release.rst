@@ -57,6 +57,7 @@ Release process
    #) `project-fix-permissions.bash`
    #) `hg add .`
    #) `hg commit -m 'Increment revision'`
+   #) `hg push`
 #. Repeat as needed
 
 ----
