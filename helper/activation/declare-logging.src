@@ -66,11 +66,7 @@ _logWithPriority () {
   # $3 = ANSI color specification
 
   _log "$3$2$1$BO_ColorOff"
-  if [[ -n "$BO_Project" ]] ; then
-    echo -e "$2$1" >>$BO_Project/BO.log
-  else
-    echo -e "$2$1" >>$PWD/BO.log
-  fi
+  echo -e "$2$1" >>$BO_FileLog
 }
 export -f _logWithPriority
 
@@ -211,12 +207,7 @@ Oops () {
   # other higher-level code.
 
   echo "Oops!" >&2
-  if [[ -n "$BO_Project" ]] ; then
-    echo "Oops!" >>$BO_Project/BO.log
-  else
-    echo "Oops!" >>$PWD/BO.log
-  fi
-  echo "Oops!" >>$BO_Home/BO.log
+  echo "Oops!" >>$BO_FileLog
 }
 export -f Oops
 
@@ -238,3 +229,4 @@ return "$BO_E_Ok"
 ###################################################################################################
 : <<'DisabledContent'
 DisabledContent
+
