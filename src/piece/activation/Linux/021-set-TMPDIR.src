@@ -9,7 +9,7 @@ if [[ -z "$TMPDIR" ]]; then
   # TODO: return "$BO_E_Config"
   echo "INFO:  Remembering TMPDIR='$TMPDIR'"
 fi
-[[ ! -d "$TMPDIR" ]] && mkdir -p "$TMPDIR"
+[[ ! -d "$TMPDIR" ]] && mkdir -p "$TMPDIR" && echo "INFO:  Created '$TMPDIR'"
 [[ ! -d "$TMPDIR" ]] && echo "FATAL: Missing directory '$TMPDIR'" && return 63
 # TODO: return "$BO_E_Config"
 
