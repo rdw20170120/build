@@ -2,7 +2,7 @@
 Dir=$(mktemp --tmpdir -d BO-XXXXXXXX)
 [[ -d "$Dir" ]] && export TMPDIR=$Dir
 
-# Remember BriteOnyx logging file
+# Initialize BriteOnyx logging file
 BO_FileLog=BO.log
 if [[ -n "$TMPDIR" ]] ; then
   export BO_FileLog=$TMPDIR/$BO_FileLog

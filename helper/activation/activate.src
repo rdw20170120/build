@@ -54,12 +54,13 @@ export PATH
 if [[ -z "$TMPDIR" ]]; then
   echo 'WARN:  Missing $TMPDIR'
   [[ -z "$TMPDIR" ]] && [[ -n "$HOME"     ]] && export TMPDIR="$HOME/tmp"
-  [[ -z "$TMPDIR" ]] && [[ -n "$USER"     ]] && export TMPDIR="/tmp/$USER"
-  [[ -z "$TMPDIR" ]] && [[ -n "$USERNAME" ]] && export TMPDIR="/tmp/$USERNAME"
+  [[ -z "$TMPDIR" ]] && [[ -d /tmp ]] && [[ -n "$USER"     ]] && export TMPDIR="/tmp/$USER"
+  [[ -z "$TMPDIR" ]] && [[ -d /tmp ]] && [[ -n "$USERNAME" ]] && export TMPDIR="/tmp/$USERNAME"
   [[ -z "$TMPDIR" ]] && echo 'FATAL: Missing $TMPDIR' && return 63
   # TODO: return "$BO_E_Config"
-  echo "INFO:  Remembering TMPDIR='$TMPDIR'"
 fi
+export TMPDIR=$TMPDIR/$BO_ProjectName
+echo "INFO:  Remembering TMPDIR='$TMPDIR'"
 [[ ! -d "$TMPDIR" ]] && mkdir -p "$TMPDIR" && echo "INFO:  Created '$TMPDIR'"
 [[ ! -d "$TMPDIR" ]] && echo "FATAL: Missing directory '$TMPDIR'" && return 63
 # TODO: return "$BO_E_Config"

@@ -1,5 +1,6 @@
 # Set TMPDIR 
+# DISABLED: MOVED: to Linux activation script
 
-export TMPDIR=$TMPDIR/$BO_ProjectName
-echo "INFO:  Remembering TMPDIR='$TMPDIR'"
+# export TMPDIR=$TMPDIR/$BO_ProjectName
+# echo "INFO:  Remembering TMPDIR='$TMPDIR'"
 

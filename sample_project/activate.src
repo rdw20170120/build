@@ -24,7 +24,7 @@
 Dir=$(mktemp --tmpdir -d BO-XXXXXXXX)
 [[ -d "$Dir" ]] && export TMPDIR=$Dir
 
-# Remember BriteOnyx logging file
+# Initialize BriteOnyx logging file
 BO_FileLog=BO.log
 if [[ -n "$TMPDIR" ]] ; then
   export BO_FileLog=$TMPDIR/$BO_FileLog
@@ -171,9 +171,10 @@ source          "$Script" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
 
 ####################################################################################################
 # Set TMPDIR 
+# DISABLED: MOVED: to Linux activation script
 
-export TMPDIR=$TMPDIR/$BO_ProjectName
-echo "INFO:  Remembering TMPDIR='$TMPDIR'"
+# export TMPDIR=$TMPDIR/$BO_ProjectName
+# echo "INFO:  Remembering TMPDIR='$TMPDIR'"
 
 ####################################################################################################
 # Declare optional project functionality
