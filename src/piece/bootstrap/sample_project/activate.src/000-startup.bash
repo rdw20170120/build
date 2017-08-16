@@ -1,3 +1,6 @@
+# NOTE: ABORT: if project is already activated
+[[ -n "$BO_Project" ]] && echo "FATAL: Project '$BO_Project' is already activated, aborting" && exit 100
+
 # Create random TMPDIR
 Dir=$(mktemp --tmpdir -d BO-XXXXXXXX)
 [[ -d "$Dir" ]] && export TMPDIR=$Dir

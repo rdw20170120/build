@@ -20,6 +20,9 @@
 # TODO: SOMEDAY: Verify that $BO_Project does indeed point to the root of our project directory tree
 
 ####################################################################################################
+# NOTE: ABORT: if project is already activated
+[[ -n "$BO_Project" ]] && echo "FATAL: Project '$BO_Project' is already activated, aborting" && exit 100
+
 # Create random TMPDIR
 Dir=$(mktemp --tmpdir -d BO-XXXXXXXX)
 [[ -d "$Dir" ]] && export TMPDIR=$Dir
