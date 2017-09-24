@@ -56,7 +56,7 @@ Release process
    #) NOTE: There should be NO files listed that still need to be edited to increment the revision
    #) `project-fix-permissions.bash`
    #) `hg add .`
-   #) `hg commit -m 'Increment revision'`
+   #) `hg commit -m 'Increment revision to begin work on next release'`
    #) `hg push`
 #. Repeat as needed
 
