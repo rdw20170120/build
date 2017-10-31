@@ -11,7 +11,7 @@ if [[ -z "$BO_Project" ]] ; then
   echo 'This project is not activated, aborting'
 else
   # Reference our script context
-  Self="$BASH_SOURCE"
+  Self="$0"
   This="$(dirname $Self)"
 
   variableRequire BO_ProjectName 
@@ -47,12 +47,12 @@ else
   Cmd+=" README.rst"
   Cmd+=" $FileTag"
   $Cmd
-  abortOnFail $?
+  abortOnFail $? $0 $LINENO
 
   # Generate signature
   cd $DirTgt
   md5sum --tag $FileArchive >$FileSig
-  abortOnFail $?
+  abortOnFail $? $0 $LINENO
 fi
 
 ################################################################################

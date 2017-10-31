@@ -31,7 +31,7 @@ boTraceEntry () {
   # Trace the entry of execution into caller with source location name $1 and line $2 called with
   #   argument count $3 and arguments $4
   [[ $# -eq 4 ]] || return 100
-  # $1 = caller source location name ($FUNCNAME or $BASH_SOURCE)
+  # $1 = caller source location name ($FUNCNAME or $0)
   # $2 = caller source location line ($LINENO)
   # $3 = caller argument count ($#)
   # $4 = caller arguments ($*)

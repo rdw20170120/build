@@ -6,7 +6,7 @@ boAbort () {
   #   (including source location name $1 and line $2) and propagating outgoing status code $4
   # TODO: Rename to boFail?
   [[ $# -eq 5 ]] || return 100
-  # $1 = caller source location name ($FUNCNAME or $BASH_SOURCE)
+  # $1 = caller source location name ($FUNCNAME or $0)
   # $2 = caller source location line ($LINENO)
   # $3 = incoming status code from previous command ($?, non-zero)
   # $4 = outgoing status code (repeat $? unless overriding)
@@ -21,7 +21,7 @@ boFailed () {
   # Log failed execution due to previous command's status $3 as reported at source location name
   #   $1 and line $2, then propagate the failed status
   [[ $# -eq 3 ]] || return 100
-  # $1 = caller source location name ($FUNCNAME or $BASH_SOURCE)
+  # $1 = caller source location name ($FUNCNAME or $0)
   # $2 = caller source location line ($LINENO)
   # $3 = incoming status code from previous command ($?, non-zero)
   [[ "$3" -eq 0 ]] && return 100

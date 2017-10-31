@@ -1,5 +1,5 @@
 #!/bin/cat
-[[ -n "$BO_Trace" ]] && echo "TRACE: Executing '$BASH_SOURCE'"
+[[ -n "$BO_Trace" ]] && echo "TRACE: Executing '$0'"
 ####################################################################################################
 # NOTE: Assumes this project has been activated using the BriteOnyx framework.
 # NOTE: We MUST NOT EVER 'exit' during BriteOnyx bootstrap or activation
@@ -47,7 +47,7 @@ boTraceEntry () {
   # Trace the entry of execution into caller with source location name $1 and line $2 called with
   #   argument count $3 and arguments $4
   [[ $# -eq 4 ]] || return 100
-  # $1 = caller source location name ($FUNCNAME or $BASH_SOURCE)
+  # $1 = caller source location name ($FUNCNAME or $0)
   # $2 = caller source location line ($LINENO)
   # $3 = caller argument count ($#)
   # $4 = caller arguments ($*)
@@ -144,7 +144,7 @@ boAbort () {
   #   (including source location name $1 and line $2) and propagating outgoing status code $4
   # TODO: Rename to boFail?
   [[ $# -eq 5 ]] || return 100
-  # $1 = caller source location name ($FUNCNAME or $BASH_SOURCE)
+  # $1 = caller source location name ($FUNCNAME or $0)
   # $2 = caller source location line ($LINENO)
   # $3 = incoming status code from previous command ($?, non-zero)
   # $4 = outgoing status code (repeat $? unless overriding)
@@ -159,7 +159,7 @@ boFailed () {
   # Log failed execution due to previous command's status $3 as reported at source location name
   #   $1 and line $2, then propagate the failed status
   [[ $# -eq 3 ]] || return 100
-  # $1 = caller source location name ($FUNCNAME or $BASH_SOURCE)
+  # $1 = caller source location name ($FUNCNAME or $0)
   # $2 = caller source location line ($LINENO)
   # $3 = incoming status code from previous command ($?, non-zero)
   [[ "$3" -eq 0 ]] && return 100
@@ -175,7 +175,7 @@ boArgsRequire () {
   # Require that the actual argument count $3 equal the expected argument count $4 in the caller
   #   with source location name $1 and line $2
   [[ $# -eq 4 ]] || return 100
-  # $1 = caller source location name ($FUNCNAME or $BASH_SOURCE)
+  # $1 = caller source location name ($FUNCNAME or $0)
   # $2 = caller source location line ($LINENO)
   # $3 = actual argument count ($#)
   # $4 = expected argument count

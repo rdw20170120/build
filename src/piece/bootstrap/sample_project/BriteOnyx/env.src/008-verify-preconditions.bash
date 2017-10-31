@@ -1,2 +1,2 @@
-boVariableRequire 'BO_Project' || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
+boVariableRequire 'BO_Project' || boFailed "$0" "$LINENO" $? || return $?
 

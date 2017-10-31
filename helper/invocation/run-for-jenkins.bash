@@ -1,15 +1,16 @@
 #!/bin/bash
-echo "TRACE: Executing '$BASH_SOURCE'"
+echo "TRACE: Executing '$0'"
 logDebug 'Running continuous integration (Jenkins) build on this project...'
 
 run-sloccount
-abortOnFail $?
+abortOnFail $? $0 $LINENO
 
 run-nose
-abortOnFail $?
+abortOnFail $? $0 $LINENO
 
 run-pylint
-abortOnFail $?
+abortOnFail $? $0 $LINENO
 
 build-sdist
-abortOnFail $?
+abortOnFail $? $0 $LINENO
+

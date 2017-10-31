@@ -1,6 +1,6 @@
 # Fix file permissions throughout project
 
 Script="$BO_Project/bin/all-fix-permissions.bash"
-boScriptRequire "$Script" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
-                "$Script" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
+boScriptRequire "$Script" || boFailed "$0" "$LINENO" $? || return $?
+                "$Script" || boFailed "$0" "$LINENO" $? || return $?
 

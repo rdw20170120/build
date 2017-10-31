@@ -1,5 +1,5 @@
 #!/bin/bash
-[[ -n "$BO_Trace" ]] && echo "TRACE: Executing '$BASH_SOURCE'"
+[[ -n "$BO_Trace" ]] && echo "TRACE: Executing '$0'"
 ################################################################################
 # NOTE: Uncomment the following two lines for debugging
 # set -o verbose
@@ -7,7 +7,7 @@
 
 ################################################################################
 # Reference our script context
-Self="$BASH_SOURCE[0]"
+Self="$0[0]"
 This="$(dirname $Self)"
 
 ################################################################################

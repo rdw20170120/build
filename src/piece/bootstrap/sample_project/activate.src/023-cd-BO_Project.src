@@ -1,4 +1,4 @@
 # Ensure that we are in our project root directory
 
-cd "$BO_Project" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
+cd "$BO_Project" || boFailed "$0" "$LINENO" $? || return $?
 

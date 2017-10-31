@@ -1,6 +1,6 @@
 # Configure for BriteOnyx
 
 Script="$BO_Project/BriteOnyx/env.src"
-boScriptRequire "$Script" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
-source          "$Script" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
+boScriptRequire "$Script" || boFailed "$0" "$LINENO" $? || return $?
+source          "$Script" || boFailed "$0" "$LINENO" $? || return $?
 

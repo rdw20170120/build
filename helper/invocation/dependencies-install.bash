@@ -1,5 +1,5 @@
 #!/bin/bash
-echo "TRACE: Executing '$BASH_SOURCE'"
+echo "TRACE: Executing '$0'"
 logDebug 'Installing the dependencies for this project using PIP...'
 
 variableRequire BO_Project
@@ -12,8 +12,8 @@ Cmd=pip
 Cmd="${Cmd} install -r ${File}"
 # TODO:  Cmd="${Cmd} --quiet"
 ${Cmd}
-abortOnFail $?
+abortOnFail $? $0 $LINENO
 
 # Report the installed dependencies
 pip freeze
-abortOnFail $?
+abortOnFail $? $0 $LINENO

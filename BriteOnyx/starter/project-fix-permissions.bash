@@ -22,8 +22,8 @@ if [[ -z "$BO_Project" ]] ; then
   echo "This project is not activated, aborting"
 else
   # Reference our script context
-  Self="$(getPathAbsolute $BASH_SOURCE)" ; abortOnFail $?
-  This="$(dirname $Self)"                ; abortOnFail $?
+  Self="$(getPathAbsolute $0)" ; abortOnFail $0 $LINENO $?
+  This="$(dirname $Self)"      ; abortOnFail $0 $LINENO $?
 
   main $@
 fi

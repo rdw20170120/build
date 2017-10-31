@@ -1,5 +1,5 @@
 #!/bin/bash
-echo "TRACE: Executing '$BASH_SOURCE'"
+echo "TRACE: Executing '$0'"
 logDebug 'Running pylint on this project...'
 
 variableRequire BO_Project
@@ -14,10 +14,11 @@ Dir=$BO_Project/out
 directoryCreate "${Dir}"
 
 cd "${BO_Project}/src"
-abortOnFail $?
+abortOnFail $? $0 $LINENO
 
 Cmd=pylint
 Cmd="$Cmd --rcfile=${Config}"
 Cmd="$Cmd ${BO_HomePackage}"
 $Cmd | tee ${BO_Project}/out/pylint.out
-abortOnFail $?
+abortOnFail $? $0 $LINENO
+

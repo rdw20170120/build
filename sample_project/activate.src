@@ -1,5 +1,5 @@
 #!/bin/cat
-[[ -n "$BO_Trace" ]] && echo "TRACE: Executing '$BASH_SOURCE'"
+[[ -n "$BO_Trace" ]] && echo "TRACE: Executing '$0'"
 ####################################################################################################
 # NOTE: We MUST NOT EVER 'exit' during BriteOnyx bootstrap or activation
 ####################################################################################################
@@ -52,8 +52,8 @@ fi
 ####################################################################################################
 # Remember the directory containing this script as our project root
 
-# TODO: Should we replicate this approach elsewhere for accessing $BASH_SOURCE?
-export BO_Project="$(dirname $BASH_SOURCE[0])"
+# TODO: Should we replicate this approach elsewhere for accessing $0?
+export BO_Project="$(dirname $0[0])"
 
 # TODO: REVIEW: Shall we NOT cd into our project directory since it changes
 # the caller's execution environment?
@@ -70,12 +70,12 @@ source "$Script" ; Status=$?
 ####################################################################################################
 # NOTE: Now that we have our support functionality declared, we can use it from here on
 
-boVariableRequire 'BO_Project' || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
+boVariableRequire 'BO_Project' || boFailed "$0" "$LINENO" $? || return $?
 boTraceVariable 'BO_Project'
 export BO_Project="$(boNodeCanonical $BO_Project)"
 boTraceVariable 'BO_Project'
 boLogInfo "Canonical form of BO_Project directory pathname is '$BO_Project'"
-boDirectoryRequire "$BO_Project" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
+boDirectoryRequire "$BO_Project" || boFailed "$0" "$LINENO" $? || return $?
 
 ####################################################################################################
 # Copy starter files into place as necessary
@@ -133,30 +133,30 @@ DisabledContent
 # Configure for this user
 
 Script=$HOME/.BriteOnyx.src
-boScriptRequire "$Script" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
-source          "$Script" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
+boScriptRequire "$Script" || boFailed "$0" "$LINENO" $? || return $?
+source          "$Script" || boFailed "$0" "$LINENO" $? || return $?
 
 ####################################################################################################
 # Configure for this project
 
 Script=$BO_Project/env.src
-boScriptRequire $Script || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
-source          $Script || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
+boScriptRequire $Script || boFailed "$0" "$LINENO" $? || return $?
+source          $Script || boFailed "$0" "$LINENO" $? || return $?
 
 ####################################################################################################
 # Configure for BriteOnyx
 
 Script="$BO_Project/BriteOnyx/env.src"
-boScriptRequire "$Script" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
-source          "$Script" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
+boScriptRequire "$Script" || boFailed "$0" "$LINENO" $? || return $?
+source          "$Script" || boFailed "$0" "$LINENO" $? || return $?
 
 ####################################################################################################
 # Verify BriteOnyx bootstrap configuration
 
-boVariableRequire   BO_Home || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
-boDirectoryRequire $BO_Home || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
+boVariableRequire   BO_Home || boFailed "$0" "$LINENO" $? || return $?
+boDirectoryRequire $BO_Home || boFailed "$0" "$LINENO" $? || return $?
 
-boVariableRequire BO_ProjectName || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
+boVariableRequire BO_ProjectName || boFailed "$0" "$LINENO" $? || return $?
 
 ####################################################################################################
 # Remember PATH
@@ -169,8 +169,8 @@ boVariableRequire BO_ProjectName || boFailed "$BASH_SOURCE" "$LINENO" $? || retu
 # Activate as a Linux project
 
 Script="$BO_Home/helper/activation/activate.src"
-boScriptRequire "$Script" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
-source          "$Script" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
+boScriptRequire "$Script" || boFailed "$0" "$LINENO" $? || return $?
+source          "$Script" || boFailed "$0" "$LINENO" $? || return $?
 
 ####################################################################################################
 # Set TMPDIR 

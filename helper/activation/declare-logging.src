@@ -84,7 +84,7 @@ dumpBash () {
   trace BASH_EXECUTION_STRING
   trace BASH_LINENO
   trace BASH_REMATCH
-  trace BASH_SOURCE
+  trace 0
   trace BASH_SUBSHELL
   trace BASH_VERSINFO[0]
   trace BASH_VERSINFO[1]

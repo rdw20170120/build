@@ -4,11 +4,6 @@
 # NOTE: Assumes this project has been activated using the BriteOnyx framework.
 # NOTE: We MUST NOT EVER invoke the 'exit' command from BASH functions
 ####################################################################################################
-# NOTE: Uncomment the following two lines for debugging
-# set -o verbose
-# set -o xtrace
-
-####################################################################################################
 # Verify pre-conditions
 
 [[ -z "$BO_E_Config" ]] && echo 'FATAL: Missing $BO_E_Config' && return 63
@@ -18,58 +13,74 @@
 ###################################################################################################
 
 abort () {
-  # Abort BASH execution with exit status $1 and message $2
-  [[ "$#" -ne 2 ]] && Oops && exit "$BO_E_Usage"
-  # $1 = exit status
-  # $2 = message
+  # Abort BASH execution with status $3 and message $4
+  # from caller file/function $1 and line $2
+  [[ "$#" -ne 4 ]] && Oops && exit "$BO_E_Usage"
+  # $1 = caller file/function (via $FUNCNAME or $0 or $Self)
+  # $2 = caller line number   (via $LINENO)
+  # $3 = exit status code
+  # $4 = message
 
-  _logFatal "ABORT: status $1: $2"
+  _logFatal "ABORT: exit $3 at $1:$2:  $4"
   if [[ "$SHLVL" -eq 1 ]] ; then
     logWarn 'At top level of BASH shell'
     # dumpBash
   fi
-  exit $1
+  exit $3
 }
 export -f abort
 
 abortIfMissing () {
-  # Abort with message $2 if value $1 is missing (resolves to empty string)
-  [[ "$#" -ne 2 ]] && Oops && exit "$BO_E_Usage"
-  # $1 = value that is required
-  # $2 = message
+  # Abort with message $3 if value $4 is missing (resolves to empty string)
+  # from caller file/function $1 and line $2
+  [[ "$#" -ne 4 ]] && Oops && exit "$BO_E_Usage"
+  # $1 = caller file/function (via $FUNCNAME or $0 or $Self)
+  # $2 = caller line number   (via $LINENO)
+  # $3 = value that is required
+  # $4 = message
 
-  [[ -n "$1" ]] && return "$BO_E_Ok"
-  abort 1 "Missing '$2'"
+  [[ -n "$3" ]] && return "$BO_E_Ok"
+  # TODO: SOMEDAY: Choose better exit status from constants
+  abort $1 $2 1 "Missing '$3'"
 }
 export -f abortIfMissing
 
 abortOnFail () {
-  # Abort on failure of previous command with exit status $1
-  [[ "$#" -ne 1 ]] && Oops && exit "$BO_E_Usage"
-  # $1 = exit status
+  # Abort on failure of previous command with status $3
+  # from caller file/function $1 and line $2
+  [[ "$#" -ne 3 ]] && Oops && exit "$BO_E_Usage"
+  # $1 = caller file/function (via $FUNCNAME or $0 or $Self)
+  # $2 = caller line number   (via $LINENO)
+  # $3 = exit status code
 
-  [[ "$1" -eq 0 ]] && return "$BO_E_Ok"
-  abort "$1" 'Last command failed'
+  [[ "$3" -eq 0 ]] && return "$BO_E_Ok"
+  abort $1 $2 $3 'Last command failed'
 }
 export -f abortOnFail
 
 report () {
-  # Report BASH execution with exit status $1 and message $2
-  [[ "$#" -ne 2 ]] && Oops && exit "$BO_E_Usage"
-  # $1 = exit status
-  # $2 = message
+  # Report BASH execution with status $3 and message $4
+  # from caller file/function $1 and line $2
+  [[ "$#" -ne 4 ]] && Oops && exit "$BO_E_Usage"
+  # $1 = caller file/function (via $FUNCNAME or $0 or $Self)
+  # $2 = caller line number   (via $LINENO)
+  # $3 = exit status code
+  # $4 = message
 
-  logError "Last command exited with status $1: $2"
+  logError "REPORT: exit $3 at $1:$2:  $4"
 }
 export -f report
 
 reportOnFail () {
-  # Report on failure of previous command with exit status $1
-  [[ "$#" -ne 1 ]] && Oops && exit "$BO_E_Usage"
-  # $1 = exit status
+  # Report on failure of last command with status $3
+  # from caller file/function $1 and line $2
+  [[ "$#" -ne 4 ]] && Oops && exit "$BO_E_Usage"
+  # $1 = caller file/function (via $FUNCNAME or $0 or $Self)
+  # $2 = caller line number   (via $LINENO)
+  # $3 = exit status code
 
-  [[ "$1" -eq 0 ]] && return "$BO_E_Ok"
-  report "$1" 'Last command failed'
+  [[ "$3" -eq 0 ]] && return "$BO_E_Ok"
+  report $1 $2 $3 'Last command failed'
 }
 export -f reportOnFail
 
@@ -80,3 +91,4 @@ return "$BO_E_Ok"
 ###################################################################################################
 : <<'DisabledContent'
 DisabledContent
+

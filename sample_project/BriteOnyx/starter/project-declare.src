@@ -1,5 +1,5 @@
 #!/bin/cat
-[[ -n "$BO_Trace" ]] && echo "TRACE: Executing '$BASH_SOURCE'"
+[[ -n "$BO_Trace" ]] && echo "TRACE: Executing '$0'"
 ####################################################################################################
 # NOTE: Assumes this project has been activated using the BriteOnyx framework.
 # NOTE: We MUST NOT EVER invoke the 'exit' command from BASH functions
@@ -12,8 +12,8 @@
 # Declare needed BASH functions to support this project
 
 Script="$BO_Project/bin/helper/Linux/declare-BASH.src"
-boScriptRequire "$Script" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
-source          "$Script" || boFailed "$BASH_SOURCE" "$LINENO" $? || return $?
+boScriptRequire "$Script" || boFailed "$0" "$LINENO" $? || return $?
+source          "$Script" || boFailed "$0" "$LINENO" $? || return $?
 
 ###################################################################################################
 # Return, but do NOT exit, with a success code

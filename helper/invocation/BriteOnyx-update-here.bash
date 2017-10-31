@@ -1,5 +1,5 @@
 #!/bin/bash
-[[ -n "$BO_Trace" ]] && echo "TRACE: Executing '$BASH_SOURCE'"
+[[ -n "$BO_Trace" ]] && echo "TRACE: Executing '$0'"
 ####################################################################################################
 # Update (install) BriteOnyx content in current directory, so that this directory becomes the root
 # of a BriteOnyx-enabled project.  BriteOnyx content is taken from $BO_Home, if configured.  Use

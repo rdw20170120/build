@@ -5,6 +5,8 @@
 main () {
   parametersRequire 0 $#
 
+  # abort $Self $LINENO 125 'Forced abort for testing'
+
   variableRequire BO_Home
   local -r Script=$BO_Home/helper/invocation/project-fix-permissions.bash
   variableRequire BO_Project
@@ -26,16 +28,15 @@ main () {
 }
 
 ################################################################################
-# NOTE: Uncomment the following two lines for debugging
-# set -o verbose
-# set -o xtrace
 
 if [[ -z "$BO_Project" ]] ; then
   echo "This project is not activated, aborting"
 else
+  # abort $0 $LINENO 125 'Forced abort for testing'
+
   # Reference our script context
-  Self="$(getPathAbsolute $BASH_SOURCE)" ; abortOnFail $?
-  This="$(dirname $Self)"                ; abortOnFail $?
+  Self="$(getPathAbsolute $0)" ; abortOnFail $0 $LINENO $?
+  This="$(dirname $Self)"      ; abortOnFail $0 $LINENO $?
 
   main $@
 fi

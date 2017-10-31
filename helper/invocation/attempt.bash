@@ -1,21 +1,21 @@
 #!/bin/bash
-[[ -n "$BO_Trace" ]] && echo "TRACE: Executing '$BASH_SOURCE'"
+[[ -n "$BO_Trace" ]] && echo "TRACE: Executing '$0'"
 ################################################################################
 # NOTE: Assumes this project has been activated using the BriteOnyx framework.
 ################################################################################
 # Reference our script context
-Self="$(getPathAbsolute $BASH_SOURCE)" ; abortOnFail $?
-This="$(dirname $Self)"                ; abortOnFail $?
+Self="$(getPathAbsolute $0)" ; abortOnFail $0 $LINENO $?
+This="$(dirname $Self)"      ; abortOnFail $0 $LINENO $?
 
 ################################################################################
-[[ -z "$1" ]] && abort 1 'A regular expression pattern is required as the first positional parameter'
-[[ -z "$2" ]] && abort 1 'Replacement text is required as the second positional parameter'
+[[ -z "$1" ]] && abort $0 $LINENO 1 'A regular expression pattern is required as the first positional parameter'
+[[ -z "$2" ]] && abort $0 $LINENO 1 'Replacement text is required as the second positional parameter'
 logInfo "Attempt (show but do NOT save) replacement of regex pattern '$1' with text '$2' in source text"
 
 Dir=$PWD
 variableRequire   Dir
 directoryRequire $Dir
-cd $Dir ; abortOnFail $?
+cd $Dir ; abortOnFail $0 $LINENO $?
 
 ################################################################################
 # NOTE: Uncomment the following two lines for debugging
@@ -34,3 +34,4 @@ done
 ################################################################################
 : <<'DisabledContent'
 DisabledContent
+
