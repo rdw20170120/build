@@ -4,11 +4,6 @@
 # NOTE: Assumes this project has been activated using the BriteOnyx framework.
 # NOTE: We MUST NOT EVER invoke the 'exit' command from BASH functions
 ####################################################################################################
-# NOTE: Uncomment the following two lines for debugging
-# set -o verbose
-# set -o xtrace
-
-####################################################################################################
 # Verify pre-conditions
 
 [[ -z "$BO_E_Config"      ]] && echo 'FATAL: Missing $BO_E_Config'      && return 63
@@ -27,7 +22,7 @@ directoryCreate () {
   else
     logInfo "Creating directory '$1'..."
     mkdir -p "$1"
-    abortOnFail $? $FUNCNAME $LINENO
+    abortOnFail $FUNCNAME $LINENO $?
   fi
   directoryRequire "$1"
 }
@@ -42,7 +37,7 @@ directoryExists () {
     logDebug "Found directory '$1'" && return "$BO_E_Ok"
   # TODO: FIX: Replace exit status of 100 with something more meaningful...
   [[   -e "$1" ]] && \
-    abort 100 $FUNCNAME $LINENO "Found non-directory '$1'"
+    abort $FUNCNAME $LINENO 100 "Found non-directory '$1'"
   return 63 # $1 does not exist, but appears to be creatable
 }
 export -f directoryExists
@@ -62,7 +57,7 @@ directoryRemove () {
   parameterRequire "$1" 1 'directory'
 
   rm -fr $1
-  abortOnFail $? $FUNCNAME $LINENO
+  abortOnFail $FUNCNAME $LINENO $?
 } && export -f directoryRemove
 
 directoryRequire () {
@@ -72,7 +67,7 @@ directoryRequire () {
 
   directoryExists "$1" && return "$BO_E_Ok"
   # TODO: FIX: Replace exit status of 100 with something more meaningful...
-  abort 100 $FUNCNAME $LINENO "Required directory '$1' must exist!"
+  abort $FUNCNAME $LINENO 100 "Required directory '$1' must exist!"
 }
 export -f directoryRequire
 
@@ -86,7 +81,7 @@ fileChangeGroup () {
   fileRequire "$2"
   logInfo "Changing owner of file '$2' to group '$1'..."
   chgrp "$1" "$2"
-  abortOnFail $? $FUNCNAME $LINENO
+  abortOnFail $FUNCNAME $LINENO $?
 }
 export -f fileChangeGroup
 
@@ -102,7 +97,7 @@ fileCopy () {
   else
     logInfo "Copying file '$2' from file '$1'..."
     cp "$1" "$2"
-    abortOnFail $? $FUNCNAME $LINENO
+    abortOnFail $FUNCNAME $LINENO $?
   fi
   fileRequire "$2"
 }
@@ -120,7 +115,7 @@ fileCopyForce () {
   fi
   logInfo "Copying file '$2' from file '$1'..."
   cp "$1" "$2"
-  abortOnFail $? $FUNCNAME $LINENO
+  abortOnFail $FUNCNAME $LINENO $?
   fileRequire "$2"
 }
 export -f fileCopyForce
@@ -135,7 +130,7 @@ filesCopy () {
   # if directoryExists "$2" ; then
     logInfo "Copying directory '$2' from directory '$1'..."
     cp -R $1/* $2/
-    abortOnFail $? $FUNCNAME $LINENO
+    abortOnFail $FUNCNAME $LINENO $?
   # fi
   directoryRequire "$2"
 }
@@ -150,7 +145,7 @@ fileExists () {
     logDebug "Found file '$1'" && return "$BO_E_Ok"
   # TODO: FIX: Replace exit status of 100 with something more meaningful...
   [[   -e "$1" ]] && \
-    abort 100 $FUNCNAME $LINENO "Found non-file '$1'"
+    abort $FUNCNAME $LINENO 100 "Found non-file '$1'"
   return 63 # $1 does not exist, but appears to be creatable
 }
 export -f fileExists
@@ -167,7 +162,7 @@ fileMove () {
   else
     logInfo "Moving file '$2' from file '$1'..."
     mv "$1" "$2"
-    abortOnFail $? $FUNCNAME $LINENO
+    abortOnFail $FUNCNAME $LINENO $?
   fi
   # TODO:  Check that file $1 is gone?
   fileRequire "$2"
@@ -181,7 +176,7 @@ fileRequire () {
 
   fileExists "$1" && return "$BO_E_Ok"
   # TODO: FIX: Replace exit status of 100 with something more meaningful...
-  abort 100 $FUNCNAME $LINENO "Required file '$1' must exist!"
+  abort $FUNCNAME $LINENO 100 "Required file '$1' must exist!"
 }
 export -f fileRequire
 
@@ -193,7 +188,7 @@ filesMakeExecutable () {
   directoryRequire "$1"
   logInfo "Making files executable in directory '$1'..."
   chmod -R u+x "$1"
-  abortOnFail $? $FUNCNAME $LINENO
+  abortOnFail $FUNCNAME $LINENO $?
 }
 export -f filesMakeExecutable
 
@@ -224,7 +219,7 @@ scriptExecute () {
   shift 1
   scriptRequire $Script
   $Script $@
-  abortOnFail $? $FUNCNAME $LINENO
+  abortOnFail $FUNCNAME $LINENO $?
 } && export -f scriptExecute
 
 scriptRequire () {

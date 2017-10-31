@@ -1,5 +1,5 @@
 #!/bin/bash
-echo "TRACE: Executing '$0'"
+echo "TRACE: Executing '$BASH_SOURCE'"
 logDebug 'Cleaning this project of all output and temporary files...'
 
 variableRequire BO_Project

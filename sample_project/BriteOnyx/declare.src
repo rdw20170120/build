@@ -1,5 +1,5 @@
 #!/bin/cat
-[[ -n "$BO_Trace" ]] && echo "TRACE: Executing '$0'"
+[[ -n "$BO_Trace" ]] && echo "TRACE: Executing '$BASH_SOURCE'"
 ####################################################################################################
 # NOTE: Assumes this project has been activated using the BriteOnyx framework.
 # NOTE: We MUST NOT EVER 'exit' during BriteOnyx bootstrap or activation

@@ -1,13 +1,8 @@
 #!/bin/cat
-[[ -n "$BO_Trace" ]] && echo "TRACE: Executing '$0'"
+[[ -n "$BO_Trace" ]] && echo "TRACE: Executing '$BASH_SOURCE'"
 ####################################################################################################
 # NOTE: Assumes this project has been activated using the BriteOnyx framework.
 # NOTE: We MUST NOT EVER invoke the 'exit' command from BASH functions
-####################################################################################################
-# NOTE: Uncomment the following two lines for debugging
-# set -o verbose
-# set -o xtrace
-
 ####################################################################################################
 # Declare needed SSH functionality to support this project
 
@@ -38,7 +33,7 @@ scpFrom () {
   declare -r Cmd="scp -Bpr $1:$3 $2"
   logDebug "Executing command: ${Cmd}"
   ${Cmd}
-  abortOnFail $? $FUNCNAME $LINENO
+  abortOnFail $FUNCNAME $LINENO $?
 } && export -f scpFrom
 
 scpTo () {
@@ -49,7 +44,7 @@ scpTo () {
   declare -r Cmd="scp -Bpr $2 $1:$3"
   logDebug "Executing command: ${Cmd}"
   ${Cmd}
-  abortOnFail $? $FUNCNAME $LINENO
+  abortOnFail $FUNCNAME $LINENO $?
 } && export -f scpTo
 
 ###################################################################################################
@@ -59,3 +54,4 @@ return "$BO_E_Ok"
 ###################################################################################################
 : <<'DisabledContent'
 DisabledContent
+

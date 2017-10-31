@@ -1,5 +1,5 @@
 #!/bin/bash
-[[ -n "$BO_Trace" ]] && echo "TRACE: Executing '$0'"
+[[ -n "$BO_Trace" ]] && echo "TRACE: Executing '$BASH_SOURCE'"
 # NOTE: Assumes that this project has been activated using the BriteOnyx framework.
 ###################################################################################################
 

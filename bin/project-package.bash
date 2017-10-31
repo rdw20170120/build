@@ -1,19 +1,10 @@
 #!/bin/bash
 [[ -n "$BO_Trace" ]] && echo "TRACE: Executing '$BASH_SOURCE'"
 ################################################################################
-# NOTE: Uncomment the following two lines for debugging
-# set -o verbose
-# set -o xtrace
-
-################################################################################
 
 if [[ -z "$BO_Project" ]] ; then
   echo 'This project is not activated, aborting'
 else
-  # Reference our script context
-  Self="$0"
-  This="$(dirname $Self)"
-
   variableRequire BO_ProjectName 
   variableRequire TMPDIR
 
@@ -47,12 +38,12 @@ else
   Cmd+=" README.rst"
   Cmd+=" $FileTag"
   $Cmd
-  abortOnFail $? $0 $LINENO
+  abortOnFail $0 $LINENO $?
 
   # Generate signature
   cd $DirTgt
   md5sum --tag $FileArchive >$FileSig
-  abortOnFail $? $0 $LINENO
+  abortOnFail $0 $LINENO $?
 fi
 
 ################################################################################

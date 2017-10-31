@@ -1,16 +1,6 @@
 #!/bin/bash
 [[ -n "$BO_Trace" ]] && echo "TRACE: Executing '$BASH_SOURCE'"
 ################################################################################
-# NOTE: Uncomment the following two lines for debugging
-# set -o verbose
-# set -o xtrace
-
-################################################################################
-# Reference our script context
-Self="$0"
-This="$(dirname $Self)"
-
-################################################################################
 
 if [[ -z "$BO_Project" ]] ; then
     echo 'This project is not activated, aborting'

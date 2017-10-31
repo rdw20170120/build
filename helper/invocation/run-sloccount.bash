@@ -1,5 +1,5 @@
 #!/bin/bash
-echo "TRACE: Executing '$0'"
+echo "TRACE: Executing '$BASH_SOURCE'"
 logDebug 'Counting the lines of source code (SLOC) in this project...'
 # TODO: This script requires the 'sloccount' package to have been installed
 
@@ -32,5 +32,5 @@ Cmd="${Cmd} $BO_Project/cfg"
 Cmd="${Cmd} $BO_Project/doc"
 Cmd="${Cmd} $BO_Project/src"
 ${Cmd} > $BO_Project/out/sloccount.sc
-abortOnFail $? $0 $LINENO
+abortOnFail $0 $LINENO $?
 

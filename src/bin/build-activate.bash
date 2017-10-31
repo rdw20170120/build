@@ -1,5 +1,5 @@
 #!/bin/bash
-[[ -n "$BO_Trace" ]] && echo "TRACE: Executing '$0'"
+[[ -n "$BO_Trace" ]] && echo "TRACE: Executing '$BASH_SOURCE'"
 ################################################################################
 # NOTE: Uncomment the following two lines for debugging
 # set -o verbose

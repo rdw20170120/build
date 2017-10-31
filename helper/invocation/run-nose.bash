@@ -1,5 +1,5 @@
 #!/bin/bash
-echo "TRACE: Executing '$0'"
+echo "TRACE: Executing '$BASH_SOURCE'"
 logDebug 'Running Nose-based tests on this project...'
 
 variableRequire BO_Project
@@ -11,12 +11,12 @@ Config=${BO_Project}/cfg/nose.cfg
 fileRequire "${Config}"
 
 cd "${BO_Project}/src"
-abortOnFail $? $0 $LINENO
+abortOnFail $0 $LINENO $?
 
 Cmd=nosetests
 Cmd="$Cmd --config=${Config}"
 Cmd="$Cmd --id-file=${BO_Project}/.noseids"
 Cmd="$Cmd --cover-package=${BO_HomePackage}"
 $Cmd
-abortOnFail $? $0 $LINENO
+abortOnFail $0 $LINENO $?
 
