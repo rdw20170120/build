@@ -4,11 +4,6 @@
 # NOTE: Assumes this project has been activated using the BriteOnyx framework.
 # NOTE: We MUST NOT EVER invoke the 'exit' command from BASH functions
 ####################################################################################################
-# NOTE: Uncomment the following two lines for debugging
-# set -o verbose
-# set -o xtrace
-
-####################################################################################################
 # Verify pre-conditions
 
 [[ -z "$BO_E_Config" ]] && echo 'FATAL: Missing $BO_E_Config' && return 63
@@ -25,7 +20,7 @@ parameterRequire () {
   valueRequire "$2" 'parameter index'
   valueRequire "$3" 'description'
 
-  abortIfMissing "$1" $FUNCNAME $LINENO "Missing parameter $2: $3!"
+  abortIfMissing $FUNCNAME $LINENO "$1" "Missing parameter $2: $3!"
 }
 export -f parameterRequire
 
@@ -37,7 +32,7 @@ parametersRequire () {
 
   [[ "$2" -eq "$1" ]] && return "$BO_E_Ok"
   # TODO: FIX: Replace exit status of 100 with something more meaningful...
-  abort 100 $FUNCNAME $LINENO "'$2' parameters were passed when exactly '$1' are required!"
+  abort $FUNCNAME $LINENO 100 "'$2' parameters were passed when exactly '$1' are required!"
 }
 export -f parametersRequire
 
@@ -49,7 +44,7 @@ parametersRequireAtLeast () {
 
   [[ "$2" -ge "$1" ]] && return "$BO_E_Ok"
   # TODO: FIX: Replace exit status of 100 with something more meaningful...
-  abort 100 $FUNCNAME $LINENO "'$2' parameters were passed when at least '$1' are required!"
+  abort $FUNCNAME $LINENO 100 "'$2' parameters were passed when at least '$1' are required!"
 }
 export -f parametersRequireAtLeast
 
@@ -59,7 +54,7 @@ valueRequire () {
   # $1 = value that is required
   # $2 = description for value
 
-  abortIfMissing "$1" $FUNCNAME $LINENO "Value for '$2' is missing (non-null)!"
+  abortIfMissing $FUNCNAME $LINENO "$1" "Value for '$2' is missing (non-null)!"
 }
 export -f valueRequire
 
@@ -73,7 +68,7 @@ variableRequire () {
   declare Value="${!Name}"
   [[ -n "${Value}" ]] && return "$BO_E_Ok"
   # TODO: FIX: Replace exit status of 100 with something more meaningful...
-  abort 100 $FUNCNAME $LINENO "Variable '$1' is required (defined and non-null)!"
+  abort $FUNCNAME $LINENO 100 "Variable '$1' is required (defined and non-null)!"
 }
 export -f variableRequire
 
