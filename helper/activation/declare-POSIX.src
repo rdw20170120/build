@@ -17,6 +17,8 @@ directoryCreate () {
   parametersRequire 1 "$#"
   parameterRequire "$1" 1 'target directory'
 
+  # abort $FUNCNAME $LINENO 125 "Forced abort for testing"
+
   if directoryExists "$1" ; then
     logDebug "Directory '$1' exists, skipping creation!"
   else
@@ -33,6 +35,8 @@ directoryExists () {
   parametersRequire 1 "$#"
   parameterRequire "$1" 1 'target directory'
 
+  # abort $FUNCNAME $LINENO 125 "Forced abort for testing"
+
   [[   -d "$1" ]] && \
     logDebug "Found directory '$1'" && return "$BO_E_Ok"
   # TODO: FIX: Replace exit status of 100 with something more meaningful...
@@ -47,6 +51,8 @@ directoryRecreate () {
   parametersRequire 1 $#
   parameterRequire "$1" 1 'directory'
 
+  # abort $FUNCNAME $LINENO 125 "Forced abort for testing"
+
   directoryRemove $1
   directoryCreate $1
 } && export -f directoryRecreate
@@ -56,6 +62,8 @@ directoryRemove () {
   parametersRequire 1 $#
   parameterRequire "$1" 1 'directory'
 
+  # abort $FUNCNAME $LINENO 125 "Forced abort for testing"
+
   rm -fr $1
   abortOnFail $FUNCNAME $LINENO $?
 } && export -f directoryRemove
@@ -64,6 +72,8 @@ directoryRequire () {
   # Require that directory $1 exists, abort if not
   parametersRequire 1 "$#"
   parameterRequire "$1" 1 'target directory'
+
+  # abort $FUNCNAME $LINENO 125 "Forced abort for testing"
 
   directoryExists "$1" && return "$BO_E_Ok"
   # TODO: FIX: Replace exit status of 100 with something more meaningful...
@@ -76,6 +86,8 @@ fileChangeGroup () {
   parametersRequire 2 "$#"
   parameterRequire "$1" 1 'group'
   parameterRequire "$2" 2 'target file'
+
+  # abort $FUNCNAME $LINENO 125 "Forced abort for testing"
 
   # TODO:  Test existence of group $1
   fileRequire "$2"
@@ -90,6 +102,8 @@ fileCopy () {
   parametersRequire 2 "$#"
   parameterRequire "$1" 1 'source file'
   parameterRequire "$2" 2 'target file'
+
+  # abort $FUNCNAME $LINENO 125 "Forced abort for testing"
 
   fileRequire "$1"
   if fileExists "$2" ; then
@@ -109,6 +123,8 @@ fileCopyForce () {
   parameterRequire "$1" 1 'source file'
   parameterRequire "$2" 2 'target file'
 
+  # abort $FUNCNAME $LINENO 125 "Forced abort for testing"
+
   fileRequire "$1"
   if fileExists "$2" ; then
     logWarn "File '$2' exists, overwriting!"
@@ -126,6 +142,8 @@ filesCopy () {
   parameterRequire "$1" 1 'source directory'
   parameterRequire "$2" 2 'target directory'
 
+  # abort $FUNCNAME $LINENO 125 "Forced abort for testing"
+
   directoryRequire "$1"
   # if directoryExists "$2" ; then
     logInfo "Copying directory '$2' from directory '$1'..."
@@ -141,6 +159,8 @@ fileExists () {
   parametersRequire 1 "$#"
   parameterRequire "$1" 1 'target file'
 
+  # abort $FUNCNAME $LINENO 125 "Forced abort for testing"
+
   [[   -f "$1" ]] && \
     logDebug "Found file '$1'" && return "$BO_E_Ok"
   # TODO: FIX: Replace exit status of 100 with something more meaningful...
@@ -155,6 +175,8 @@ fileMove () {
   parametersRequire 2 "$#"
   parameterRequire "$1" 1 'source file'
   parameterRequire "$2" 2 'target file'
+
+  # abort $FUNCNAME $LINENO 125 "Forced abort for testing"
 
   fileRequire "$1"
   if fileExists "$2" ; then
@@ -174,6 +196,8 @@ fileRequire () {
   parametersRequire 1 "$#"
   parameterRequire "$1" 1 'target file'
 
+  # abort $FUNCNAME $LINENO 125 "Forced abort for testing"
+
   fileExists "$1" && return "$BO_E_Ok"
   # TODO: FIX: Replace exit status of 100 with something more meaningful...
   abort $FUNCNAME $LINENO 100 "Required file '$1' must exist!"
@@ -185,6 +209,8 @@ filesMakeExecutable () {
   parametersRequire 1 "$#"
   parameterRequire "$1" 1 'target directory'
 
+  # abort $FUNCNAME $LINENO 125 "Forced abort for testing"
+
   directoryRequire "$1"
   logInfo "Making files executable in directory '$1'..."
   chmod -R u+x "$1"
@@ -195,6 +221,8 @@ export -f filesMakeExecutable
 getPathAbsolute () {
   # Get absolute (canonical) path for the pathname $1
   # $1 = pathname
+
+  # abort $FUNCNAME $LINENO 125 "Forced abort for testing"
 
   # TODO: echo "$1"
   if [ -d "$1" ]; then
@@ -211,28 +239,37 @@ getPathAbsolute () {
 } && export -f getPathAbsolute
 
 scriptExecute () {
-  # Execute script file $1, aborting on failure
-  parametersRequireAtLeast 1 $#
-  parameterRequire "$1" 1 'script file'
+  # Execute script file $3, aborting on failure
+  parametersRequireAtLeast 3 $#
+  parameterRequire "$1" 1 'caller file/function (via $FUNCNAME or $BASH_SOURCE or $0)'
+  parameterRequire "$2" 2 'caller line number (via $LINENO)'
+  parameterRequire "$3" 3 'script file to be executed'
 
-  local -r Script=$1
-  shift 1
-  scriptRequire $Script
+  # BROKEN: abort $BASH_SOURCE:$FUNCNAME $LINENO 125 "Forced abort for testing"
+  # BROKEN: abort ${BASH_SOURCE[0]}:${FUNCNAME[0]} $LINENO 125 "Forced abort for testing"
+  # WRONG: abort $0:$FUNCNAME $LINENO 125 "Forced abort for testing"
+  # abort $FUNCNAME $LINENO 125 "Forced abort for testing"
+
+  local -r Caller=$1
+  local -r Line=$2
+  local -r Script=$3
+  shift 3
+  scriptRequire $Caller $Line $Script
   $Script $@
-  abortOnFail $FUNCNAME $LINENO $?
+  abortOnFail $Caller $Line $?
 } && export -f scriptExecute
 
 scriptRequire () {
-  # Require script file $1
-  parametersRequireAtLeast 1 $#
-  parameterRequire "$1" 1 'script file'
+  # Require script file $3
+  parametersRequireAtLeast 3 $#
+  parameterRequire "$1" 1 'caller file/function (via $FUNCNAME or $BASH_SOURCE or $0)'
+  parameterRequire "$2" 2 'caller line number (via $LINENO)'
+  parameterRequire "$3" 3 'required script file'
 
-  fileRequire $1
+  # abort $FUNCNAME $LINENO 125 "Forced abort for testing"
+
+  fileRequire $3
 } && export -f scriptRequire
-
-###################################################################################################
-# Return, but do NOT exit, with a success code
-return "$BO_E_Ok"
 
 ###################################################################################################
 : <<'DisabledContent'

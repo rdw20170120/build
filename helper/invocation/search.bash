@@ -12,7 +12,7 @@ This="$(dirname $Self)"      ; abortOnFail $0 $LINENO $?
 logInfo "Search for regex pattern '$1' in source text"
 
 Dir=$PWD
-variableRequire   Dir
+variableRequire $BASH_SOURCE $LINENO Dir
 directoryRequire $Dir
 cd $Dir ; abortOnFail $0 $LINENO $?
 

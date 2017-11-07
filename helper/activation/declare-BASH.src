@@ -13,12 +13,14 @@
 ###################################################################################################
 
 parameterRequire () {
-  # Require parameter passed as $1, indexed as $2, and described as $3;
+  # Require parameter passed as $3, indexed as $4, and described as $5;
   # abort if missing
-  parametersRequire 3 "$#"
+  [[ "$#" -ne 3 ]] && Oops && exit "$BO_E_Usage"
   # $1 = actual parameter value (may be null)
   valueRequire "$2" 'parameter index'
   valueRequire "$3" 'description'
+
+  # abort $FUNCNAME $LINENO 125 "Forced abort for testing"
 
   abortIfMissing $FUNCNAME $LINENO "$1" "Missing parameter $2: $3!"
 }
@@ -30,6 +32,8 @@ parametersRequire () {
   valueRequire "$1" 'required parameter count'
   valueRequire "$2" 'actual parameter count'
 
+  # abort $FUNCNAME $LINENO 125 "Forced abort for testing"
+
   [[ "$2" -eq "$1" ]] && return "$BO_E_Ok"
   # TODO: FIX: Replace exit status of 100 with something more meaningful...
   abort $FUNCNAME $LINENO 100 "'$2' parameters were passed when exactly '$1' are required!"
@@ -38,12 +42,14 @@ export -f parametersRequire
 
 parametersRequireAtLeast () {
   # Require at least $1 parameters to calling function/script
-  parametersRequire 2 "$#"
+  [[ "$#" -ne 2 ]] && Oops && exit "$BO_E_Usage"
   valueRequire "$1" 'required parameter count'
   valueRequire "$2" 'actual parameter count'
 
+  # abort $FUNCNAME $LINENO 125 "Forced abort for testing"
+
   [[ "$2" -ge "$1" ]] && return "$BO_E_Ok"
-  # TODO: FIX: Replace exit status of 100 with something more meaningful...
+  # TODO: FIX: Replace exit status 100 with something more meaningful...
   abort $FUNCNAME $LINENO 100 "'$2' parameters were passed when at least '$1' are required!"
 }
 export -f parametersRequireAtLeast
@@ -54,6 +60,8 @@ valueRequire () {
   # $1 = value that is required
   # $2 = description for value
 
+  # abort $FUNCNAME $LINENO 125 "Forced abort for testing"
+
   abortIfMissing $FUNCNAME $LINENO "$1" "Value for '$2' is missing (non-null)!"
 }
 export -f valueRequire
@@ -61,8 +69,10 @@ export -f valueRequire
 variableRequire () {
   # Require variable $1, abort if it is missing
   # TODO: Can variable be defined, but have no value (I think so)?
-  parametersRequire 1 "$#"
-  parameterRequire  "$1" 1 'name of variable that is required'
+  [[ "$#" -ne 1 ]] && Oops && exit "$BO_E_Usage"
+  valueRequire "$1" 'name of variable that is required'
+
+  # abort $FUNCNAME $LINENO 125 "Forced abort for testing"
 
   declare Name=$1
   declare Value="${!Name}"
@@ -74,8 +84,10 @@ export -f variableRequire
 
 variableTrace () {
   # Trace variable $1, showing its value or that it is missing
-  parametersRequire 1 "$#"
-  parameterRequire  "$1" 1 'name of variable to be traced'
+  [[ "$#" -ne 1 ]] && Oops && exit "$BO_E_Usage"
+  valueRequire "$1" 'name of variable to be traced'
+
+  # abort $FUNCNAME $LINENO 125 "Forced abort for testing"
 
   declare Name=$1
   declare Value="${!Name}"
@@ -86,10 +98,6 @@ variableTrace () {
   fi
 }
 export -f variableTrace
-
-###################################################################################################
-# Return, but do NOT exit, with a success code
-return "$BO_E_Ok"
 
 ###################################################################################################
 : <<'DisabledContent'

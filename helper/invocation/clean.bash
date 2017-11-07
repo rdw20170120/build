@@ -2,7 +2,7 @@
 echo "TRACE: Executing '$BASH_SOURCE'"
 logDebug 'Cleaning this project of all output and temporary files...'
 
-variableRequire BO_Project
+variableRequire $BASH_SOURCE $LINENO BO_Project
 
 rm ${BO_Project}/MANIFEST
 

@@ -16,7 +16,7 @@ abort () {
   # Abort BASH execution with status $3 and message $4
   # from caller file/function $1 and line $2
   [[ "$#" -ne 4 ]] && Oops && exit "$BO_E_Usage"
-  # $1 = caller file/function (via $FUNCNAME or $0 or $Self)
+  # $1 = caller file/function (via $FUNCNAME or $BASH_SOURCE or $0)
   # $2 = caller line number   (via $LINENO)
   # $3 = exit status code
   # $4 = message
@@ -34,7 +34,7 @@ abortIfMissing () {
   # Abort with message $3 if value $4 is missing (resolves to empty string)
   # from caller file/function $1 and line $2
   [[ "$#" -ne 4 ]] && Oops && exit "$BO_E_Usage"
-  # $1 = caller file/function (via $FUNCNAME or $0 or $Self)
+  # $1 = caller file/function (via $FUNCNAME or $BASH_SOURCE or $0)
   # $2 = caller line number   (via $LINENO)
   # $3 = value that is required
   # $4 = message
@@ -49,7 +49,7 @@ abortOnFail () {
   # Abort on failure of previous command with status $3
   # from caller file/function $1 and line $2
   [[ "$#" -ne 3 ]] && Oops && exit "$BO_E_Usage"
-  # $1 = caller file/function (via $FUNCNAME or $0 or $Self)
+  # $1 = caller file/function (via $FUNCNAME or $BASH_SOURCE or $0)
   # $2 = caller line number   (via $LINENO)
   # $3 = exit status code
 
@@ -62,7 +62,7 @@ report () {
   # Report BASH execution with status $3 and message $4
   # from caller file/function $1 and line $2
   [[ "$#" -ne 4 ]] && Oops && exit "$BO_E_Usage"
-  # $1 = caller file/function (via $FUNCNAME or $0 or $Self)
+  # $1 = caller file/function (via $FUNCNAME or $BASH_SOURCE or $0)
   # $2 = caller line number   (via $LINENO)
   # $3 = exit status code
   # $4 = message
@@ -75,7 +75,7 @@ reportOnFail () {
   # Report on failure of last command with status $3
   # from caller file/function $1 and line $2
   [[ "$#" -ne 4 ]] && Oops && exit "$BO_E_Usage"
-  # $1 = caller file/function (via $FUNCNAME or $0 or $Self)
+  # $1 = caller file/function (via $FUNCNAME or $BASH_SOURCE or $0)
   # $2 = caller line number   (via $LINENO)
   # $3 = exit status code
 
@@ -85,10 +85,46 @@ reportOnFail () {
 export -f reportOnFail
 
 ###################################################################################################
-# Return, but do NOT exit, with a success code
-return "$BO_E_Ok"
-
-###################################################################################################
 : <<'DisabledContent'
+printStackTrace() {
+  # NOTE: Requires extended debugging enabled, such as by 'shopt -s extdebug'
+  # TODO: RESEARCH: Why does this seem not to work?
+  set -o verbose
+  set -o xtrace
+
+  if shopt -q extdebug ; then
+    declare frame=0
+    declare argv_offset=0
+
+    while caller_info=( $(caller $frame) ) ; do
+      declare argv=()
+      declare argc
+      declare frame_argc
+
+      for ((frame_argc=${BASH_ARGC[frame]},frame_argc--,argc=0; frame_argc >= 0; argc++, frame_argc--)) ; do
+        argv[argc]=${BASH_ARGV[argv_offset+frame_argc]}
+        case "${argv[argc]}" in
+          *[[:space:]]*) argv[argc]="'${argv[argc]}'" ;;
+        esac
+      done
+      argv_offset=$((argv_offset + ${BASH_ARGC[frame]}))
+      echo ":: ${caller_info[2]}: Line ${caller_info[0]}: ${caller_info[1]}(): ${FUNCNAME[frame]} ${argv[*]}"
+
+      frame=$((frame+1))
+    done
+
+    if [[ $frame -eq 1 ]] ; then
+      caller_info=( $(caller 0) )
+      echo ":: ${caller_info[2]}: Line ${caller_info[0]}: ${caller_info[1]}"
+    fi
+  else
+    logWarn "Cannot print stack trace since BASH extended debugging is off"
+  fi
+
+  set +o xtrace
+  set +o verbose
+}
+export -f printStackTrace
+
 DisabledContent
 

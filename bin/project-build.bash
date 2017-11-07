@@ -2,9 +2,12 @@
 [[ -n "$BO_Trace" ]] && echo "TRACE: Executing '$BASH_SOURCE'"
 ################################################################################
 
-if [[ -z "$BO_Project" ]] ; then
-    echo 'This project is not activated, aborting'
-else
+main () {
+  parametersRequire 0 $#
+
+  # BROKEN: abort $BASH_SOURCE:$FUNCNAME $LINENO 125 "Forced abort for testing"
+  # abort $0:$FUNCNAME $LINENO 125 "Forced abort for testing"
+
   variableRequire BO_ProjectName 
   variableRequire TMPDIR
 
@@ -16,6 +19,15 @@ else
   # Build new output
   directoryRecreate $DirTgt
   scriptExecute $BO_Project/src/bin/build-all.bash $DirSrc $DirTgt
+}
+
+################################################################################
+
+if [[ -z "$BO_Project" ]] ; then
+  echo 'This project is not activated, aborting'
+else
+  main $@
+  abortOnFail $0 $LINENO $?
 fi
 
 ################################################################################

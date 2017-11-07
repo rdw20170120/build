@@ -13,7 +13,7 @@ This="$(dirname $Self)"      ; abortOnFail $0 $LINENO $?
 logInfo "Attempt (show but do NOT save) replacement of regex pattern '$1' with text '$2' in source text"
 
 Dir=$PWD
-variableRequire   Dir
+variableRequire $BASH_SOURCE $LINENO Dir
 directoryRequire $Dir
 cd $Dir ; abortOnFail $0 $LINENO $?
 
