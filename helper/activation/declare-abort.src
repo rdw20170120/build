@@ -74,7 +74,7 @@ export -f report
 reportOnFail () {
   # Report on failure of last command with status $3
   # from caller file/function $1 and line $2
-  [[ "$#" -ne 4 ]] && Oops && exit "$BO_E_Usage"
+  [[ "$#" -ne 3 ]] && Oops && exit "$BO_E_Usage"
   # $1 = caller file/function (via $FUNCNAME or $BASH_SOURCE or $0)
   # $2 = caller line number   (via $LINENO)
   # $3 = exit status code
