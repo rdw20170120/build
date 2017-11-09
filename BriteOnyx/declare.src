@@ -4,12 +4,6 @@
 # NOTE: Assumes this project has been activated using the BriteOnyx framework.
 # NOTE: We MUST NOT EVER 'exit' during BriteOnyx bootstrap or activation
 ####################################################################################################
-# NOTE: Uncomment the following two lines for debugging
-# set -o verbose
-# set -o xtrace
-# TODO: SOMEDAY: Add inverse commands to isolate debugging
-
-####################################################################################################
 # Declare needed functionality to support the BriteOnyx framework
 # NOTE: We use the 'bo' prefix by convention for all our BriteOnyx support functions.
 

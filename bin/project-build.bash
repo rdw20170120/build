@@ -18,7 +18,7 @@ main () {
 
   # Build new output
   directoryRecreate $DirTgt
-  scriptExecute $BO_Project/src/bin/build-all.bash $DirSrc $DirTgt
+  scriptExecute $0:$FUNCNAME $LINENO $BO_Project/src/bin/build-all.bash $DirSrc $DirTgt
 }
 
 ################################################################################

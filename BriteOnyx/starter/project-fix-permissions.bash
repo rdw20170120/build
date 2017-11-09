@@ -5,11 +5,11 @@
 main () {
   parametersRequire 0 $#
 
-  variableRequire $BASH_SOURCE $LINENO BO_Home
+  variableRequire BO_Home
   local -r Script=$BO_Home/helper/invocation/project-fix-permissions.bash
-  variableRequire $BASH_SOURCE $LINENO BO_Project
-  scriptExecute $Script $BO_Project/bin
-  scriptExecute $Script $BO_Project/BriteOnyx
+  variableRequire BO_Project
+  scriptExecute $0:$FUNCNAME $LINENO $Script $BO_Project/bin
+  scriptExecute $0:$FUNCNAME $LINENO $Script $BO_Project/BriteOnyx
   # TODO: Add other subdirectories as necessary
 }
 

@@ -7,7 +7,7 @@
 # NOTE: Assumes that this project has been activated using the BriteOnyx framework.
 ###################################################################################################
 
-variableRequire $BASH_SOURCE $LINENO BO_Project
+variableRequire BO_Project
 directoryRequire "$BO_Project"
 
 Version=2.2
@@ -35,7 +35,7 @@ abortOnFail $0 $LINENO $?
 : <<'DisabledContent'
 # Use Resty tool
 
-variableRequire $BASH_SOURCE $LINENO BO_Project
+variableRequire BO_Project
 export ScriptResty="$BO_Project/lib/Resty-2.2.src"
 fileRequire "$ScriptResty"
 chmod u+x   "$ScriptResty"

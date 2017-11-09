@@ -3,7 +3,7 @@ echo "TRACE: Executing '$BASH_SOURCE'"
 logDebug 'Counting the lines of source code (SLOC) in this project...'
 # TODO: This script requires the 'sloccount' package to have been installed
 
-variableRequire $BASH_SOURCE $LINENO BO_Project
+variableRequire BO_Project
 
 Dir=$BO_Project/out
 directoryCreate "${Dir}"

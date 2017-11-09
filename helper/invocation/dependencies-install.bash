@@ -2,7 +2,7 @@
 echo "TRACE: Executing '$BASH_SOURCE'"
 logDebug 'Installing the dependencies for this project using PIP...'
 
-variableRequire $BASH_SOURCE $LINENO BO_Project
+variableRequire BO_Project
 
 File=${BO_Project}/cfg/freeze.pip
 fileRequire "${File}"

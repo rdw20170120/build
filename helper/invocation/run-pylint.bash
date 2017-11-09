@@ -2,8 +2,8 @@
 echo "TRACE: Executing '$BASH_SOURCE'"
 logDebug 'Running pylint on this project...'
 
-variableRequire $BASH_SOURCE $LINENO BO_Project
-variableRequire $BASH_SOURCE $LINENO BO_HomePackage
+variableRequire BO_Project
+variableRequire BO_HomePackage
 
 directoryRequire "$BO_Project/src/$BO_HomePackage"
 

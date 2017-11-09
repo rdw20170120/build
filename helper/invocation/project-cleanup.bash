@@ -3,7 +3,7 @@
 # NOTE: Assumes that this project has been activated using the BriteOnyx framework.
 ###################################################################################################
 
-variableRequire $BASH_SOURCE $LINENO BO_Project
+variableRequire BO_Project
 directoryRequire $BO_Project
 
 ###################################################################################################
