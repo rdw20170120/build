@@ -246,7 +246,6 @@ scriptExecute () {
   parameterRequire "$3" 3 'script file to be executed'
 
   # BROKEN: abort $BASH_SOURCE:$FUNCNAME $LINENO 125 "Forced abort for testing"
-  # BROKEN: abort ${BASH_SOURCE[0]}:${FUNCNAME[0]} $LINENO 125 "Forced abort for testing"
   # WRONG: abort $0:$FUNCNAME $LINENO 125 "Forced abort for testing"
   # abort $FUNCNAME $LINENO 125 "Forced abort for testing"
 

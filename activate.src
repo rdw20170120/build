@@ -52,8 +52,7 @@ fi
 ####################################################################################################
 # Remember the directory containing this script as our project root
 
-# TODO: Should we replicate this approach elsewhere for accessing $0?
-export BO_Project="$(dirname $0[0])"
+export BO_Project="$(dirname $BASH_SOURCE)"
 
 # TODO: REVIEW: Shall we NOT cd into our project directory since it changes
 # the caller's execution environment?
