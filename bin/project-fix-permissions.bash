@@ -5,7 +5,6 @@
 main () {
   parametersRequire 0 $#
 
-  # BROKEN: abort $BASH_SOURCE:$FUNCNAME $LINENO 125 "Forced abort for testing"
   # abort $0:$FUNCNAME $LINENO 125 "Forced abort for testing"
 
   variableRequire BO_Home
