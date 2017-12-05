@@ -220,6 +220,51 @@ def _generate_activate(script, target_directory, target_file):
     script.add_disabled_content_footer()
     _generate(script, target_directory, target_file)
 
+def _generate_activate_gradle(script, target_directory, target_file):
+    script.add_text('''
+''')
+    _generate(script, target_directory, target_file)
+
+def _generate_activate_linux(script, target_directory, target_file):
+    script.add_text('''
+''')
+    _generate(script, target_directory, target_file)
+
+def _generate_activate_python(script, target_directory, target_file):
+    script.add_text('''
+''')
+    _generate(script, target_directory, target_file)
+
+def _generate_bootstrap(script, target_directory, target_file):
+    script.add_text('''
+''')
+    _generate(script, target_directory, target_file)
+
+def _generate_declare(script, target_directory, target_file):
+    script.add_text('''
+''')
+    _generate(script, target_directory, target_file)
+
+def _generate_environment_for_briteonyx(script, target_directory, target_file):
+    script.add_text('''
+''')
+    _generate(script, target_directory, target_file)
+
+def _generate_environment_for_project(script, target_directory, target_file):
+    script.add_text('''
+''')
+    _generate(script, target_directory, target_file)
+
+def _generate_environment_for_user(script, target_directory, target_file):
+    script.add_text('''
+''')
+    _generate(script, target_directory, target_file)
+
+def _generate_maybe_activate(script, target_directory, target_file):
+    script.add_text('''
+''')
+    _generate(script, target_directory, target_file)
+
 def _initialize_logging_file(script):
     script.add_blank_line()
     script.add_comment('Initialize BriteOnyx logging file')
@@ -306,10 +351,30 @@ def main():
         ))
         recreate_directory(args.target_directory)
 
-        directory = args.target_directory        
+        directory = os.path.join(args.target_directory, 'helper', 'activation')
         maybe_create_directory(directory)
+        _generate_activate_linux(BashScript(), directory, 'activate.src')
 
+        directory = os.path.join(args.target_directory, 'helper', 'activation', 'add_on')
+        maybe_create_directory(directory)
+        _generate_activate_gradle(BashScript(), directory, 'activate-Gradle.src')
+        _generate_activate_python(BashScript(), directory, 'activate-Python.src')
+
+        directory = os.path.join(args.target_directory, 'sample_project')
+        maybe_create_directory(directory)
         _generate_activate(BashScript(), directory, 'activate.src')
+
+        directory = os.path.join(args.target_directory, 'sample_project', 'BriteOnyx')
+        maybe_create_directory(directory)
+        _generate_bootstrap(BashScript(), directory, 'bootstrap.src')
+        _generate_declare(BashScript(), directory, 'declare.src')
+        _generate_environment_for_briteonyx(BashScript(), directory, 'env.src')
+        _generate_maybe_activate(BashScript(), directory, 'maybeActivate.src')
+
+        directory = os.path.join(args.target_directory, 'sample_project', 'BriteOnyx', 'starter')
+        maybe_create_directory(directory)
+        _generate_environment_for_project(BashScript(), directory, 'project-env.src')
+        _generate_environment_for_user(BashScript(), directory, 'user-BriteOnyx.src')
     except Exception as e:
         LOG.error("main() except Exception = failure")
         LOG.exception(e)
