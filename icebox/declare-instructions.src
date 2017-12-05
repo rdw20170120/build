@@ -1,0 +1,168 @@
+#!/bin/cat
+[[ -n "$BO_Trace" ]] && echo "TRACE: Executing '$BASH_SOURCE'"
+###################################################################################################
+# This script is NOT intended to be an entry point, to be directly executed by a user or otherwise.
+
+argsFromLines () {
+  parametersRequire 2 $#
+  parameterRequire "$1" 1 'file name'
+  parameterRequire "$2" 2 'separator'
+
+  local -r Old_IFS="$IFS"
+  IFS=
+  while read -r line || [[ -n "$line" ]] ; do
+    printf "%s%s" $line "$2"
+  done <$1
+  IFS="$Old_IFS"
+}
+export -f argsFromLines
+
+argsIntoLines () {
+  for a in $@ ; do
+    printf "%s\n" $a
+  done
+}
+export -f argsIntoLines
+
+colored () {
+  parametersRequire 2 $#
+  parameterRequire "$1" 1 'text'
+  parameterRequire "$2" 2 'color reference'
+
+  local Style=$2
+  Style="color: $Style;"
+
+  local Text=$1
+  Text=$(span "$Text" "$Style")
+  printf "%s" "$Text"
+}
+export -f colored
+
+data () {
+  parametersRequire 1 $#
+  parameterRequire "$1" 1 'text'
+
+  local Text=$1
+  Text=$(colored   "$Text" '#0000ff')
+  Text=$(strong    "$Text")
+  Text=$(underline "$Text")
+  printf "%s" "$Text"
+}
+export -f data
+
+emphasis () {
+  parametersRequire 1 $#
+  parameterRequire "$1" 1 'text'
+
+  local Text=$1
+  Text=$(colored "$Text" '#800080')
+  Text=$(strong  "$Text")
+  printf "%s" "$Text"
+}
+export -f emphasis
+
+listClean () {
+  parametersRequire 1 $#
+  parameterRequire "$1" 1 'comma-separated list'
+
+  variableRequire   TMPDIR
+  directoryRequire $TMPDIR
+
+  # Define temporary files
+  local -r File0=$TMPDIR/listClean-$$-0.tmp
+  local -r File1=$TMPDIR/listClean-$$-1.tmp
+  local -r File2=$TMPDIR/listClean-$$-2.tmp
+
+  local -r Separator=', '
+
+  local Text=$1
+  Text="${Text//,/ }"  # Convert separators from comma to space
+  argsIntoLines >$File0 $Text
+
+  sort <$File0 >$File1
+
+  [[ -f "$File2" ]] && rm $File2
+  while read v ; do
+    Text=$(data $v)
+    printf "%s\n" "$Text" >>$File2
+  done <$File1
+
+  Text=$(argsFromLines $File2 "$Separator")
+  # TODO: SOMEDAY: Move this cleanup step into argsFromLines function
+  Text="${Text%$Separator}"  # Remove final Separator
+
+  printf "%s" "$Text"
+
+  # Delete temporary files
+  rm $File2
+  rm $File1
+  rm $File0
+}
+export -f listClean
+
+p () {
+  parametersRequire 1 $#
+  parameterRequire "$1" 1 'text'
+
+  printf "<p>%s</p>" "$1"
+}
+export -f p
+
+span () {
+  parametersRequire 2 $#
+  parameterRequire "$1" 1 'text'
+  parameterRequire "$2" 2 'style'
+
+  printf "<span style=\"%s\">%s</span>" "$2" "$1"
+}
+export -f span
+
+strong () {
+  parametersRequire 1 $#
+  parameterRequire "$1" 1 'text'
+
+  printf "<strong>%s</strong>" "$1"
+}
+export -f strong
+
+underline () {
+  parametersRequire 1 $#
+  parameterRequire "$1" 1 'text'
+
+  local Style='text-decoration: underline;'
+
+  local Text=$1
+  Text=$(span "$Text" "$Style")
+  printf "%s" "$Text"
+}
+export -f underline
+
+writeHeader () {
+  parametersRequire 1 $#
+  parameterRequire "$1" 1 'header text'
+
+  writeLine
+  echo "$1"
+  writeLine
+}
+export -f writeHeader
+
+writeLine () {
+  echo '##########################################################################################'
+}
+export -f writeLine
+
+####################################################################################################
+
+getTaskWebpageFilePath () {
+  parametersRequire 1 $#
+  parameterRequire "$1" 1 'file name'
+
+  printf '%s' "$(getTaskOutputFilePath $1 html)"
+}
+export -f getTaskWebpageFilePath
+
+####################################################################################################
+: <<'DisabledContent'
+DisabledContent
+

@@ -1,0 +1,207 @@
+#!/bin/cat
+[[ -n "$BO_Trace" ]] && echo "TRACE: Executing '$BASH_SOURCE'"
+####################################################################################################
+# TODO: SOMEDAY: Integrate into BriteOnyx
+
+fileExists () {
+  # Return whether $1 exists and is a file
+  [[ -f "$1" ]] && return 0
+  return 1
+}
+export -f fileExists
+
+getLength () {
+  # Return length of string $1
+  return ${#1}
+}
+export -f getLength
+
+getPathnameExtension () {
+  # Return extension (if any) of pathname $1
+  # If $1 contains backslash         ('\'), output empty string & return 1
+  # If $1 contains space             (' '), output empty string & return 1
+  # If $1 contains left  parenthesis ('('), output empty string & return 1
+  # If $1 contains right parenthesis (')'), output empty string & return 1
+  [[ -z "$1" ]] && echo '' && return 1
+  stringContains "$1" '\' && echo '' && return 1
+  stringContains "$1" " " && echo '' && return 1
+  stringContains "$1" '(' && echo '' && return 1
+  stringContains "$1" ')' && echo '' && return 1
+
+  local -r Base=$(basename "$1")
+  local -i Index
+  getPositionLast "$Base" . ; Index=$?
+  (( Index == 0 )) && echo '' && return 0
+  # Skip . preceding extension
+  (( Index++ ))
+  echo "$(getSubstring $Base $Index)"
+}
+export -f getPathnameExtension
+
+getPositionFirst () {
+  # Return one-based index of first position of substring $2 in string $1
+  # Return 0 if substring $2 is not present in string $1
+  # If parameters are invalid, return 0
+  local -ir Length1=${#1}
+  local -ir Length2=${#2}
+  local -i  Result=0
+
+  (( Length1 == 0 )) && return $Result
+  (( Length2 == 0 )) && return $Result
+
+  local    Partial
+  local -i Stop=$Length1
+  (( Stop = Length1 - Length2 + 1 ))
+  for ((I = 1; I <= Stop; I++)) ; do
+    Partial=$(getSubstring $1 $I $Length2)
+    if [[ "$Partial" = "$2" ]] ; then
+      Result=$I ; break
+    fi
+  done
+  return $Result
+}
+export -f getPositionFirst
+
+getPositionLast () {
+  # Return one-based index of last position of substring $2 in string $1
+  # Return 0 if substring $2 is not present in string $1
+  # If parameters are invalid, return 0
+  local -ir Length1=${#1}
+  local -ir Length2=${#2}
+  local -i  Result=0
+
+  (( Length1 == 0 )) && return 0
+  (( Length2 == 0 )) && return 0
+
+  local    Partial
+  local -i Stop=$Length1
+  (( Stop = Length1 - Length2 + 1 ))
+  for ((I = Stop; I >= 1; I--)) ; do
+    Partial=$(getSubstring $1 $I $Length2)
+    if [[ "$Partial" = "$2" ]] ; then
+      Result=$I ; break
+    fi
+  done
+  return $Result
+}
+export -f getPositionLast
+
+getStringWithoutEnding () {
+  # Return string $1 without ending substring $2, if present
+  # If string $1 does not end with substring $2, output string $1 & return 1
+  # If parameters are invalid, output empty string '' & return 1
+  [[ -z "$2" ]] && echo '' && return 1
+  [[ -z "$1" ]] && echo '' && return 1
+
+  local -ir Length1=${#1}
+  local -ir Length2=${#2}
+  (( Length1 < Length2 )) && return 1
+
+  local    Output=$1
+  local -i Result=1
+  local -i Index
+  (( Index = Length1 - Length2 ))
+  local -r End=${1:$Index:$Length2}
+  if [[ "$End" = "$2" ]]; then
+    Result=0
+    Output=${1:0:$Index}
+  fi
+  echo "$Output"
+  return $Result
+}
+export -f getStringWithoutEnding
+
+getSubstring () {
+  # Return substring starting at one-based index $2 for length $3 of string $1
+  # If length $3 is missing, then return rest of string $1
+  # If length $3 exceeds length of rest of string $1, then return rest of string $1
+  # If parameters are invalid, output empty string '' & return 1
+  local -r String=$1
+
+  [[ -z "$2" ]] && echo '' && return 1
+  local -i Index=$2
+  (( Index < 1 )) && echo '' && return 1
+
+  local -ir Max=${#1}
+  local -i  Length=$Max
+  [[ -n "$3" ]] && Length=$3
+  (( Index > Max )) && echo '' && return 1
+  # TODO: SOMEDAY RESEARCH why does this NOT work?!?!
+  # local -i Length=$(getLength $String)
+
+  # Convert index from one-based to zero-based as expected by BASH syntax
+  let Index--
+  echo "${String:$Index:$Length}"
+}
+export -f getSubstring
+
+stringContains () {
+  # Return whether string $1 contains substring $2
+  local     Partial=$1
+  local -ir Length=${#2}
+  local -i  Result=1
+
+  [[ -z "$2" ]] && return 1
+  [[ -z "$1" ]] && return 1
+
+  while [[ -n "$Partial" ]] ; do
+    Start=${Partial:0:$Length}
+    if [[ "$Start" == "$2" ]] ; then
+      Result=0 ; break
+    else
+      Partial=${Partial:1}
+    fi
+  done
+  return $Result
+}
+export -f stringContains
+
+stringEndsWith () {
+  # Return whether string $1 ends with substring $2
+  [[ -z "$2" ]] && return 1
+  [[ -z "$1" ]] && return 1
+
+  local -ir Length1=${#1}
+  local -ir Length2=${#2}
+  (( Length1 < Length2 )) && return 1
+
+  local -i Result=1
+  local -i Index
+  (( Index = Length1 - Length2 ))
+  local -r End=${1:$Index:$Length2}
+  [[ "$End" = "$2" ]] && Result=0
+  return $Result
+}
+export -f stringEndsWith
+
+stringReplaceAll () {
+  # Return string $1 after replacing all occurrences of substring $2 with string $3
+  # If parameters are invalid, output empty string '' & return 1
+  [[ -z "$3" ]] && echo '' && return 1
+  [[ -z "$2" ]] && echo '' && return 1
+  [[ -z "$1" ]] && echo '' && return 1
+
+  echo "${1//$2/$3}"
+}
+export -f stringReplaceAll
+
+stringStartsWith () {
+  # Return whether string $1 starts with substring $2
+  [[ -z "$2" ]] && return 1
+  [[ -z "$1" ]] && return 1
+
+  local -ir Length1=${#1}
+  local -ir Length2=${#2}
+  (( Length1 < Length2 )) && return 1
+
+  local -i Result=1
+  local -r Start=${1:0:$Length2}
+  [[ "$Start" = "$2" ]] && Result=0
+  return $Result
+}
+export -f stringStartsWith
+
+################################################################################
+: <<'DisabledContent'
+DisabledContent
+

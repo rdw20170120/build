@@ -1,0 +1,38 @@
+#!/bin/cat
+[[ -n "$BO_Trace" ]] && echo "TRACE: Executing '$BASH_SOURCE'"
+####################################################################################################
+# NOTE: Assumes this project has been activated using the BriteOnyx framework.
+# NOTE: We MUST NOT EVER invoke the 'exit' command from BASH functions
+####################################################################################################
+# NOTE: Uncomment the following two lines for debugging
+# set -o verbose
+# set -o xtrace
+
+####################################################################################################
+
+Dir=$CB_DirSrc/helper
+
+Script=$Dir/declare-generate.src
+scriptRequire $Script ; source $Script ; abortOnFail $?
+
+Script=$Dir/declare-exercise.src
+scriptRequire $Script ; source $Script ; abortOnFail $?
+
+Script=$Dir/declare-Couchbase.src
+scriptRequire $Script ; source $Script ; abortOnFail $?
+
+Script=$Dir/declare-N1QL-base.src
+scriptRequire $Script ; source $Script ; abortOnFail $?
+
+Script=$Dir/declare-N1QL-check-output.src
+scriptRequire $Script ; source $Script ; abortOnFail $?
+
+Script=$Dir/declare-N1QL-check-plan.src
+scriptRequire $Script ; source $Script ; abortOnFail $?
+
+Script=$Dir/declare-N1QL-index.src
+scriptRequire $Script ; source $Script ; abortOnFail $?
+
+################################################################################
+: <<'DisabledContent'
+DisabledContent

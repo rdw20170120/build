@@ -1,0 +1,27 @@
+#!/bin/cat
+[[ -n "$BO_Trace" ]] && echo "TRACE: Executing '$BASH_SOURCE'"
+###################################################################################################
+# This script is NOT intended to be an entry point, to be directly executed by a user or otherwise.
+
+getEpochUtcIso8601 () {
+  parametersRequire 0 $#
+
+  # abort $FUNCNAME $LINENO 125 "Forced abort for testing"
+
+  printf '%s' $(date --utc +%Y%m%dT%H%M%SZ)
+}
+export -f getEpochUtcIso8601
+
+getEpochUtcSeconds () {
+  parametersRequire 0 $#
+
+  # abort $FUNCNAME $LINENO 125 "Forced abort for testing"
+
+  printf '%s' "$(date --utc +%s)"
+}
+export -f getEpochUtcSeconds
+
+####################################################################################################
+: <<'DisabledContent'
+DisabledContent
+

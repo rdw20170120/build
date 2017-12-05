@@ -1,0 +1,53 @@
+#!/bin/cat
+[[ -n "$BO_Trace" ]] && echo "TRACE: Executing '$BASH_SOURCE'"
+####################################################################################################
+# NOTE: Assumes this project has been activated using the BriteOnyx framework.
+# NOTE: We MUST NOT EVER invoke the 'exit' command from BASH functions
+####################################################################################################
+# NOTE: Uncomment the following two lines for debugging
+# set -o verbose
+# set -o xtrace
+
+####################################################################################################
+# Prepare for script generation
+
+variableRequire CB_ExerciseKind
+variableRequire CB_ExerciseNameLong
+variableRequire CB_ExerciseNameShort
+variableRequire CB_ExerciseNumber
+CB_ExerciseId=$CB_ExerciseNumber-$CB_ExerciseNameShort
+CB_Exercise="$CB_ExerciseKind-$CB_ExerciseNumber '$CB_ExerciseNameLong'"
+
+variableRequire CB_DirGen
+export DirGenExercise=$CB_DirGen/exercise/$CB_ExerciseId
+directoryCreate $DirGenExercise
+
+export ScriptBook=$(getExerciseScriptFile ${CB_ExerciseId}.txt)
+export ScriptDrop=$(getExerciseScriptFile drop.bash)
+export ScriptEnv=$(getExerciseScriptFile env.bash)
+export ScriptRun=$(getExerciseScriptFile run.bash)
+export ScriptUndo=$(getExerciseScriptFile undo.bash)
+
+# Data for exercises
+CB_CountryId='FI'
+CB_PlaylistId='76500162-0555-4034-b343-207732e8e1d2'
+CB_PlaylistIds=( \
+  "$CB_PlaylistId" \
+  '973cf887-30f3-4a09-8286-ce68e1362af9' \
+  'a9105702-62a3-4f73-b3de-2273ab5bc1c1' \
+  'b92f8143-15f4-455b-b4c9-9c8fff6a7c8a' \
+  'f8d82edc-bdc3-4b97-bd5e-3c5491f4142e' \
+)
+CB_SubregionId='154'
+CB_TrackId='00003466BBCDD2242E13D71F075D01458B8910FE'
+CB_UserEmail='rasmus.oja@comcast.net'
+CB_UserId='unreclaimedtablespoonfuls65337'
+CB_UserPhoneCell='040-026-56-24'
+
+# Directory within virtual machine (VM) containing content
+CB_DirContent=\$HOME/Desktop/CD210
+
+################################################################################
+: <<'DisabledContent'
+CB_DirData=\$HOME/Downloads
+DisabledContent

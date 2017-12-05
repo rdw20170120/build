@@ -1,0 +1,495 @@
+#!/bin/cat
+[[ -n "$BO_Trace" ]] && echo "TRACE: Executing '$BASH_SOURCE'"
+###################################################################################################
+# This script is NOT intended to be an entry point, to be directly executed by a user or otherwise.
+
+getItemId () {
+  parametersRequire 1 $#
+  parameterRequire "$1" 1 'exam item number'
+
+  # abort $FUNCNAME $LINENO 125 "Forced abort for testing"
+
+  printf 'EI%03u' $1
+}
+export -f getItemId
+
+getStepId () {
+  parametersRequire 1 $#
+  parameterRequire "$1" 1 'exam task step number'
+
+  # abort $FUNCNAME $LINENO 125 "Forced abort for testing"
+
+  printf 'Step%02u' $1
+}
+export -f getStepId
+
+getTaskId () {
+  parametersRequire 1 $#
+  parameterRequire "$1" 1 'exam task sequence number'
+
+  # abort $FUNCNAME $LINENO 125 "Forced abort for testing"
+
+  printf 'ET%02u' $1
+}
+export -f getTaskId
+
+####################################################################################################
+
+getAnswerFile () {
+  parametersRequire 2 $#
+  parameterRequire "$1" 1 'exam task sequence number'
+  parameterRequire "$2" 2 'exam task step number'
+
+  # abort $FUNCNAME $LINENO 125 "Forced abort for testing"
+
+  printf '%s/%s-%s.out' $CB_All_DirAnswer "$(getTaskId $1)" "$(getStepId $2)"
+}
+export -f getAnswerFile
+
+getTaskCommandPrefix () {
+  parametersRequire 2 $#
+  parameterRequire "$1" 1 'exam task sequence number'
+  parameterRequire "$2" 2 'exam item number'
+
+  # abort $FUNCNAME $LINENO 125 "Forced abort for testing"
+
+  printf 'executeFor %s %s' "$(getTaskId $1)" "$(getItemId $2)"
+}
+export -f getTaskCommandPrefix
+
+####################################################################################################
+
+getTaskOutputFileName () {
+  parametersRequireAtLeast 2 $#
+  parameterRequire "$1" 1 'exam task identifier'
+  parameterRequire "$2" 2 'exam item identifier'
+
+  # abort $FUNCNAME $LINENO 125 "Forced abort for testing"
+
+  printf '%s-%s' $1 $2
+}
+export -f getTaskOutputFileName
+
+getTaskOutputFilePath () {
+  parametersRequire 2 $#
+  parameterRequire "$1" 1 'file name'
+  parameterRequire "$2" 2 'file extension'
+
+  # abort $FUNCNAME $LINENO 125 "Forced abort for testing"
+
+  variableRequire    TMPDIR
+  directoryRequire  $TMPDIR
+  printf '%s/%s.%s' $TMPDIR $1 $2
+}
+export -f getTaskOutputFilePath
+
+getTaskStderrFilePath () {
+  parametersRequire 1 $#
+  parameterRequire "$1" 1 'file name'
+
+  # abort $FUNCNAME $LINENO 125 "Forced abort for testing"
+
+  printf '%s' "$(getTaskOutputFilePath $1 err)"
+}
+export -f getTaskStderrFilePath
+
+getTaskStdoutFilePath () {
+  parametersRequire 1 $#
+  parameterRequire "$1" 1 'file name'
+
+  # abort $FUNCNAME $LINENO 125 "Forced abort for testing"
+
+  printf '%s' "$(getTaskOutputFilePath $1 out)"
+}
+export -f getTaskStdoutFilePath
+
+getTaskTimingFilePath () {
+  parametersRequire 1 $#
+  parameterRequire "$1" 1 'file name'
+
+  # abort $FUNCNAME $LINENO 125 "Forced abort for testing"
+
+  printf '%s' "$(getTaskOutputFilePath $1 timing)"
+}
+export -f getTaskTimingFilePath
+
+writeBegan () {
+  parametersRequire 1 $#
+  parameterRequire "$1" 1 'exam task timing file'
+
+  # abort $FUNCNAME $LINENO 125 "Forced abort for testing"
+
+  local -ir Began=$(getEpochUtcSeconds)
+  printf 'Began %d\n' $Began >$1
+  # Write Began to caller so it can capture for later calls
+  printf '%s' $Began
+}
+export -f writeBegan
+
+writeCommand () {
+  parametersRequire 2 $#
+  parameterRequire "$1" 1 'exam task timing file'
+  parameterRequire "$2" 1 'exam task command'
+
+  # abort $FUNCNAME $LINENO 125 "Forced abort for testing"
+
+  printf 'Executing: %s\n' "$2" >>$1
+  if [[ -n "$CB_Debug" ]] ; then
+    logDebug "Executing:  $2"
+  fi
+}
+export -f writeCommand
+
+writeElapsed () {
+  parametersRequire 3 $#
+  parameterRequire "$1" 1 'exam task timing file'
+  parameterRequire "$2" 2 'time that exam task began execution (epoch seconds)'
+  parameterRequire "$3" 3 'time that exam task ended execution (epoch seconds)'
+
+  # abort $FUNCNAME $LINENO 125 "Forced abort for testing"
+
+  local -ir Began=$2
+  local -ir Ended=$3
+  local -i Elapsed
+  (( Elapsed = Ended - Began ))
+  printf 'Elapsed %d seconds\n' $Elapsed >>$1
+}
+export -f writeElapsed
+
+writeEnded () {
+  parametersRequire 2 $#
+  parameterRequire "$1" 1 'exam task timing file'
+  parameterRequire "$2" 2 'time that exam task began execution (epoch UTC seconds)'
+
+  # abort $FUNCNAME $LINENO 125 "Forced abort for testing"
+
+  local -ir Began=$2
+  local -ir Ended=$(getEpochUtcSeconds)
+  printf 'Ended %d\n' $Ended >>$1
+  writeElapsed $1 $Began $Ended
+}
+export -f writeEnded
+
+writeTaskOutput () {
+  parametersRequire 3 $#
+  parameterRequire "$1" 1 'exam task identifier'
+  parameterRequire "$2" 1 'exam task output file label'
+  parameterRequire "$3" 1 'exam task output file path'
+
+  # abort $FUNCNAME $LINENO 125 "Forced abort for testing"
+
+  logWarn "Task $1 $2:"
+  cat $3
+}
+export -f writeTaskOutput
+
+####################################################################################################
+
+getExamResultsTarballName () {
+  parametersRequire 6 $#
+  parameterRequire "$1" 1 'project name'
+  parameterRequire "$2" 2 'project revision'
+  parameterRequire "$3" 3 'exam id'
+  parameterRequire "$4" 4 'exam phase'
+  parameterRequire "$5" 5 'timestamp'
+  parameterRequire "$6" 6 'exam session id'
+
+  # abort $FUNCNAME $LINENO 125 "Forced abort for testing"
+
+  # TODO: REFACTOR: into a separate function
+  # NOTE: Assumes exam session identifier is 32 byte, expressed as a hexadecimal string
+  #       (so two characters per byte)
+
+  local -r  SessionId=$6
+  local     Suffix
+  getLength $SessionId
+  local -ir Length=$?
+  if (( Length == 64 )) ; then
+    local -i Index
+    (( Index = Length - 4 ))
+    Suffix=${SessionId:Index}
+  else
+    Suffix=$SessionId
+  fi
+  printf '%s-%s-%s-%s-%s-%s.tb2' "$1" "$2" "$Suffix" "$3" "$5" "$4"
+}
+export -f getExamResultsTarballName
+
+getProjectReleaseTarballName () {
+  parametersRequireAtLeast 3 $#
+  parameterRequire "$1" 1 'project name'
+  parameterRequire "$2" 2 'project revision'
+  parameterRequire "$3" 3 'exam id'
+  # parameterRequire "$4" 4 'qualifier'
+
+  # abort $FUNCNAME $LINENO 125 "Forced abort for testing"
+
+  if [[ -n "$4" ]] ; then
+    printf '%s-%s-%s-%s.tb2' $1 $2 $3 $4
+  else
+    printf '%s-%s-%s.tb2' $1 $2 $3
+  fi
+}
+export -f getProjectReleaseTarballName
+
+####################################################################################################
+
+packageExam () {
+  parametersRequire 1 $#
+  parameterRequire "$1" 1 'exam id'
+
+  # abort $FUNCNAME $LINENO 125 "Forced abort for testing"
+
+  local -r Exam=$1
+  local    Tarball
+
+  variableRequire BO_ProjectName
+
+  logInfo "Package '$BO_ProjectName' for exam '$Exam'"
+
+  variableRequire BO_FileTag
+  variableRequire TMPDIR
+
+  fileRequire $BO_Project/$BO_FileTag
+  local -r CB_Version=$(cat $BO_Project/$BO_FileTag)
+  abortOnFail $FUNCNAME $LINENO $?
+
+  local -r DirSrc=$BO_Project
+  local -r DirTgt=$TMPDIR
+
+  Tarball=$(getProjectReleaseTarballName $BO_ProjectName $CB_Version $Exam instruction)
+  abortOnFail $FUNCNAME $LINENO $?
+  packageExamInstructions $Tarball
+  abortOnFail $FUNCNAME $LINENO $?
+
+  Tarball=$(getProjectReleaseTarballName $BO_ProjectName $CB_Version $Exam)
+  abortOnFail $FUNCNAME $LINENO $?
+  packageExamScripts $Tarball
+  abortOnFail $FUNCNAME $LINENO $?
+} && export -f packageExam
+
+packageExamInstructions () {
+  parametersRequire 1 $#
+  parameterRequire "$1" 1 'tarball filename'
+
+  # abort $FUNCNAME $LINENO 125 "Forced abort for testing"
+
+  variableRequire BO_FileTag
+  variableRequire Exam
+  variableRequire DirSrc
+  variableRequire DirTgt
+
+  local -r FileArchive=$1
+  local -r FileChecksum=${FileArchive}.md5
+
+  # Clean old output
+  directoryCreate $DirTgt
+  [[ -f "$DirTgt/$FileArchive"  ]] && rm -f $DirTgt/$FileArchive
+  [[ -f "$DirTgt/$FileChecksum" ]] && rm -f $DirTgt/$FileChecksum
+
+  # Generate archive file
+  cd $DirSrc ; abortOnFail $FUNCNAME $LINENO $?
+  local Cmd='tar'
+  Cmd+=' --create'
+  Cmd+=' --anchored'
+  Cmd+=' --auto-compress'
+  Cmd+=" --file=$DirTgt/$FileArchive"
+  [[ -n "$CB_Debug" ]] && Cmd+=' --show-stored-names'
+  Cmd+=" --exclude=*.timing"
+  Cmd+=" instruction/$Exam"
+  Cmd+=" LICENSE"
+  Cmd+=" README.md"
+  Cmd+=" $BO_FileTag"
+  logDebug "Executing: $Cmd"
+  $Cmd
+  abortOnFail $FUNCNAME $LINENO $?
+
+  md5Checksum $DirTgt $FileArchive
+} && export -f packageExamInstructions
+
+packageExamScripts () {
+  # TODO: SOMEDAY: Tune down to just the essential content
+  # TODO: SOMEDAY: Split up into separate releases for various exam phases
+  parametersRequire 1 $#
+  parameterRequire "$1" 1 'tarball filename'
+
+  # abort $FUNCNAME $LINENO 125 "Forced abort for testing"
+
+  variableRequire BO_FileTag
+  variableRequire Exam
+  variableRequire DirSrc
+  variableRequire DirTgt
+
+  local -r FileArchive=$1
+  local -r FileChecksum=${FileArchive}.md5
+
+  # Clean old output
+  directoryCreate $DirTgt
+  [[ -f "$DirTgt/$FileArchive"  ]] && rm -f $DirTgt/$FileArchive
+  [[ -f "$DirTgt/$FileChecksum" ]] && rm -f $DirTgt/$FileChecksum
+
+  # Generate archive file
+  cd $DirSrc ; abortOnFail $FUNCNAME $LINENO $?
+  local Cmd='tar'
+  Cmd+=' --create'
+  Cmd+=' --anchored'
+  Cmd+=' --auto-compress'
+  Cmd+=" --file=$DirTgt/$FileArchive"
+  [[ -n "$CB_Debug" ]] && Cmd+=' --show-stored-names'
+  Cmd+=" --exclude=*.timing"
+  Cmd+=" Amazon"
+  Cmd+=" bin"
+  Cmd+=" BriteOnyx"
+  Cmd+=" exam/bank"
+  Cmd+=" exam/$Exam"
+  Cmd+=" instruction/$Exam"
+  Cmd+=" lib"
+  Cmd+=" trigger"
+  Cmd+=" activate.src"
+  Cmd+=" declare.src"
+  Cmd+=" env.src"
+  Cmd+=" LICENSE"
+  Cmd+=" README.md"
+  Cmd+=" $BO_FileTag"
+  logDebug "Executing: $Cmd"
+  $Cmd
+  abortOnFail $FUNCNAME $LINENO $?
+
+  md5Checksum $DirTgt $FileArchive
+} && export -f packageExamScripts
+
+####################################################################################################
+
+filesSessionGrab () {
+  parametersRequire 1 $#
+  parameterRequire "$1" 1 'target directory'
+
+  # abort $FUNCNAME $LINENO 125 "Forced abort for testing"
+
+  local -r DirTgt=$1
+
+  logInfo "Grab session files into directory '$DirTgt'"
+
+  variableRequire BO_FileLog
+  variableRequire CB_Client_FileSessionId
+  variableRequire HS_DirData
+  variableRequire HS_FileData
+
+  directoryRequire $DirTgt
+
+  # Grab project log file
+  if [[ -f "$BO_FileLog" ]] ; then
+    cp $BO_FileLog $DirTgt/
+    reportOnFail $FUNCNAME $LINENO $?
+  else
+    logWarn "Did not find project log file '$BO_FileLog'"
+  fi
+
+  # Grab Couchbase session file
+  if [[ -f "$CB_Client_FileSessionId" ]] ; then
+    cp $CB_Client_FileSessionId $DirTgt/
+    reportOnFail $FUNCNAME $LINENO $?
+  else
+    logWarn "Did not find session file '$CB_Client_FileSessionId'"
+  fi
+
+  # Grab Hatsize session file
+  local -r FileData=$HS_DirData/$HS_FileData
+  if [[ -f "$FileData" ]] ; then
+    cp $FileData $DirTgt/
+    reportOnFail $FUNCNAME $LINENO $?
+  else
+    logWarn "Did not find session file '$FileData'"
+  fi
+}
+export -f filesSessionGrab
+
+tarballAssembleInDirAnswer () {
+  parametersRequire 1 $#
+  parameterRequire "$1" 1 'tarball filename'
+
+  # abort $FUNCNAME $LINENO 125 "Forced abort for testing"
+
+  variableRequire CB_All_DirAnswer
+  variableRequire CB_DirUpload
+
+  directoryCreate $CB_All_DirAnswer
+  directoryCreate $CB_DirUpload
+
+  filesSessionGrab $CB_All_DirAnswer
+
+  logInfo "Assemble directory '$CB_All_DirAnswer' into tarball '$1'"
+
+  # Generate archive file
+  pushd $CB_All_DirAnswer ; abortOnFail $FUNCNAME $LINENO $?
+  local Cmd='tar'
+  Cmd+=' cv'
+  Cmd+=' --anchored'
+  Cmd+=' --auto-compress'
+  Cmd+=" --file=$CB_DirUpload/$1"
+  [[ -n "$CB_Debug" ]] && Cmd+=' --show-stored-names'
+  Cmd+=" --exclude=backup"
+  Cmd+=" *"
+  $Cmd
+  reportOnFail $FUNCNAME $LINENO $?
+  popd ; abortOnFail $FUNCNAME $LINENO $?
+
+  md5Checksum $CB_DirUpload $1
+}
+export -f tarballAssembleInDirAnswer
+
+tarballAssembleInDirOutput () {
+  parametersRequire 1 $#
+  parameterRequire "$1" 1 'tarball filename'
+
+  # abort $FUNCNAME $LINENO 125 "Forced abort for testing"
+
+  variableRequire CB_Client_DirOutput
+  variableRequire CB_DirUpload
+  variableRequire CB_Client_FileSessionId
+  variableRequire HS_DirData
+  variableRequire HS_FileData
+
+  directoryCreate $CB_Client_DirOutput
+  directoryCreate $CB_DirUpload
+
+  filesSessionGrab $CB_Client_DirOutput
+
+  logInfo "Assemble directory '$CB_Client_DirOutput' into tarball '$1'"
+
+  # Generate archive file
+  pushd $CB_Client_DirOutput ; abortOnFail $FUNCNAME $LINENO $?
+  local Cmd='tar'
+  Cmd+=' cv'
+  Cmd+=' --anchored'
+  Cmd+=' --auto-compress'
+  Cmd+=" --file=$CB_DirUpload/$1"
+  [[ -n "$CB_Debug" ]] && Cmd+=' --show-stored-names'
+  Cmd+=" *"
+  $Cmd
+  reportOnFail $FUNCNAME $LINENO $?
+  popd ; abortOnFail $FUNCNAME $LINENO $?
+
+  md5Checksum $CB_DirUpload $1
+}
+export -f tarballAssembleInDirOutput
+
+####################################################################################################
+
+getOutputDirectory () {
+  parametersRequire 2 $#
+  parameterRequire "$1" 1 'exam stage'
+  parameterRequire "$2" 2 'exam phase'
+
+  # abort $FUNCNAME $LINENO 125 "Forced abort for testing"
+
+  variableRequire CB_Client_DirOutput
+
+  printf '%s/%s/%s' "$CB_Client_DirOutput" "$1" "$2"
+}
+export -f getOutputDirectory
+
+####################################################################################################
+: <<'DisabledContent'
+DisabledContent
+

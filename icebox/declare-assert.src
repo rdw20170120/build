@@ -1,0 +1,48 @@
+#!/bin/cat
+[[ -n "$BO_Trace" ]] && echo "TRACE: Executing '$BASH_SOURCE'"
+####################################################################################################
+# TODO: SOMEDAY: Integrate into BriteOnyx
+
+assertEquals () {
+  # Assert that actual $1 equals expected $2, otherwise report message $3
+  if [[ "$1" = "$2" ]] ; then
+    echo "pass:  Got '$1', expected '$2', for $3"
+  else
+    echo "FAIL:  Got '$1', expected '$2', for $3"
+  fi
+}
+export -f assertEquals
+
+assertOutput () {
+  # Assert that actual output & exit status is expected output $2 & exit status $1
+  # for the command made of the remaining parameters
+  local -ir ExpectStatus=$1
+  local -r  ExpectOutput=$2
+  shift 2
+  local -r  Cmd=$@
+
+  local    ActualOutput
+  local -i ActualStatus
+  ActualOutput=$($Cmd) ; ActualStatus=$?
+  assertEquals  $ActualStatus   $ExpectStatus  "status of $Cmd"
+  assertEquals "$ActualOutput" "$ExpectOutput" "output of $Cmd"
+}
+export -f assertOutput
+
+assertStatus () {
+  # Assert that actual exit status is expected exit status $1
+  # for the command made of the remaining parameters
+  local -ir Expect=$1
+  shift 1
+  local -r  Cmd=$@
+
+  local -i Actual
+  $Cmd ; Actual=$?
+  assertEquals $Actual $Expect "status of $Cmd"
+}
+export -f assertStatus
+
+################################################################################
+: <<'DisabledContent'
+DisabledContent
+
