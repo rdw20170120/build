@@ -54,6 +54,10 @@ fi
 
 export BO_Project="$(dirname $BASH_SOURCE)"
 
+# TODO: REVIEW: Shall we NOT cd into our project directory since it changes
+# the caller's execution environment?
+# cd "$BO_Project" || return $?
+
 ####################################################################################################
 # Declare BriteOnyx support functionality
 
@@ -209,4 +213,3 @@ fi
 ####################################################################################################
 : <<'DisabledContent'
 DisabledContent
-
