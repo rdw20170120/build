@@ -4,269 +4,55 @@ import argparse
 import os
 import sys
 
-from bash_script import BashScript
-from bash_script import VISITOR_MAP
 from logging import getLogger
 from my_logging import configure_logging
 from my_system import maybe_create_directory
 from my_system import recreate_directory
 from renderer import Renderer
+from script_bash import VISITOR_MAP
+from script_briteonyx_bootstrap import BriteOnyxBootstrapScript
+from script_briteonyx_declare import BriteOnyxDeclareScript
+from script_briteonyx_environment import BriteOnyxEnvironmentScript
+from script_gradle_activate import GradleActivateScript
+from script_linux_activate import LinuxActivateScript
+from script_project_activate import ProjectActivateScript
+from script_project_environment import ProjectEnvironmentScript
+from script_project_maybe_activate import ProjectMaybeActivateScript
+from script_python_activate import PythonActivateScript
+from script_user_environment import UserEnvironmentScript
 
-LOG = getLogger('generate')
 
+LOG = getLogger('all_generate')
 
-def _abort_if_activated(script):
-    script.add_blank_line()
-    script.add_rule()
-    script.add_note('ABORT: if project is already activated')
-    script.add_text('[[ -n "$BO_Project" ]] &&')
-    script.add_text(''' echo "FATAL: Project '$BO_Project' is already activated, aborting" &&''')
-    script.add_line(' exit 100')
-
-def _activate_for_linux(script):
-    script.add_blank_line()
-    script.add_rule()
-    script.add_comment('Activate as a Linux project')
-    script.add_blank_line()
-    script.add_line('Script="$BO_Home/helper/activation/activate.src"')
-    script.add_text('boScriptRequire "$Script" ||')
-    script.add_text(' boFailed "$0" "$LINENO" $? ||')
-    script.add_line(' return $?')
-    script.add_text('source          "$Script" ||')
-    script.add_text(' boFailed "$0" "$LINENO" $? ||')
-    script.add_line(' return $?')
-
-def _add_activation_comments(script):
-    script.add_note("We MUST NOT EVER 'exit' during BriteOnyx bootstrap or activation")
-    script.add_rule()
-    script.add_debugging_comment()
-    script.add_someday('Add inverse commands to isolate debugging')
-    script.add_blank_line()
-    script.add_rule()
-    script.add_comment('Activate the BriteOnyx framework to manage this project directory tree')
-    script.add_blank_comment()
-    script.add_note("This script, and EVERY script that it calls, must NOT invoke 'exit'!  The user calling this")
-    script.add_comment('  script must be allowed to preserve their shell and every effort must be made to inform the user')
-    script.add_comment('  of problems while continuing execution where possible.  Terminating the shell robs the user of')
-    script.add_comment("  useful feedback and interrupts their work, which is unacceptable.  Instead, the BASH 'return'")
-    script.add_comment('  statement should be invoked to end execution with an appropriate status code.')
-    script.add_blank_comment()
-    script.add_someday('Verify that $BO_Project does indeed point to the root of our project directory tree')
-
-def _capture_incoming_environment(script):
-    script.add_blank_line()
-    script.add_comment('Capture incoming BASH environment')
-    script.add_text('if [[ -n "$TMPDIR" ]] ;')
-    script.add_line(' then')
-    script.add_line('  env | sort >$TMPDIR/BO-env-incoming.out')
-    script.add_text('elif [[ -n "$BO_Project" ]] ;')
-    script.add_line(' then')
-    script.add_line('  env | sort >$BO_Project/BO-env-incoming.out')
-    script.add_line('else')
-    script.add_line('  env | sort >$PWD/BO-env-incoming.out')
-    script.add_line('fi')
-
-def _capture_outgoing_environment(script):
-    script.add_blank_line()
-    script.add_comment('Capture outgoing BASH environment')
-    script.add_text('if [[ -n "$TMPDIR" ]] ;')
-    script.add_line(' then')
-    script.add_line('  env | sort >$TMPDIR/BO-env-outgoing.out')
-    script.add_text('elif [[ -n "$BO_Project" ]] ;')
-    script.add_line(' then')
-    script.add_line('  env | sort >$BO_Project/BO-env-outgoing.out')
-    script.add_line('else')
-    script.add_line('  env | sort >$PWD/BO-env-outgoing.out')
-    script.add_line('fi')
-
-def _configure_for_briteonyx(script):
-    script.add_blank_line()
-    script.add_rule()
-    script.add_comment('Configure for BriteOnyx')
-    script.add_blank_line()
-    script.add_line('Script="$BO_Project/BriteOnyx/env.src"')
-    script.add_text('boScriptRequire "$Script" ||')
-    script.add_text(' boFailed "$0" "$LINENO" $? ||')
-    script.add_line(' return $?')
-    script.add_text('source          "$Script" ||')
-    script.add_text(' boFailed "$0" "$LINENO" $? ||')
-    script.add_line(' return $?')
-
-def _configure_for_project(script):
-    script.add_blank_line()
-    script.add_rule()
-    script.add_comment('Configure for this project')
-    script.add_blank_line()
-    script.add_line('Script=$BO_Project/env.src')
-    script.add_text('boScriptRequire $Script ||')
-    script.add_text(' boFailed "$0" "$LINENO" $? ||')
-    script.add_line(' return $?')
-    script.add_text('source          $Script ||')
-    script.add_text(' boFailed "$0" "$LINENO" $? ||')
-    script.add_line(' return $?')
-
-def _configure_for_user(script):
-    script.add_blank_line()
-    script.add_rule()
-    script.add_comment('Configure for this user')
-    script.add_blank_line()
-    script.add_line('Script=$HOME/.BriteOnyx.src')
-    script.add_text('boScriptRequire "$Script" ||')
-    script.add_text(' boFailed "$0" "$LINENO" $? ||')
-    script.add_line(' return $?')
-    script.add_text('source          "$Script" ||')
-    script.add_text(' boFailed "$0" "$LINENO" $? ||')
-    script.add_line(' return $?')
-
-def _copy_starter_files(script):
-    script.add_blank_line()
-    script.add_rule()
-    script.add_comment('Copy starter files into place as necessary')
-    script.add_blank_line()
-    script.add_line('DirSrc=$BO_Project/BriteOnyx/starter')
-    script.add_blank_line()
-    script.add_line('boVariableRequire HOME')
-    script.add_line('DirTgt=$HOME')
-    script.add_text('[[ ! -e "$DirTgt" ]] &&')
-    script.add_line(' mkdir -p $DirTgt')
-    script.add_blank_line()
-    script.add_line('FileTgt=$DirTgt/.BriteOnyx.src')
-    script.add_comment('Move previous scripts to new path')
-    script.add_text('[[   -f $DirTgt/BriteOnyx.src      ]] &&')
-    script.add_line(' mv $DirTgt/BriteOnyx.src      $FileTgt')
-    script.add_text('[[   -f $DirTgt/BriteOnyx-env.bash ]] &&')
-    script.add_line(' mv $DirTgt/BriteOnyx-env.bash $FileTgt')
-    script.add_text('[[   -f $DirTgt/BriteOnyx-env.src  ]] &&')
-    script.add_line(' mv $DirTgt/BriteOnyx-env.src  $FileTgt')
-    script.add_comment('Copy starter script, if necessary')
-    script.add_text('[[ ! -f $FileTgt ]] &&')
-    script.add_line(' cp $DirSrc/user-BriteOnyx.src $FileTgt')
-    script.add_blank_line()
-    script.add_line('DirTgt=$BO_Project')
-    script.add_text('[[ ! -e "$DirTgt" ]] &&')
-    script.add_line(' mkdir -p $DirTgt')
-    script.add_blank_line()
-    script.add_line('FileTgt=$DirTgt/env.src')
-    script.add_text('[[ ! -f $FileTgt ]] &&')
-    script.add_line(' cp $DirSrc/project-env.src $FileTgt')
-    script.add_blank_line()
-    script.add_line('FileTgt=$DirTgt/.hgignore')
-    script.add_text('[[ ! -f $FileTgt ]] &&')
-    script.add_line(' cp $DirSrc/project.hgignore $FileTgt')
-    script.add_blank_line()
-    script.add_line('DirTgt=$BO_Project/bin')
-    script.add_text('[[ ! -e "$DirTgt" ]] &&')
-    script.add_line(' mkdir -p $DirTgt')
-    script.add_blank_line()
-    script.add_line('FileTgt=$DirTgt/project-fix-permissions.bash')
-    script.add_comment('Move previous scripts to new path')
-    script.add_text('[[   -f $DirTgt/all-fix-permissions.bash ]] &&')
-    script.add_line(' mv $DirTgt/all-fix-permissions.bash $FileTgt')
-    script.add_comment('Copy starter script, if necessary')
-    script.add_text('[[ ! -f $FileTgt ]] &&')
-    script.add_line(' cp $DirSrc/project-fix-permissions.bash $FileTgt')
-    script.add_blank_line()
-    script.add_line(": <<'DisabledContent'")
-    script.add_line('FileTgt=$DirTgt/declare.src')
-    script.add_text('[[ ! -f $FileTgt ]] &&')
-    script.add_line(' cp $DirSrc/project-declare.src $FileTgt')
-    script.add_blank_line()
-    script.add_line('FileTgt=$DirTgt/development.rst')
-    script.add_text('[[ ! -f $FileTgt ]] &&')
-    script.add_line(' cp $DirSrc/project-development.rst $FileTgt')
-    script.add_blank_line()
-    script.add_line('FileTgt=$DirTgt/README.rst')
-    script.add_text('[[ ! -f $FileTgt ]] &&')
-    script.add_line(' cp $DirSrc/project-README.rst $FileTgt')
-    script.add_blank_line()
-    script.add_line('DirTgt=$BO_Project/bin/helper/Linux')
-    script.add_text('[[ ! -e $DirTgt ]] &&')
-    script.add_line(' mkdir -p $DirTgt')
-    script.add_blank_line()
-    script.add_line('FileTgt=$DirTgt/declare-BASH.src')
-    script.add_text('[[ ! -f $FileTgt ]] &&')
-    script.add_line(' cp $DirSrc/project-declare-BASH.src $FileTgt')
-    script.add_line('DisabledContent')
-
-def _create_random_tmpdir(script):
-    script.add_blank_line()
-    script.add_comment('Create random TMPDIR')
-    script.add_line('Dir=$(mktemp --tmpdir -d BO-XXXXXXXX)')
-    script.add_text('[[ -d "$Dir" ]] &&')
-    script.add_line(' export TMPDIR=$Dir')
-
-def _declare_for_bootstrap(script):
-    script.add_blank_line()
-    script.add_rule()
-    script.add_comment('Declare BriteOnyx support functionality')
-    script.add_blank_line()
-    script.add_line('Script="$BO_Project/BriteOnyx/declare.src"')
-    script.add_text('[[ ! -f "$Script" ]] &&')
-    script.add_text(''' echo "FATAL: Missing script '$Script'" &&''')
-    script.add_line(' return 63')
-    script.add_text('source "$Script" ;')
-    script.add_line(' Status=$?')
-    script.add_text('[[ "${Status}" -ne 0 ]] &&')
-    script.add_text(''' echo "FATAL: Script exited with '${Status}'" &&''')
-    script.add_line(' return ${Status}')
-    script.add_blank_line()
-    script.add_rule()
-    script.add_note('Now that we have our support functionality declared, we can use it from here on')
-
-def _declare_for_project(script):
-    script.add_blank_line()
-    script.add_rule()
-    script.add_comment('Declare optional project functionality')
-    script.add_blank_line()
-    script.add_line('Script="$BO_Project/declare.src"')
-    script.add_text('if [[ -f "$Script" ]] ;')
-    script.add_line(' then')
-    script.add_text('  source "$Script" ;')
-    script.add_line(' Status=$?')
-    script.add_text('  [[ "${Status}" -ne 0 ]] &&')
-    script.add_text(''' echo "FATAL: Script exited with '${Status}'" &&''')
-    script.add_line(' return ${Status}')
-    script.add_line('fi')
-
-def _demonstrate_logging(script):
-    script.add_blank_line()
-    script.add_rule()
-    script.add_comment('Demonstrate logging')
-    script.add_blank_line()
-    script.add_line('logDebug  "EXAMPLE: This is a debugging message"')
-    script.add_line('logInfo   "EXAMPLE: This is an informational message"')
-    script.add_line('logWarn   "EXAMPLE: This is a warning message"')
-    script.add_line('logError  "EXAMPLE: This is an error message"')
-    script.add_line('_logFatal "EXAMPLE: This is a fatal message"')
 
 def _generate(script, target_directory, target_file):
     Renderer(VISITOR_MAP).render(script, os.path.join(target_directory, target_file))
 
-def _generate_activate(script, target_directory, target_file):
+def _generate_project_activate(script, target_directory, target_file):
     script.add_source_header()
-    _add_activation_comments(script)
-    _abort_if_activated(script)
-    _create_random_tmpdir(script)
-    _initialize_logging_file(script)
-    _capture_incoming_environment(script)
-    _remember_project_root(script)
-    _declare_for_bootstrap(script)
-    _normalize_reference_to_project_root(script)
-    _copy_starter_files(script)
-    _configure_for_user(script)
-    _configure_for_project(script)
-    _configure_for_briteonyx(script)
-    _verify_bootstrap(script)
-    _remember_path(script)
-    _activate_for_linux(script)
-    _set_tmpdir(script)
-    _declare_for_project(script)
-    _demonstrate_logging(script)
-    _shutdown(script)
+    script.add_activation_comments()
+    script.abort_if_activated()
+    script.create_random_tmpdir()
+    script.initialize_logging_file()
+    script.capture_incoming_environment()
+    script.remember_project_root()
+    script.declare_for_bootstrap()
+    script.normalize_reference_to_project_root()
+    script.copy_starter_files()
+    script.configure_for_user()
+    script.configure_for_project()
+    script.configure_for_briteonyx()
+    script.verify_bootstrap()
+    script.remember_path()
+    script.activate_for_linux()
+    script.set_tmpdir()
+    script.declare_for_project()
+    script.demonstrate_logging()
+    script.shutdown()
     script.add_disabled_content_footer()
     _generate(script, target_directory, target_file)
 
-def _generate_activate_gradle(script, target_directory, target_file):
+def _generate_gradle_activate(script, target_directory, target_file):
     script.add_source_header()
     script.add_note("We MUST NOT EVER 'exit' during BriteOnyx bootstrap or activation")
     script.add_rule()
@@ -346,7 +132,7 @@ def _generate_activate_gradle(script, target_directory, target_file):
     script.add_disabled_content_footer()
     _generate(script, target_directory, target_file)
 
-def _generate_activate_linux(script, target_directory, target_file):
+def _generate_linux_activate(script, target_directory, target_file):
     script.add_source_header()
     script.add_note("We MUST NOT EVER 'exit' during BriteOnyx bootstrap or activation")
     script.add_rule()
@@ -456,7 +242,7 @@ def _generate_activate_linux(script, target_directory, target_file):
     script.add_disabled_content_footer()
     _generate(script, target_directory, target_file)
 
-def _generate_activate_python(script, target_directory, target_file):
+def _generate_python_activate(script, target_directory, target_file):
     script.add_source_header()
     script.add_note("We MUST NOT EVER 'exit' during BriteOnyx bootstrap or activation")
     script.add_rule()
@@ -602,7 +388,7 @@ def _generate_activate_python(script, target_directory, target_file):
     script.add_disabled_content_footer()
     _generate(script, target_directory, target_file)
 
-def _generate_bootstrap(script, target_directory, target_file):
+def _generate_briteonyx_bootstrap(script, target_directory, target_file):
     script.add_source_header()
     script.add_note("By convention, BriteOnyx is configured via environment variables prefixed by 'BO_'.")
     script.add_blank_line()
@@ -758,7 +544,7 @@ def _generate_bootstrap(script, target_directory, target_file):
     script.add_disabled_content_footer()
     _generate(script, target_directory, target_file)
 
-def _generate_declare(script, target_directory, target_file):
+def _generate_briteonyx_declare(script, target_directory, target_file):
     script.add_source_header()
     script.add_note('Assumes this project has been activated using the BriteOnyx framework.')
     script.add_note("We MUST NOT EVER 'exit' during BriteOnyx bootstrap or activation")
@@ -1013,7 +799,7 @@ def _generate_declare(script, target_directory, target_file):
     script.add_disabled_content_footer()
     _generate(script, target_directory, target_file)
 
-def _generate_environment_for_briteonyx(script, target_directory, target_file):
+def _generate_briteonyx_environment(script, target_directory, target_file):
     script.add_source_header()
     script.add_comment('Configure BriteOnyx deployment')
     script.add_someday('Keep BO_Version updated to latest published revision')
@@ -1029,7 +815,7 @@ def _generate_environment_for_briteonyx(script, target_directory, target_file):
     script.add_disabled_content_footer()
     _generate(script, target_directory, target_file)
 
-def _generate_environment_for_project(script, target_directory, target_file):
+def _generate_project_environment(script, target_directory, target_file):
     script.add_source_header()
     script.add_comment('Configure this project')
     script.add_blank_line()
@@ -1038,7 +824,7 @@ def _generate_environment_for_project(script, target_directory, target_file):
     script.add_disabled_content_footer()
     _generate(script, target_directory, target_file)
 
-def _generate_environment_for_user(script, target_directory, target_file):
+def _generate_user_environment(script, target_directory, target_file):
     script.add_source_header()
     script.add_note('Declare needed environment variables here')
     script.add_blank_line()
@@ -1051,7 +837,7 @@ def _generate_environment_for_user(script, target_directory, target_file):
     script.add_line('DisabledContent''')
     _generate(script, target_directory, target_file)
 
-def _generate_maybe_activate(script, target_directory, target_file):
+def _generate_project_maybe_activate(script, target_directory, target_file):
     script.add_source_header()
     script.add_note("We MUST NOT EVER 'exit' during BriteOnyx bootstrap or activation")
     script.add_rule()
@@ -1105,89 +891,6 @@ def _generate_maybe_activate(script, target_directory, target_file):
     script.add_disabled_content_footer()
     _generate(script, target_directory, target_file)
 
-def _initialize_logging_file(script):
-    script.add_blank_line()
-    script.add_comment('Initialize BriteOnyx logging file')
-    script.add_line('BO_FileLog=BO.log')
-    script.add_text('if [[ -n "$TMPDIR" ]] ;')
-    script.add_line(' then')
-    script.add_line('  export BO_FileLog=$TMPDIR/$BO_FileLog')
-    script.add_text('elif [[ -n "$BO_Project" ]] ;')
-    script.add_line(' then')
-    script.add_line('  export BO_FileLog=$BO_Project/$BO_FileLog')
-    script.add_line('else')
-    script.add_line('  export BO_FileLog=$PWD/$BO_FileLog')
-    script.add_line('fi')
-    script.add_line('echo "INFO:  Activating..." >$BO_FileLog')
-    script.add_line('echo "INFO:  Activating the BriteOnyx framework for this project..."')
-    script.add_line('''echo "WARN:  This script MUST be executed as 'source activate.src', WAS IT?"''')
-
-def _normalize_reference_to_project_root(script):
-    script.add_blank_line()
-    script.add_text('''boVariableRequire 'BO_Project' ||''')
-    script.add_text(' boFailed "$0" "$LINENO" $? ||')
-    script.add_line(' return $?')
-    script.add_line("boTraceVariable 'BO_Project'")
-    script.add_line('export BO_Project="$(boNodeCanonical $BO_Project)"')
-    script.add_line("boTraceVariable 'BO_Project'")
-    script.add_line('''boLogInfo "Canonical form of BO_Project directory pathname is '$BO_Project'"''')
-    script.add_text('boDirectoryRequire "$BO_Project" ||')
-    script.add_text(' boFailed "$0" "$LINENO" $? ||')
-    script.add_line(' return $?')
-
-def _remember_path(script):
-    script.add_blank_line()
-    script.add_rule()
-    script.add_comment('Remember PATH')
-    script.add_blank_line()
-    script.add_line('[[ -z "$BO_PathSystem" ]] && \\')
-    script.add_line('  export BO_PathSystem=$PATH && \\')
-    script.add_line('''  echo "INFO:  Remembering BO_PathSystem='$BO_PathSystem'"''')
-
-def _remember_project_root(script):
-    script.add_blank_line()
-    script.add_rule()
-    script.add_comment('Remember the directory containing this script as our project root')
-    script.add_blank_line()
-    script.add_line('export BO_Project="$(dirname $BASH_SOURCE)"')
-    script.add_blank_line()
-    script.add_todo('REVIEW: Shall we NOT cd into our project directory since it changes')
-    script.add_comment("the caller's execution environment?")
-    script.add_comment('cd "$BO_Project" || return $?')
-
-def _set_tmpdir(script):
-    script.add_blank_line()
-    script.add_rule()
-    script.add_comment('Set TMPDIR ')
-    script.add_comment('DISABLED: MOVED: to Linux activation script')
-    script.add_blank_line()
-    script.add_comment('export TMPDIR=$TMPDIR/$BO_ProjectName')
-    script.add_line('''# echo "INFO:  Remembering TMPDIR='$TMPDIR'"''')
-
-def _shutdown(script):
-    script.add_blank_line()
-    script.add_rule()
-    script.add_comment('Shutdown')
-    script.add_blank_line()
-    script.add_line('''logInfo "Project '$BO_ProjectName' in directory '$BO_Project' is now activated, done."''')
-    _capture_outgoing_environment(script)
-
-def _verify_bootstrap(script):
-    script.add_blank_line()
-    script.add_rule()
-    script.add_comment('Verify BriteOnyx bootstrap configuration')
-    script.add_blank_line()
-    script.add_text('boVariableRequire   BO_Home ||')
-    script.add_text(' boFailed "$0" "$LINENO" $? ||')
-    script.add_line(' return $?')
-    script.add_text('boDirectoryRequire $BO_Home ||')
-    script.add_text(' boFailed "$0" "$LINENO" $? ||')
-    script.add_line(' return $?')
-    script.add_blank_line()
-    script.add_text('boVariableRequire BO_ProjectName ||')
-    script.add_text(' boFailed "$0" "$LINENO" $? ||')
-    script.add_line(' return $?')
-
 def main():
     try:
         configure_logging()
@@ -1205,28 +908,28 @@ def main():
 
         directory = os.path.join(args.target_directory, 'helper', 'activation')
         maybe_create_directory(directory)
-        _generate_activate_linux(BashScript(), directory, 'activate.src')
+        _generate_linux_activate(LinuxActivateScript(), directory, 'activate.src')
 
         directory = os.path.join(args.target_directory, 'helper', 'activation', 'add_on')
         maybe_create_directory(directory)
-        _generate_activate_gradle(BashScript(), directory, 'activate-Gradle.src')
-        _generate_activate_python(BashScript(), directory, 'activate-Python.src')
+        _generate_gradle_activate(GradleActivateScript(), directory, 'activate-Gradle.src')
+        _generate_python_activate(PythonActivateScript(), directory, 'activate-Python.src')
 
         directory = os.path.join(args.target_directory, 'sample_project')
         maybe_create_directory(directory)
-        _generate_activate(BashScript(), directory, 'activate.src')
+        _generate_project_activate(ProjectActivateScript(), directory, 'activate.src')
 
         directory = os.path.join(args.target_directory, 'sample_project', 'BriteOnyx')
         maybe_create_directory(directory)
-        _generate_bootstrap(BashScript(), directory, 'bootstrap.src')
-        _generate_declare(BashScript(), directory, 'declare.src')
-        _generate_environment_for_briteonyx(BashScript(), directory, 'env.src')
-        _generate_maybe_activate(BashScript(), directory, 'maybeActivate.src')
+        _generate_briteonyx_bootstrap(BriteOnyxBootstrapScript(), directory, 'bootstrap.src')
+        _generate_briteonyx_declare(BriteOnyxDeclareScript(), directory, 'declare.src')
+        _generate_briteonyx_environment(BriteOnyxEnvironmentScript(), directory, 'env.src')
+        _generate_project_maybe_activate(ProjectMaybeActivateScript(), directory, 'maybeActivate.src')
 
         directory = os.path.join(args.target_directory, 'sample_project', 'BriteOnyx', 'starter')
         maybe_create_directory(directory)
-        _generate_environment_for_project(BashScript(), directory, 'project-env.src')
-        _generate_environment_for_user(BashScript(), directory, 'user-BriteOnyx.src')
+        _generate_project_environment(ProjectEnvironmentScript(), directory, 'project-env.src')
+        _generate_user_environment(UserEnvironmentScript(), directory, 'user-BriteOnyx.src')
     except Exception as e:
         LOG.error("main() except Exception = failure")
         LOG.exception(e)

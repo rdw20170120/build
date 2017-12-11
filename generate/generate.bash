@@ -24,7 +24,7 @@ main () {
   directoryRequire $DirHelperThird
   export PYTHONPATH=$DirHelperProject:$DirHelperThird:$PYTHONPATH
 
-  scriptExecute $0:$FUNCNAME $LINENO $This/helper/generate.py "$This" "$DirTgt"
+  scriptExecute $0:$FUNCNAME $LINENO $This/helper/all_generate.py "$This" "$DirTgt"
 
   logWarn "Please manually synchronize updates into the project from the generated output"
   logInfo "meld '$DirTgt' '$BO_Project'"

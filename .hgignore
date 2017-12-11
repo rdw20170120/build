@@ -21,7 +21,7 @@ syntax: glob
 *.out
 
 # Python
-# *.pyc
+*.pyc
 
 # Vim
 .*.swp
