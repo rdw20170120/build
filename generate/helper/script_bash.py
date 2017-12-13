@@ -8,57 +8,117 @@ class BashScript(object):
         object.__init__(self)
         self._text = []
 
-    def add_blank_comment(self):
-        self.add_line('#')
-
-    def add_blank_line(self):
-        self.add_text('\n')
-
-    def add_comment(self, comment):
-        self.add_line('# ' + comment)
-
     def add_debugging_comment(self):
-        self.add_note('Uncomment the following two lines for debugging')
-        self.add_comment('set -o verbose')
-        self.add_comment('set -o xtrace')
+        self.note('Uncomment the following two lines for debugging')
+        self.comment('set -o verbose')
+        self.comment('set -o xtrace')
 
     def add_disabled_content_footer(self):
-        self.add_blank_line()
-        self.add_rule()
-        self.add_line(": <<'DisabledContent'")
-        self.add_line('DisabledContent')
-
-    def add_execute_shebang(self):
-        self.add_line('#!/bin/bash')
+        self.line()
+        self.rule()
+        self.line(": <<'DisabledContent'")
+        self.line('DisabledContent')
 
     def add_execution_trace(self):
-        self.add_line('''[[ -n "$BO_Trace" ]] && echo "TRACE: Executing '$BASH_SOURCE'"''')
-
-    def add_line(self, text):
-        self.add_text(text + '\n')
-
-    def add_note(self, note):
-        self.add_comment('NOTE: ' + note)
-
-    def add_rule(self):
-        self.add_line('#' * 100)
-
-    def add_someday(self, task):
-        self.add_todo('SOMEDAY: ' + task)
+        self.line('''[[ -n "$BO_Trace" ]] && echo "TRACE: Executing '$BASH_SOURCE'"''')
 
     def add_source_header(self):
-        self.add_source_shebang()
+        self.shebang_source()
         self.add_execution_trace()
-        self.add_rule()
+        self.rule()
 
-    def add_source_shebang(self):
-        self.add_line('#!/bin/cat')
+    def and_(self):
+        self.text(' && ')
+        return self
 
-    def add_text(self, text):
+    def continue_(self):
+        self.text('\\').end_line()
+
+    def assign(self, variable_name, expression):
+        self.text(variable_name).text('=').text(expression)
+        return self
+
+    def export(self, variable_name, expression):
+        self.text('export ').assign(variable_name, expression)
+        return self
+
+    def comment(self, comment=None):
+        if comment is None: self.line('#')
+        else:               self.line('# ' + comment)
+
+    def echo(self, text):
+        self.text('echo ' + text)
+        return self
+
+    def elif_(self, condition):
+        self.text('elif ').text(condition)
+        return self
+
+    def else_(self):
+        self.text('else')
+        return self
+
+    def end_line(self):
+        self.text('\n')
+
+    def exit(self, status):
+        self.text('exit ' + str(status))
+        return self
+
+    def fi(self):
+        self.text('fi')
+        return self
+
+    def if_(self, condition):
+        self.text('if ').text(condition)
+        return self
+
+    def line(self, text=None):
+        if text is not None: self.text(text)
+        self.end_line()
+        return self
+
+    def note(self, note):
+        self.comment('NOTE: ' + note)
+
+    def or_(self):
+        self.text(' || ')
+        return self
+
+    def return_(self, status):
+        self.text('return ').text(status)
+        return self
+
+    def rule(self):
+        self.line('#' * 100)
+
+    def seq(self):
+        self.text(' ; ')
+        return self
+
+    def shebang_execute(self):
+        self.line('#!/bin/bash')
+
+    def shebang_source(self):
+        self.line('#!/bin/cat')
+
+    def someday(self, task):
+        self.todo('SOMEDAY: ' + task)
+
+    def source(self, filename):
+        self.text('source ').text(filename)
+        return self
+
+    def text(self, text):
         self._text.append(text)
+        return self
 
-    def add_todo(self, task):
-        self.add_comment('TODO: ' + task)
+    def then(self):
+        self.text('then')
+        return self
+
+    def todo(self, task):
+        self.comment('TODO: ' + task)
 
         
 @VISITOR_MAP.register(BashScript)
