@@ -1,6 +1,6 @@
-from throw_out_your_templates import default_visitors_map
-from throw_out_your_templates import get_default_encoding
-from throw_out_your_templates import Serializer
+from throw_out_your_templates_1_core_wrappers import get_default_encoding
+from throw_out_your_templates_2_core_serializer import Serializer
+from throw_out_your_templates_4_core_default_visitors import default_visitors_map
 
 
 class Renderer(object):

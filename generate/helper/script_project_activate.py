@@ -1,9 +1,12 @@
-from script_bash import BashScript
+import script_bash
+import script_briteonyx
+
+from throw_out_your_templates_3_core_visitor_map import VisitorMap
 
 
-class ProjectActivateScript(BashScript):
+class Script(script_briteonyx.Script):
     def __init__(self):
-        BashScript.__init__(self)
+        script_briteonyx.Script.__init__(self)
 
     def abort_if_activated(self):
         self.line()
@@ -331,7 +334,19 @@ class ProjectActivateScript(BashScript):
         self.failed().or_()
         self.return_('$?').end_line()
 
-        
+
+VISITOR_MAP = VisitorMap(parent_map=script_briteonyx.VISITOR_MAP)
+
+
+def build():
+    script = Script()
+    script.generate()
+    return script
+    
+def render(target_directory, target_file):
+    script_bash.render(build(), VISITOR_MAP, target_directory, target_file)
+
+
 """ Disabled content
 """
 
