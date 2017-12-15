@@ -3,165 +3,123 @@ import script_briteonyx
 
 from throw_out_your_templates_3_core_visitor_map import VisitorMap
 
+from structure_bash import *
+from structure_briteonyx import *
+
 
 class Script(script_briteonyx.Script):
-    def __init__(self):
+    def __init__(self, content):
         script_briteonyx.Script.__init__(self)
+        self._content = content
 
-    def generate(self):
-        self.add_source_header()
-        self.note("We MUST NOT EVER 'exit' during BriteOnyx bootstrap or activation")
-        self.rule()
-        self.note('Uncomment the following two lines for debugging')
-        self.comment('set -o verbose')
-        self.comment('set -o xtrace')
-        self.someday('Add inverse commands to isolate debugging')
-        self.line()
-        self.rule()
-        self.comment('Verify pre-conditions')
-        self.line()
-        self.text('[[   -z "$BO_Home"        ]] &&')
-        self.text(''' echo 'FATAL: Missing $BO_Home'                &&''')
-        self.line(' return 63')
-        self.text('[[ ! -d "$BO_Home"        ]] &&')
-        self.text(''' echo "FATAL: Missing directory '$BO_Home'"    &&''')
-        self.line(' return 63')
-        self.text('[[   -z "$BO_Project"     ]] &&')
-        self.text(''' echo 'FATAL: Missing $BO_Project'             &&''')
-        self.line(' return 63')
-        self.text('[[ ! -d "$BO_Project"     ]] &&')
-        self.text(''' echo "FATAL: Missing directory '$BO_Project'" &&''')
-        self.line(' return 63')
-        self.text('[[   -z "$BO_HomePackage" ]] &&')
-        self.text(''' echo 'FATAL: Missing $BO_HomePackage'         &&''')
-        self.line(' return 63')
-        self.text('[[   -z "$BO_PathSystem"  ]] &&')
-        self.text(''' echo 'FATAL: Missing $BO_PathSystem'          &&''')
-        self.line(' return 63')
-        self.line()
-        self.line('Dir=$BO_Home/activation')
-        self.text('[[ ! -d "${Dir}" ]] &&')
-        self.text(''' echo "FATAL: Missing directory '${Dir}'" &&''')
-        self.line(' return 63')
-        self.line()
-        self.rule()
-        self.comment('Configure environment for Linux')
-        self.line()
-        self.line('Script=${Dir}/activate.src')
-        self.text('[[ ! -f "${Script}" ]] &&')
-        self.text(''' echo "FATAL: Missing script '${Script}'" &&''')
-        self.line(' return 63')
-        self.line()
-        self.line('source ${Script}')
-        self.line()
-        self.line('Status=$?')
-        self.text('[[ ${Status} -ne 0 ]] &&')
-        self.text(''' echo "FATAL: Exit code ${Status} at '$0':$LINENO" &&''')
-        self.line(' return ${Status}')
-        self.line()
-        self.rule()
-        self.comment('Verify post-conditions')
-        self.line()
-        self.text('[[ -z "$BO_E_Config"  ]] &&')
-        self.text(''' echo 'FATAL: Missing $BO_E_Config'  &&''')
-        self.line(' return 63')
-        self.text('[[ -z "$BO_E_Ok"      ]] &&')
-        self.text(''' echo 'FATAL: Missing $BO_E_Ok'      &&''')
-        self.line(' return "$BO_E_Config"')
-        self.text('[[ -z "$BO_PathLinux" ]] &&')
-        self.text(''' echo 'FATAL: Missing $BO_PathLinux' &&''')
-        self.line(' return "$BO_E_Config"')
-        self.line()
-        self.rule()
-        self.comment('Configure environment for Python on Linux')
-        self.line()
-        self.line('DirPVE=$BO_Project/PVE')
-        self.line('export BO_PathProject=$BO_PathProject:${DirPVE}/bin')
-        self.line('export BO_PathPython=$BO_Home/invocation/Python')
-        self.line()
-        self.line('PATH=${BO_PathProject}')
-        self.line('PATH=$PATH:${BO_PathPython}')
-        self.line('PATH=$PATH:${BO_PathLinux}')
-        self.line('PATH=$PATH:${BO_PathSystem}')
-        self.line('export PATH')
-        self.line()
-        self.rule()
-        self.comment('Configure PIP_DOWNLOAD_CACHE')
-        self.line()
-        self.text('if [[ -z "$PIP_DOWNLOAD_CACHE" ]];')
-        self.line(' then')
-        self.line("  echo 'WARN: Missing $PIP_DOWNLOAD_CACHE'")
-        self.text('  [[ -z "$PIP_DOWNLOAD_CACHE" ]] &&')
-        self.text(' [[ -n "$TMPDIR" ]] &&')
-        self.line(' export PIP_DOWNLOAD_CACHE="$TMPDIR/pip"')
-        self.text('  [[ -z "$PIP_DOWNLOAD_CACHE" ]] &&')
-        self.text(''' echo 'FATAL: Missing $PIP_DOWNLOAD_CACHE' &&''')
-        self.line(' return 63')
-        self.line('''  echo "INFO: Remembering PIP_DOWNLOAD_CACHE='$PIP_DOWNLOAD_CACHE'"''')
-        self.line('fi')
-        self.text('[[ ! -d "$PIP_DOWNLOAD_CACHE" ]] &&')
-        self.line(' mkdir -p "$PIP_DOWNLOAD_CACHE"')
-        self.text('[[ ! -d "$PIP_DOWNLOAD_CACHE" ]] &&')
-        self.text(''' echo "FATAL: Missing directory '$PIP_DOWNLOAD_CACHE'" &&''')
-        self.line(' return 63')
-        self.line()
-        self.rule()
-        self.comment('Configure Python virtual environment (PVE)')
-        self.line()
-        self.line('export PIP_REQUIRE_VIRTUALENV=true')
-        self.line('export PIP_RESPECT_VIRTUALENV=true')
-        self.line()
-        self.line('Script=${DirPVE}/bin/activate')
-        self.text('if [[ ! -f "${Script}" ]];')
-        self.line(' then')
-        self.line('  # If the virtual environment does not already exist, create it')
-        self.line('  # TODO: This code assumes that the Python virtual environment package is')
-        self.line('  # already installed, but it may not be.  Eventually we should handle that,')
-        self.line('  # either with a more-specific message or by actually installing it.')
-        self.line('''  echo "WARN: Creating Python virtual environment (PVE) in '${DirPVE}'"''')
-        self.line('''  echo "WARN: This requires the 'python-virtualenv' package to have been installed"''')
-        self.line('  virtualenv "${DirPVE}"')
-        self.line('  Status=$?')
-        self.text('  [[ ${Status} -ne 0 ]] &&')
-        self.text(''' echo "FATAL: Exit code ${Status} at '$0':$LINENO" &&''')
-        self.line(' return ${Status}')
-        self.line('fi')
-        self.line()
-        self.text('[[ ! -d "${DirPVE}" ]] &&')
-        self.text(''' echo "FATAL: Missing directory '${DirPVE}'" &&''')
-        self.line(' return 63')
-        self.text('[[ ! -f "${Script}" ]] &&')
-        self.text(''' echo "FATAL: Missing script '${Script}'" &&''')
-        self.line(' return 63')
-        self.line()
-        self.line('source ${Script}')
-        self.line()
-        self.line('Status=$?')
-        self.text('[[ ${Status} -ne 0 ]] &&')
-        self.text(''' echo "FATAL: Exit code ${Status} at '$0':$LINENO" &&''')
-        self.line(' return ${Status}')
-        self.line()
-        self.text('[[ -z "$VIRTUAL_ENV" ]] &&')
-        self.text(''' echo 'FATAL: Missing $VIRTUAL_ENV' &&''')
-        self.line(' return 63')
-        self.line('export PYTHONHOME=$VIRTUAL_ENV')
-        self.text('[[ -z "$PYTHONHOME"  ]] &&')
-        self.text(''' echo 'FATAL: Missing $PYTHONHOME'  &&''')
-        self.line(' return 63')
-        self.line()
-        self.line('''echo "INFO: Activated Python virtual environment (PVE) in '${DirPVE}'"''')
-        self.line('''echo "INFO: Found '$(python --version 2>&1)' at '$(which python)'"''')
-        self.add_disabled_content_footer()
 
+def build():
+    return Script([
+        add_source_header(),
+        '''# NOTE: We MUST NOT EVER 'exit' during BriteOnyx bootstrap or activation
+####################################################################################################
+# NOTE: Uncomment the following two lines for debugging
+# set -o verbose
+# set -o xtrace
+# TODO: SOMEDAY: Add inverse commands to isolate debugging
+
+####################################################################################################
+# Verify pre-conditions
+
+[[   -z "$BO_Home"        ]] && echo 'FATAL: Missing $BO_Home'                && return 63
+[[ ! -d "$BO_Home"        ]] && echo "FATAL: Missing directory '$BO_Home'"    && return 63
+[[   -z "$BO_Project"     ]] && echo 'FATAL: Missing $BO_Project'             && return 63
+[[ ! -d "$BO_Project"     ]] && echo "FATAL: Missing directory '$BO_Project'" && return 63
+[[   -z "$BO_HomePackage" ]] && echo 'FATAL: Missing $BO_HomePackage'         && return 63
+[[   -z "$BO_PathSystem"  ]] && echo 'FATAL: Missing $BO_PathSystem'          && return 63
+
+Dir=$BO_Home/activation
+[[ ! -d "${Dir}" ]] && echo "FATAL: Missing directory '${Dir}'" && return 63
+
+####################################################################################################
+# Configure environment for Linux
+
+Script=${Dir}/activate.src
+[[ ! -f "${Script}" ]] && echo "FATAL: Missing script '${Script}'" && return 63
+
+source ${Script}
+
+Status=$?
+[[ ${Status} -ne 0 ]] && echo "FATAL: Exit code ${Status} at '$0':$LINENO" && return ${Status}
+
+####################################################################################################
+# Verify post-conditions
+
+[[ -z "$BO_E_Config"  ]] && echo 'FATAL: Missing $BO_E_Config'  && return 63
+[[ -z "$BO_E_Ok"      ]] && echo 'FATAL: Missing $BO_E_Ok'      && return "$BO_E_Config"
+[[ -z "$BO_PathLinux" ]] && echo 'FATAL: Missing $BO_PathLinux' && return "$BO_E_Config"
+
+####################################################################################################
+# Configure environment for Python on Linux
+
+DirPVE=$BO_Project/PVE
+export BO_PathProject=$BO_PathProject:${DirPVE}/bin
+export BO_PathPython=$BO_Home/invocation/Python
+
+PATH=${BO_PathProject}
+PATH=$PATH:${BO_PathPython}
+PATH=$PATH:${BO_PathLinux}
+PATH=$PATH:${BO_PathSystem}
+export PATH
+
+####################################################################################################
+# Configure PIP_DOWNLOAD_CACHE
+
+if [[ -z "$PIP_DOWNLOAD_CACHE" ]]; then
+  echo 'WARN: Missing $PIP_DOWNLOAD_CACHE'
+  [[ -z "$PIP_DOWNLOAD_CACHE" ]] && [[ -n "$TMPDIR" ]] && export PIP_DOWNLOAD_CACHE="$TMPDIR/pip"
+  [[ -z "$PIP_DOWNLOAD_CACHE" ]] && echo 'FATAL: Missing $PIP_DOWNLOAD_CACHE' && return 63
+  echo "INFO: Remembering PIP_DOWNLOAD_CACHE='$PIP_DOWNLOAD_CACHE'"
+fi
+[[ ! -d "$PIP_DOWNLOAD_CACHE" ]] && mkdir -p "$PIP_DOWNLOAD_CACHE"
+[[ ! -d "$PIP_DOWNLOAD_CACHE" ]] && echo "FATAL: Missing directory '$PIP_DOWNLOAD_CACHE'" && return 63
+
+####################################################################################################
+# Configure Python virtual environment (PVE)
+
+export PIP_REQUIRE_VIRTUALENV=true
+export PIP_RESPECT_VIRTUALENV=true
+
+Script=${DirPVE}/bin/activate
+if [[ ! -f "${Script}" ]]; then
+  # If the virtual environment does not already exist, create it
+  # TODO: This code assumes that the Python virtual environment package is
+  # already installed, but it may not be.  Eventually we should handle that,
+  # either with a more-specific message or by actually installing it.
+  echo "WARN: Creating Python virtual environment (PVE) in '${DirPVE}'"
+  echo "WARN: This requires the 'python-virtualenv' package to have been installed"
+  virtualenv "${DirPVE}"
+  Status=$?
+  [[ ${Status} -ne 0 ]] && echo "FATAL: Exit code ${Status} at '$0':$LINENO" && return ${Status}
+fi
+
+[[ ! -d "${DirPVE}" ]] && echo "FATAL: Missing directory '${DirPVE}'" && return 63
+[[ ! -f "${Script}" ]] && echo "FATAL: Missing script '${Script}'" && return 63
+
+source ${Script}
+
+Status=$?
+[[ ${Status} -ne 0 ]] && echo "FATAL: Exit code ${Status} at '$0':$LINENO" && return ${Status}
+
+[[ -z "$VIRTUAL_ENV" ]] && echo 'FATAL: Missing $VIRTUAL_ENV' && return 63
+export PYTHONHOME=$VIRTUAL_ENV
+[[ -z "$PYTHONHOME"  ]] && echo 'FATAL: Missing $PYTHONHOME'  && return 63
+
+echo "INFO: Activated Python virtual environment (PVE) in '${DirPVE}'"
+echo "INFO: Found '$(python --version 2>&1)' at '$(which python)'"
+''',
+        add_disabled_content_footer(),
+    ])
+    
 
 VISITOR_MAP = VisitorMap(parent_map=script_bash.VISITOR_MAP)
 
 
-def build():
-    script = Script()
-    script.generate()
-    return script
-    
 def render(target_directory, target_file):
     script_bash.render(build(), VISITOR_MAP, target_directory, target_file)
 
