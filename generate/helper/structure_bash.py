@@ -117,8 +117,12 @@ def echo(arguments):
 
 ####################################################################################################
 
+class _Exit(_Command):
+    def __init__(self, arguments):
+        _Command.__init__(self, 'exit', arguments)
+
 def exit(status):
-    return 'exit ' + str(status)
+    return _Exit(status)
 
 ####################################################################################################
 
@@ -139,8 +143,12 @@ def visit_export(element, walker):
 
 ####################################################################################################
 
+class _Return(_Command):
+    def __init__(self, arguments):
+        _Command.__init__(self, 'return', arguments)
+
 def return_(status):
-    return 'return ' + str(status)
+    return _Return(status)
 
 ####################################################################################################
 
@@ -162,8 +170,12 @@ def visit_comment(element, walker):
 
 ####################################################################################################
 
+class _Source(_Command):
+    def __init__(self, arguments):
+        _Command.__init__(self, 'source', arguments)
+
 def source(filename):
-    return 'source ' + filename
+    return _Source(filename)
 
 ####################################################################################################
 
