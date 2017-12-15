@@ -8,22 +8,20 @@ from structure_briteonyx import *
 
 
 class Script(script_briteonyx.Script):
-    def __init__(self):
+    def __init__(self, content):
         script_briteonyx.Script.__init__(self)
-
-    def generate(self):
-        self.add(source_header())
-        self.add(comment('Configure this project'))
-        self.add(line())
-        self.add(comment('TODO: Implement'))
-        self.add(line('export BO_ProjectName=TODO'))
-        self.add(disabled_content_footer())
+        self._content = content
 
 
 def build():
-    script = Script()
-    script.generate()
-    return script
+    return Script([
+        source_header(),
+        comment('Configure this project'),
+        line(),
+        comment('TODO: Implement'),
+        line('export BO_ProjectName=TODO'),
+        disabled_content_footer(),
+    ])
     
 
 VISITOR_MAP = VisitorMap(parent_map=script_bash.VISITOR_MAP)

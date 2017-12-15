@@ -8,93 +8,71 @@ from structure_briteonyx import *
 
 
 class Script(script_briteonyx.Script):
-    def __init__(self):
+    def __init__(self, content):
         script_briteonyx.Script.__init__(self)
-
-    def generate(self):
-        self.add(source_header())
-        self.add(note("We MUST NOT EVER 'exit' during BriteOnyx bootstrap or activation"))
-        self.add(rule())
-        self.add(note('Uncomment the following two lines for debugging'))
-        self.add(comment('set -o verbose'))
-        self.add(comment('set -o xtrace'))
-        self.add(someday('Add inverse commands to isolate debugging'))
-        self.add(line())
-        self.add(rule())
-        self.add(comment('Verify pre-conditions'))
-        self.add(line())
-        self.add('[[   -z "$BO_Home"          ]] &&')
-        self.add(" echo 'FATAL: Missing $BO_Home'                &&")
-        self.add(line(' return 63'))
-        self.add('[[ ! -d "$BO_Home"          ]] &&')
-        self.add(''' echo "FATAL: Missing directory '$BO_Home'"    &&''')
-        self.add(line(' return 63'))
-        self.add('[[   -z "$BO_Project"       ]] &&')
-        self.add(" echo 'FATAL: Missing $BO_Project'             &&")
-        self.add(line(' return 63'))
-        self.add('[[ ! -d "$BO_Project"       ]] &&')
-        self.add(''' echo "FATAL: Missing directory '$BO_Project'" &&''')
-        self.add(line(' return 63'))
-        self.add('[[   -z "$BO_GradleVersion" ]] &&')
-        self.add(''' echo 'FATAL: Missing $BO_GradleVersion'       &&''')
-        self.add(line(' return 63'))
-        self.add('[[   -z "$BO_PathSystem"    ]] &&')
-        self.add(''' echo 'FATAL: Missing $BO_PathSystem'          &&''')
-        self.add(line(' return 63'))
-        self.add('[[   -z "$JAVA_HOME"        ]] &&')
-        self.add(''' echo 'FATAL: Missing $JAVA_HOME'              &&''')
-        self.add(line(' return 63'))
-        self.add(line())
-        self.add(line('Dir=$BO_Home/activation'))
-        self.add('[[ ! -d "${Dir}" ]] &&')
-        self.add(''' echo "FATAL: Missing directory '${Dir}'" &&''')
-        self.add(line(' return 63'))
-        self.add(line())
-        self.add(rule())
-        self.add(comment('Configure environment for Linux'))
-        self.add(line())
-        self.add(line('Script=${Dir}/activate.src'))
-        self.add('[[ ! -f "${Script}" ]] &&')
-        self.add(''' echo "FATAL: Missing script '${Script}'" &&''')
-        self.add(line(' return 63'))
-        self.add(line())
-        self.add(line('source ${Script}'))
-        self.add(line())
-        self.add(line('Status=$?'))
-        self.add('[[ ${Status} -ne 0 ]] &&')
-        self.add(''' echo "FATAL: Exit code ${Status} at '$0':$LINENO" &&''')
-        self.add(line(' return ${Status}'))
-        self.add(line())
-        self.add(rule())
-        self.add(comment('Verify post-conditions'))
-        self.add(line())
-        self.add('[[ -z "$BO_E_Config"  ]] &&')
-        self.add(''' echo 'FATAL: Missing $BO_E_Config'  &&''')
-        self.add(line(' return 63'))
-        self.add('[[ -z "$BO_E_Ok"      ]] &&')
-        self.add(''' echo 'FATAL: Missing $BO_E_Ok'      &&''')
-        self.add(line(' return "$BO_E_Config"'))
-        self.add('[[ -z "$BO_PathLinux" ]] &&')
-        self.add(''' echo 'FATAL: Missing $BO_PathLinux' &&''')
-        self.add(line(' return "$BO_E_Config"'))
-        self.add(line())
-        self.add(rule())
-        self.add(comment('Configure environment for Gradle on Linux'))
-        self.add(line())
-        self.add(line('export BO_PathGradle=$JAVA_HOME/bin'))
-        self.add(line())
-        self.add(line('PATH=${BO_PathProject}'))
-        self.add(line('PATH=$PATH:${BO_PathGradle}'))
-        self.add(line('PATH=$PATH:${BO_PathLinux}'))
-        self.add(line('PATH=$PATH:${BO_PathSystem}'))
-        self.add(line('export PATH'))
-        self.add(disabled_content_footer())
+        self._content = content
 
 
 def build():
-    script = Script()
-    script.generate()
-    return script
+    return Script([
+        '''#!/bin/cat
+[[ -n "$BO_Trace" ]] && echo "TRACE: Executing '$BASH_SOURCE'"
+####################################################################################################
+# NOTE: We MUST NOT EVER 'exit' during BriteOnyx bootstrap or activation
+####################################################################################################
+# NOTE: Uncomment the following two lines for debugging
+# set -o verbose
+# set -o xtrace
+# TODO: SOMEDAY: Add inverse commands to isolate debugging
+
+####################################################################################################
+# Verify pre-conditions
+
+[[   -z "$BO_Home"          ]] && echo 'FATAL: Missing $BO_Home'                && return 63
+[[ ! -d "$BO_Home"          ]] && echo "FATAL: Missing directory '$BO_Home'"    && return 63
+[[   -z "$BO_Project"       ]] && echo 'FATAL: Missing $BO_Project'             && return 63
+[[ ! -d "$BO_Project"       ]] && echo "FATAL: Missing directory '$BO_Project'" && return 63
+[[   -z "$BO_GradleVersion" ]] && echo 'FATAL: Missing $BO_GradleVersion'       && return 63
+[[   -z "$BO_PathSystem"    ]] && echo 'FATAL: Missing $BO_PathSystem'          && return 63
+[[   -z "$JAVA_HOME"        ]] && echo 'FATAL: Missing $JAVA_HOME'              && return 63
+
+Dir=$BO_Home/activation
+[[ ! -d "${Dir}" ]] && echo "FATAL: Missing directory '${Dir}'" && return 63
+
+####################################################################################################
+# Configure environment for Linux
+
+Script=${Dir}/activate.src
+[[ ! -f "${Script}" ]] && echo "FATAL: Missing script '${Script}'" && return 63
+
+source ${Script}
+
+Status=$?
+[[ ${Status} -ne 0 ]] && echo "FATAL: Exit code ${Status} at '$0':$LINENO" && return ${Status}
+
+####################################################################################################
+# Verify post-conditions
+
+[[ -z "$BO_E_Config"  ]] && echo 'FATAL: Missing $BO_E_Config'  && return 63
+[[ -z "$BO_E_Ok"      ]] && echo 'FATAL: Missing $BO_E_Ok'      && return "$BO_E_Config"
+[[ -z "$BO_PathLinux" ]] && echo 'FATAL: Missing $BO_PathLinux' && return "$BO_E_Config"
+
+####################################################################################################
+# Configure environment for Gradle on Linux
+
+export BO_PathGradle=$JAVA_HOME/bin
+
+PATH=${BO_PathProject}
+PATH=$PATH:${BO_PathGradle}
+PATH=$PATH:${BO_PathLinux}
+PATH=$PATH:${BO_PathSystem}
+export PATH
+
+####################################################################################################
+: <<'DisabledContent'
+DisabledContent
+''',
+    ])
     
 
 VISITOR_MAP = VisitorMap(parent_map=script_bash.VISITOR_MAP)

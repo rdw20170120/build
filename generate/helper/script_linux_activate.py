@@ -8,123 +8,92 @@ from structure_briteonyx import *
 
 
 class Script(script_briteonyx.Script):
-    def __init__(self):
+    def __init__(self, content):
         script_briteonyx.Script.__init__(self)
-
-    def generate(self):
-        self.add(source_header())
-        self.add(note("We MUST NOT EVER 'exit' during BriteOnyx bootstrap or activation"))
-        self.add(rule())
-        self.add(note('Uncomment the following two lines for debugging'))
-        self.add(comment('set -o verbose'))
-        self.add(comment('set -o xtrace'))
-        self.add(someday('Add inverse commands to isolate debugging'))
-        self.add(line())
-        self.add(rule())
-        self.add(comment('Verify pre-conditions'))
-        self.add(line())
-        self.add('[[   -z "$BO_Home"       ]] &&')
-        self.add(''' echo 'FATAL: Missing $BO_Home'                &&''')
-        self.add(line(' return 63'))
-        self.add('[[ ! -d "$BO_Home"       ]] &&')
-        self.add(''' echo "FATAL: Missing directory '$BO_Home'"    &&''')
-        self.add(line(' return 63'))
-        self.add('[[   -z "$BO_Project"    ]] &&')
-        self.add(''' echo 'FATAL: Missing $BO_Project'             &&''')
-        self.add(line(' return 63'))
-        self.add('[[ ! -d "$BO_Project"    ]] &&')
-        self.add(''' echo "FATAL: Missing directory '$BO_Project'" &&''')
-        self.add(line(' return 63'))
-        self.add('[[   -z "$BO_PathSystem" ]] &&')
-        self.add(''' echo 'FATAL: Missing $BO_PathSystem'          &&''')
-        self.add(line(' return 63'))
-        self.add(line())
-        self.add(line('Dir="$BO_Home/helper/activation"'))
-        self.add('[[ ! -d "${Dir}" ]] &&')
-        self.add(''' echo "FATAL: Missing directory '${Dir}'" &&''')
-        self.add(line(' return 63'))
-        self.add(line())
-        self.add(rule())
-        self.add(comment('Configure Linux environment'))
-        self.add(line())
-        self.add(line('Script="${Dir}/declare.src"'))
-        self.add('[[ ! -f "${Script}" ]] &&')
-        self.add(''' echo "FATAL: Missing script '${Script}'" &&''')
-        self.add(line(' return 63'))
-        self.add(line())
-        self.add(line('source "${Script}"'))
-        self.add(line())
-        self.add(line('Status=$?'))
-        self.add('[[ ${Status} -ne 0 ]] &&')
-        self.add(''' echo "FATAL: Exit code ${Status} at '$0':$LINENO" &&''')
-        self.add(line(' return ${Status}'))
-        self.add(line())
-        self.add(rule())
-        self.add(comment('Verify post-conditions'))
-        self.add(line())
-        self.add('[[ -z "$BO_E_Config" ]] &&')
-        self.add(''' echo 'FATAL: Missing $BO_E_Config' &&''')
-        self.add(line(' return 63'))
-        self.add('[[ -z "$BO_E_Ok"     ]] &&')
-        self.add(''' echo 'FATAL: Missing $BO_E_Ok'     &&''')
-        self.add(line(' return "$BO_E_Config"'))
-        self.add(line())
-        self.add(rule())
-        self.add(comment('Configure PATH'))
-        self.add(line())
-        self.add(line('export BO_PathLinux="$BO_Home/helper/invocation"'))
-        self.add(line('export BO_PathProject="$BO_Project/bin"'))
-        self.add(line())
-        self.add(line('PATH="${BO_PathProject}"'))
-        self.add(line('PATH="$PATH:${BO_PathLinux}"'))
-        self.add(line('PATH="$PATH:${BO_PathSystem}"'))
-        self.add(line('export PATH'))
-        self.add(line())
-        self.add(rule())
-        self.add(comment('Configure TMPDIR'))
-        self.add(line())
-        self.add('if [[ -z "$TMPDIR" ]];')
-        self.add(line(' then'))
-        self.add(line("  echo 'WARN:  Missing $TMPDIR'"))
-        self.add('  [[ -z "$TMPDIR" ]] &&')
-        self.add(' [[ -n "$HOME"     ]] &&')
-        self.add(line(' export TMPDIR="$HOME/tmp"'))
-        self.add('  [[ -z "$TMPDIR" ]] &&')
-        self.add(' [[ -d /tmp ]] &&')
-        self.add(' [[ -n "$USER"     ]] &&')
-        self.add(line(' export TMPDIR="/tmp/$USER"'))
-        self.add('  [[ -z "$TMPDIR" ]] &&')
-        self.add(' [[ -d /tmp ]] &&')
-        self.add(' [[ -n "$USERNAME" ]] &&')
-        self.add(line(' export TMPDIR="/tmp/$USERNAME"'))
-        self.add('  [[ -z "$TMPDIR" ]] &&')
-        self.add(''' echo 'FATAL: Missing $TMPDIR' &&''')
-        self.add(line(' return 63'))
-        self.add(line('  # TODO: return "$BO_E_Config"'))
-        self.add(line('fi'))
-        self.add(line('export TMPDIR=$TMPDIR/$BO_ProjectName'))
-        self.add(line('''echo "INFO:  Remembering TMPDIR='$TMPDIR'"'''))
-        self.add('[[ ! -d "$TMPDIR" ]] &&')
-        self.add(' mkdir -p "$TMPDIR" &&')
-        self.add(line(''' echo "INFO:  Created '$TMPDIR'"'''))
-        self.add('[[ ! -d "$TMPDIR" ]] &&')
-        self.add(''' echo "FATAL: Missing directory '$TMPDIR'" &&''')
-        self.add(line(' return 63'))
-        self.add(comment('TODO: return "$BO_E_Config"'))
-        self.add(line())
-        self.add(rule())
-        self.add(comment('Define common aliases'))
-        self.add(line())
-        self.add(line("alias ignored='hg status --ignored | grep -v work-in-progress | grep -v wip'"))
-        self.add(line("alias someday='grep -Einrw TODO . --include=*.bash --include=*.src --include=*.txt | sort | grep -v work-in-progress'"))
-        self.add(line("alias todo='grep -Einrw TODO . --include=*.bash --include=*.src --include=*.txt | sort | grep -v work-in-progress | grep -v SOMEDAY'"))
-        self.add(disabled_content_footer())
+        self._content = content
 
 
 def build():
-    script = Script()
-    script.generate()
-    return script
+    return Script([
+        '''#!/bin/cat
+[[ -n "$BO_Trace" ]] && echo "TRACE: Executing '$BASH_SOURCE'"
+####################################################################################################
+# NOTE: We MUST NOT EVER 'exit' during BriteOnyx bootstrap or activation
+####################################################################################################
+# NOTE: Uncomment the following two lines for debugging
+# set -o verbose
+# set -o xtrace
+# TODO: SOMEDAY: Add inverse commands to isolate debugging
+
+####################################################################################################
+# Verify pre-conditions
+
+[[   -z "$BO_Home"       ]] && echo 'FATAL: Missing $BO_Home'                && return 63
+[[ ! -d "$BO_Home"       ]] && echo "FATAL: Missing directory '$BO_Home'"    && return 63
+[[   -z "$BO_Project"    ]] && echo 'FATAL: Missing $BO_Project'             && return 63
+[[ ! -d "$BO_Project"    ]] && echo "FATAL: Missing directory '$BO_Project'" && return 63
+[[   -z "$BO_PathSystem" ]] && echo 'FATAL: Missing $BO_PathSystem'          && return 63
+
+Dir="$BO_Home/helper/activation"
+[[ ! -d "${Dir}" ]] && echo "FATAL: Missing directory '${Dir}'" && return 63
+
+####################################################################################################
+# Configure Linux environment
+
+Script="${Dir}/declare.src"
+[[ ! -f "${Script}" ]] && echo "FATAL: Missing script '${Script}'" && return 63
+
+source "${Script}"
+
+Status=$?
+[[ ${Status} -ne 0 ]] && echo "FATAL: Exit code ${Status} at '$0':$LINENO" && return ${Status}
+
+####################################################################################################
+# Verify post-conditions
+
+[[ -z "$BO_E_Config" ]] && echo 'FATAL: Missing $BO_E_Config' && return 63
+[[ -z "$BO_E_Ok"     ]] && echo 'FATAL: Missing $BO_E_Ok'     && return "$BO_E_Config"
+
+####################################################################################################
+# Configure PATH
+
+export BO_PathLinux="$BO_Home/helper/invocation"
+export BO_PathProject="$BO_Project/bin"
+
+PATH="${BO_PathProject}"
+PATH="$PATH:${BO_PathLinux}"
+PATH="$PATH:${BO_PathSystem}"
+export PATH
+
+####################################################################################################
+# Configure TMPDIR
+
+if [[ -z "$TMPDIR" ]]; then
+  echo 'WARN:  Missing $TMPDIR'
+  [[ -z "$TMPDIR" ]] && [[ -n "$HOME"     ]] && export TMPDIR="$HOME/tmp"
+  [[ -z "$TMPDIR" ]] && [[ -d /tmp ]] && [[ -n "$USER"     ]] && export TMPDIR="/tmp/$USER"
+  [[ -z "$TMPDIR" ]] && [[ -d /tmp ]] && [[ -n "$USERNAME" ]] && export TMPDIR="/tmp/$USERNAME"
+  [[ -z "$TMPDIR" ]] && echo 'FATAL: Missing $TMPDIR' && return 63
+  # TODO: return "$BO_E_Config"
+fi
+export TMPDIR=$TMPDIR/$BO_ProjectName
+echo "INFO:  Remembering TMPDIR='$TMPDIR'"
+[[ ! -d "$TMPDIR" ]] && mkdir -p "$TMPDIR" && echo "INFO:  Created '$TMPDIR'"
+[[ ! -d "$TMPDIR" ]] && echo "FATAL: Missing directory '$TMPDIR'" && return 63
+# TODO: return "$BO_E_Config"
+
+####################################################################################################
+# Define common aliases
+
+alias ignored='hg status --ignored | grep -v work-in-progress | grep -v wip'
+alias someday='grep -Einrw TODO . --include=*.bash --include=*.src --include=*.txt | sort | grep -v work-in-progress'
+alias todo='grep -Einrw TODO . --include=*.bash --include=*.src --include=*.txt | sort | grep -v work-in-progress | grep -v SOMEDAY'
+
+####################################################################################################
+: <<'DisabledContent'
+DisabledContent
+''',
+    ])
     
 
 VISITOR_MAP = VisitorMap(parent_map=script_bash.VISITOR_MAP)

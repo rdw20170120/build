@@ -8,26 +8,24 @@ from structure_briteonyx import *
 
 
 class Script(script_briteonyx.Script):
-    def __init__(self):
+    def __init__(self, content):
         script_briteonyx.Script.__init__(self)
-
-    def generate(self):
-        self.add(source_header())
-        self.add(note('Declare needed environment variables here'))
-        self.add(line())
-        self.add(comment('TODO: Implement as needed, but defer to $BO_Project/BriteOnyx/env.src for now'))
-        self.add(line())
-        self.add(rule())
-        self.add(line(": <<'DisabledContent'"))
-        self.add(note('Copy this content above, to override system portion of final PATH'))
-        self.add(line('export BO_PathSystem=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'))
-        self.add(line('DisabledContent'''))
+        self._content = content
 
 
 def build():
-    script = Script()
-    script.generate()
-    return script
+    return Script([
+        source_header(),
+        note('Declare needed environment variables here'),
+        line(),
+        comment('TODO: Implement as needed, but defer to $BO_Project/BriteOnyx/env.src for now'),
+        line(),
+        rule(),
+        line(": <<'DisabledContent'"),
+        note('Copy this content above, to override system portion of final PATH'),
+        line('export BO_PathSystem=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'),
+        line('DisabledContent'''),
+    ])
     
 
 VISITOR_MAP = VisitorMap(parent_map=script_bash.VISITOR_MAP)
