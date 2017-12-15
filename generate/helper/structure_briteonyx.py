@@ -1,4 +1,5 @@
 from script_briteonyx import VISITOR_MAP
+from structure_bash import _Command
 
 from structure_bash import *
 

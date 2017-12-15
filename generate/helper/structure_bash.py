@@ -49,18 +49,30 @@ def visit_statement(element, walker):
 
 ####################################################################################################
 
+class _Arguments(object):
+    def __init__(self, arguments):
+        object.__init__(self)
+        self.arguments = arguments
+
+@VISITOR_MAP.register(_Arguments)
+def visit_arguments(element, walker):
+    if element.arguments is not None:
+        for a in element.arguments:
+            walker.emit(' ')
+            walker.walk(a)
+
 class _Command(_Statement):
     def __init__(self, command, arguments=None):
         _Statement.__init__(self, '_Command')
-        self.arguments = arguments
+        if arguments is None:             self.arguments = None
+        elif isinstance(arguments, list): self.arguments = _Arguments(arguments)
+        else:                             self.arguments = _Arguments([arguments,])
         self.command = command
 
 @VISITOR_MAP.register(_Command)
 def visit_command(element, walker):
     walker.walk(element.command)
-    if element.arguments is not None:
-        walker.emit(' ')
-        walker.walk(element.arguments)
+    walker.walk(element.arguments)
 
 ####################################################################################################
 
