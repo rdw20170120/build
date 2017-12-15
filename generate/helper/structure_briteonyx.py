@@ -5,9 +5,6 @@ from structure_bash import *
 
 ####################################################################################################
 
-def bo_log_info(text):
-    return ['boLogInfo ', dq(text)]
-
 def debugging_comment():
     return [
         note('Uncomment the following two lines for debugging'),
@@ -35,23 +32,8 @@ def echo_warn(text):
 def execution_trace():
     return line('''[[ -n "$BO_Trace" ]] && echo "TRACE: Executing '$BASH_SOURCE'"''')
 
-def failed():
-    return 'boFailed "$0" "$LINENO" $?'
-
-def log_info(text):
-    return ['logInfo ', dq(text)]
-
 def note(note):
     return comment('NOTE: ' + note)
-
-def require_directory(directory_name):
-    return 'boDirectoryRequire ' + directory_name
-
-def require_script(filename):
-    return 'boScriptRequire ' + filename
-
-def require_variable(variable_name):
-    return 'boVariableRequire ' + variable_name
 
 def rule():
     return line('#' * 100)
@@ -69,8 +51,68 @@ def source_header():
 def todo(task):
     return comment('TODO: ' + task)
 
+####################################################################################################
+
+class _BoLogInfo(_Command):
+    def __init__(self, text):
+        _Command.__init__(self, 'boLogInfo', dq(text))
+
+def bo_log_info(text):
+    return _BoLogInfo(text)
+
+####################################################################################################
+
+class _Failed(_Command):
+    def __init__(self):
+        _Command.__init__(self, 'boFailed', [dq('$0'), dq('$LINENO'), '$?'])
+
+def failed():
+    return _Failed()
+
+####################################################################################################
+
+class _LogInfo(_Command):
+    def __init__(self, text):
+        _Command.__init__(self, 'logInfo', dq(text))
+
+def log_info(text):
+    return _LogInfo(text)
+
+####################################################################################################
+
+class _BoRequireDirectory(_Command):
+    def __init__(self, directory_name):
+        _Command.__init__(self, 'boDirectoryRequire', directory_name)
+
+def require_directory(directory_name):
+    return _BoRequireDirectory(directory_name)
+
+####################################################################################################
+
+class _BoRequireScript(_Command):
+    def __init__(self, filename):
+        _Command.__init__(self, 'boScriptRequire', filename)
+
+def require_script(filename):
+    return _BoRequireScript(filename)
+
+####################################################################################################
+
+class _BoRequireVariable(_Command):
+    def __init__(self, variable_name):
+        _Command.__init__(self, 'boVariableRequire', variable_name)
+
+def require_variable(variable_name):
+    return _BoRequireVariable(variable_name)
+
+####################################################################################################
+
+class _BoTraceVariable(_Command):
+    def __init__(self, variable_name):
+        _Command.__init__(self, 'boTraceVariable', variable_name)
+
 def trace_variable(variable_name):
-    return 'boTraceVariable ' + variable_name
+    return _BoTraceVariable(variable_name)
 
 ####################################################################################################
 """ Disabled content
