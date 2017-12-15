@@ -11,13 +11,22 @@ def add_debugging_comment(script):
     script.add(comment('set -o xtrace'))
 
 def add_disabled_content_footer():
-    return line() + rule() + line(': <<' + sq('DisabledContent')) + line('DisabledContent')
+    return [
+        line(),
+        rule(),
+        line(': <<' + sq('DisabledContent')),
+        line('DisabledContent'),
+    ]
 
 def add_execution_trace():
     return line('''[[ -n "$BO_Trace" ]] && echo "TRACE: Executing '$BASH_SOURCE'"''')
 
 def add_source_header():
-    return shebang_source() + add_execution_trace() + rule()
+    return [
+        shebang_source(),
+        add_execution_trace(),
+        rule(),
+    ]
 
 def bo_log_info(text):
     return 'boLogInfo ' + dq(text)
