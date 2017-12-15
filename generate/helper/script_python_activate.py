@@ -15,7 +15,7 @@ class Script(script_briteonyx.Script):
 
 def build():
     return Script([
-        add_source_header(),
+        source_header(),
         '''# NOTE: We MUST NOT EVER 'exit' during BriteOnyx bootstrap or activation
 ####################################################################################################
 # NOTE: Uncomment the following two lines for debugging
@@ -113,7 +113,7 @@ export PYTHONHOME=$VIRTUAL_ENV
 echo "INFO: Activated Python virtual environment (PVE) in '${DirPVE}'"
 echo "INFO: Found '$(python --version 2>&1)' at '$(which python)'"
 ''',
-        add_disabled_content_footer(),
+        disabled_content_footer(),
     ])
     
 

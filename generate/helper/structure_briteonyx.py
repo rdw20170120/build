@@ -5,31 +5,23 @@ from structure_bash import *
 
 ####################################################################################################
 
-def add_debugging_comment(script):
-    script.add(note('Uncomment the following two lines for debugging'))
-    script.add(comment('set -o verbose'))
-    script.add(comment('set -o xtrace'))
+def bo_log_info(text):
+    return ['boLogInfo ', dq(text)]
 
-def add_disabled_content_footer():
+def debugging_comment():
+    return [
+        note('Uncomment the following two lines for debugging'),
+        comment('set -o verbose'),
+        comment('set -o xtrace'),
+    ]
+
+def disabled_content_footer():
     return [
         line(),
         rule(),
-        line(': <<' + sq('DisabledContent')),
+        ': <<', line(sq('DisabledContent')),
         line('DisabledContent'),
     ]
-
-def add_execution_trace():
-    return line('''[[ -n "$BO_Trace" ]] && echo "TRACE: Executing '$BASH_SOURCE'"''')
-
-def add_source_header():
-    return [
-        shebang_source(),
-        add_execution_trace(),
-        rule(),
-    ]
-
-def bo_log_info(text):
-    return 'boLogInfo ' + dq(text)
 
 def echo_fatal(text):
     return echo(dq('FATAL: ' + text))
@@ -40,11 +32,14 @@ def echo_info(text):
 def echo_warn(text):
     return echo(dq('WARN:  ' + text))
 
+def execution_trace():
+    return line('''[[ -n "$BO_Trace" ]] && echo "TRACE: Executing '$BASH_SOURCE'"''')
+
 def failed():
     return 'boFailed "$0" "$LINENO" $?'
 
 def log_info(text):
-    return 'logInfo ' + dq(text)
+    return ['logInfo ', dq(text)]
 
 def note(note):
     return comment('NOTE: ' + note)
@@ -63,6 +58,13 @@ def rule():
 
 def someday(task):
     return todo('SOMEDAY: ' + task)
+
+def source_header():
+    return [
+        shebang_source(),
+        execution_trace(),
+        rule(),
+    ]
 
 def todo(task):
     return comment('TODO: ' + task)

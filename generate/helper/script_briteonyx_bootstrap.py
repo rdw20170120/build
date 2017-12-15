@@ -12,7 +12,7 @@ class Script(script_briteonyx.Script):
         script_briteonyx.Script.__init__(self)
 
     def generate(self):
-        self.add(add_source_header())
+        self.add(source_header())
         self.add(note("By convention, BriteOnyx is configured via environment variables prefixed by 'BO_'."))
         self.add(line())
         self.add('''boVariableRequire 'BO_Project' ||''')
@@ -164,7 +164,7 @@ class Script(script_briteonyx.Script):
         self.add(line('''  boLogDebug "BriteOnyx version '$BO_Version' should be stable, skipping update of clone."'''))
         self.add(line('fi'))
         self.add(line('DisabledContent'))
-        self.add(add_disabled_content_footer())
+        self.add(disabled_content_footer())
 
 
 def build():

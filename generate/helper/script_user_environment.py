@@ -12,7 +12,7 @@ class Script(script_briteonyx.Script):
         script_briteonyx.Script.__init__(self)
 
     def generate(self):
-        self.add(add_source_header())
+        self.add(source_header())
         self.add(note('Declare needed environment variables here'))
         self.add(line())
         self.add(comment('TODO: Implement as needed, but defer to $BO_Project/BriteOnyx/env.src for now'))

@@ -15,7 +15,7 @@ class Script(script_briteonyx.Script):
 
 def build():
     return Script([
-        add_source_header(),
+        source_header(),
         '''# NOTE: We MUST NOT EVER 'exit' during BriteOnyx bootstrap or activation
 ####################################################################################################
 # NOTE: Uncomment the following two lines for debugging
@@ -51,7 +51,7 @@ boDirectoryRequire $BO_Project || boFailed "$0" "$LINENO" $? || return $?
 # Successfully 'return', but do NOT 'exit'
 return 0
 ''',
-        add_disabled_content_footer(),
+        disabled_content_footer(),
     ])
     
 

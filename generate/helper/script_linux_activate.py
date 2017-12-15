@@ -12,7 +12,7 @@ class Script(script_briteonyx.Script):
         script_briteonyx.Script.__init__(self)
 
     def generate(self):
-        self.add(add_source_header())
+        self.add(source_header())
         self.add(note("We MUST NOT EVER 'exit' during BriteOnyx bootstrap or activation"))
         self.add(rule())
         self.add(note('Uncomment the following two lines for debugging'))
@@ -118,7 +118,7 @@ class Script(script_briteonyx.Script):
         self.add(line("alias ignored='hg status --ignored | grep -v work-in-progress | grep -v wip'"))
         self.add(line("alias someday='grep -Einrw TODO . --include=*.bash --include=*.src --include=*.txt | sort | grep -v work-in-progress'"))
         self.add(line("alias todo='grep -Einrw TODO . --include=*.bash --include=*.src --include=*.txt | sort | grep -v work-in-progress | grep -v SOMEDAY'"))
-        self.add(add_disabled_content_footer())
+        self.add(disabled_content_footer())
 
 
 def build():

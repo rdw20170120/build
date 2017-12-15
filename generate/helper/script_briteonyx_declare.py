@@ -15,7 +15,7 @@ class Script(script_briteonyx.Script):
 
 def build():
     return Script([
-        add_source_header(),
+        source_header(),
         '''# NOTE: Assumes this project has been activated using the BriteOnyx framework.
 # NOTE: We MUST NOT EVER 'exit' during BriteOnyx bootstrap or activation
 ####################################################################################################
@@ -267,7 +267,7 @@ boExecute () {
 # Successfully 'return', but do NOT 'exit'
 return 0
 ''',
-        add_disabled_content_footer(),
+        disabled_content_footer(),
     ])
     
 

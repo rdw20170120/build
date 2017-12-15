@@ -15,7 +15,7 @@ class Script(script_briteonyx.Script):
 
 def build():
     return Script([
-        add_source_header(),
+        source_header(),
         '''# Configure BriteOnyx deployment
 # TODO: SOMEDAY: Keep BO_Version updated to latest published revision
 
@@ -25,7 +25,7 @@ def build():
 
 alias functions='declare -F | sort'
 ''',
-        add_disabled_content_footer(),
+        disabled_content_footer(),
     ])
 
 

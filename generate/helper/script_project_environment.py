@@ -12,12 +12,12 @@ class Script(script_briteonyx.Script):
         script_briteonyx.Script.__init__(self)
 
     def generate(self):
-        self.add(add_source_header())
+        self.add(source_header())
         self.add(comment('Configure this project'))
         self.add(line())
         self.add(comment('TODO: Implement'))
         self.add(line('export BO_ProjectName=TODO'))
-        self.add(add_disabled_content_footer())
+        self.add(disabled_content_footer())
 
 
 def build():

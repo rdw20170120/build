@@ -6,41 +6,32 @@ from script_bash import VISITOR_MAP
 def and_():
     return ' && '
 
-def continue_():
-    return '\\' + end_line()
-
-def dq(text):
-    """Return text wrapped in double quotes."""
-    return '"' + text + '"'
-
 def elif_(condition):
-    return 'elif ' + condition
+    return ['elif ', condition]
 
 def else_():
     return 'else'
 
-def end_line():
+def eol():
     return '\n'
 
 def fi():
     return 'fi'
 
 def if_(condition):
-    return 'if ' + condition
+    return ['if ', condition]
 
 def line(text=None):
-    if text is not None: return text + end_line()
-    else:                return end_line()
+    return [text, eol()]
+
+def nl():
+    return line('\\')
 
 def or_():
     return ' || '
 
 def seq():
     return ' ; '
-
-def sq(text):
-    """Return text wrapped in single quotes."""
-    return "'" + text + "'"
 
 def then():
     return 'then'
@@ -179,11 +170,35 @@ def source(filename):
 
 ####################################################################################################
 
-####################################################################################################
+class _DoubleQuoted(object):
+    def __init__(self, content):
+        object.__init__(self)
+        self.content = content
+
+def dq(content):
+    return _DoubleQuoted(content)
+
+@VISITOR_MAP.register(_DoubleQuoted)
+def visit_double_quoted(element, walker):
+    walker.emit('"')
+    walker.walk(element.content)
+    walker.emit('"')
 
 ####################################################################################################
 
-####################################################################################################
+class _SingleQuoted(object):
+    def __init__(self, content):
+        object.__init__(self)
+        self.content = content
+
+def sq(content):
+    return _SingleQuoted(content)
+
+@VISITOR_MAP.register(_SingleQuoted)
+def visit_single_quoted(element, walker):
+    walker.emit("'")
+    walker.walk(element.content)
+    walker.emit("'")
 
 ####################################################################################################
 """ Disabled content

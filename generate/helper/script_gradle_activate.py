@@ -12,7 +12,7 @@ class Script(script_briteonyx.Script):
         script_briteonyx.Script.__init__(self)
 
     def generate(self):
-        self.add(add_source_header())
+        self.add(source_header())
         self.add(note("We MUST NOT EVER 'exit' during BriteOnyx bootstrap or activation"))
         self.add(rule())
         self.add(note('Uncomment the following two lines for debugging'))
@@ -88,7 +88,7 @@ class Script(script_briteonyx.Script):
         self.add(line('PATH=$PATH:${BO_PathLinux}'))
         self.add(line('PATH=$PATH:${BO_PathSystem}'))
         self.add(line('export PATH'))
-        self.add(add_disabled_content_footer())
+        self.add(disabled_content_footer())
 
 
 def build():
