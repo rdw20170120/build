@@ -122,12 +122,24 @@ class _Condition(_Command):
         arguments.append(']]')
         _Command.__init__(self, '[[', arguments)
 
+def directory_exists(directory_name):
+    return _Condition(['-d', dq(directory_name), ])
+
+def file_exists(filename):
+    return _Condition(['-f', dq(filename), ])
+
 def path_does_not_exist(pathname):
     return _Condition(['!', '-e', dq(pathname), ])
-    
+
+def path_is_not_file(pathname):
+    return _Condition(['!', '-f', dq(pathname), ])
+
 def string_is_not_null(expression):
     return _Condition(['-n', dq(expression), ])
-    
+
+def string_is_null(expression):
+    return _Condition(['-z', dq(expression), ])
+
 ####################################################################################################
 
 class _Echo(_Command):

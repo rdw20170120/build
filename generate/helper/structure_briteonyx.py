@@ -104,7 +104,7 @@ class _BoRequireDirectory(_Command):
         _Command.__init__(self, 'boDirectoryRequire', directory_name)
 
 def require_directory(directory_name):
-    return _BoRequireDirectory(directory_name)
+    return _BoRequireDirectory(dq(directory_name))
 
 ####################################################################################################
 
