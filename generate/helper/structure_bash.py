@@ -30,6 +30,9 @@ def nl():
 def or_():
     return ' || '
 
+def pipe():
+    return ' | '
+
 def seq():
     return ' ; '
 
@@ -74,6 +77,9 @@ def visit_command(element, walker):
     walker.walk(element.command)
     walker.walk(element.arguments)
 
+def command(command, arguments=None):
+    return _Command(command, arguments)
+
 ####################################################################################################
 
 class _Assign(_Command):
@@ -83,32 +89,45 @@ class _Assign(_Command):
         self.expression = expression
         self.variable = variable
 
-def assign(variable, expression):
-    return _Assign(variable, expression)
-
 @VISITOR_MAP.register(_Assign)
 def visit_assign(element, walker):
     walker.walk(element.variable)
     walker.emit('=')
     walker.walk(element.expression)
 
+def assign(variable, expression):
+    return _Assign(variable, expression)
+
 ####################################################################################################
 
 class _Comment(_Statement):
-    def __init__(self, comment):
+    def __init__(self, content):
         _Statement.__init__(self, '_Comment')
-        self.comment = comment
-
-def comment(comment=None):
-    if comment is None: return _Comment('')
-    else:               return _Comment(' ' + comment)
+        self.content = content
 
 @VISITOR_MAP.register(_Comment)
 def visit_comment(element, walker):
     walker.emit('#')
-    walker.walk(element.comment)
+    walker.walk(element.content)
     walker.emit('\n')
 
+def comment(content=None):
+    if content is None: return _Comment(None)
+    else:               return _Comment([' ', content])
+
+####################################################################################################
+
+class _Condition(_Command):
+    def __init__(self, arguments):
+        arguments.append(']]')
+        _Command.__init__(self, '[[', arguments)
+
+def path_does_not_exist(pathname):
+    return _Condition(['!', '-e', dq(pathname), ])
+    
+def string_is_not_null(expression):
+    return _Condition(['-n', dq(expression), ])
+    
 ####################################################################################################
 
 class _Echo(_Command):
@@ -133,9 +152,6 @@ class _Export(_Assign):
     def __init__(self, variable, expression):
         _Assign.__init__(self, variable, expression, 'export')
 
-def export(variable, expression):
-    return _Export(variable, expression)
-
 @VISITOR_MAP.register(_Export)
 def visit_export(element, walker):
     walker.emit(element.command)
@@ -143,6 +159,9 @@ def visit_export(element, walker):
     walker.walk(element.variable)
     walker.emit('=')
     walker.walk(element.expression)
+
+def export(variable, expression):
+    return _Export(variable, expression)
 
 ####################################################################################################
 
@@ -153,23 +172,26 @@ class _Return(_Command):
 def return_(status):
     return _Return(status)
 
+def return_last_status():
+    return return_('$?')
+
 ####################################################################################################
 
 class _Shebang(_Comment):
-    def __init__(self, comment):
-        _Comment.__init__(self, comment)
+    def __init__(self, content):
+        _Comment.__init__(self, content)
+
+@VISITOR_MAP.register(_Shebang)
+def visit_comment(element, walker):
+    walker.emit('#!')
+    walker.walk(element.content)
+    walker.emit('\n')
 
 def shebang_execute():
     return _Shebang(_Command('/bin/bash'))
 
 def shebang_source():
     return _Shebang(_Command('/bin/cat'))
-
-@VISITOR_MAP.register(_Shebang)
-def visit_comment(element, walker):
-    walker.emit('#!')
-    walker.walk(element.comment)
-    walker.emit('\n')
 
 ####################################################################################################
 
@@ -187,14 +209,14 @@ class _DoubleQuoted(object):
         object.__init__(self)
         self.content = content
 
-def dq(content):
-    return _DoubleQuoted(content)
-
 @VISITOR_MAP.register(_DoubleQuoted)
 def visit_double_quoted(element, walker):
     walker.emit('"')
     walker.walk(element.content)
     walker.emit('"')
+
+def dq(content):
+    return _DoubleQuoted(content)
 
 ####################################################################################################
 
@@ -203,14 +225,14 @@ class _SingleQuoted(object):
         object.__init__(self)
         self.content = content
 
-def sq(content):
-    return _SingleQuoted(content)
-
 @VISITOR_MAP.register(_SingleQuoted)
 def visit_single_quoted(element, walker):
     walker.emit("'")
     walker.walk(element.content)
     walker.emit("'")
+
+def sq(content):
+    return _SingleQuoted(content)
 
 ####################################################################################################
 """ Disabled content

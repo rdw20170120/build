@@ -3,7 +3,6 @@ from structure_bash import _Command
 
 from structure_bash import *
 
-
 ####################################################################################################
 
 def debugging_comment():
@@ -49,6 +48,13 @@ def source_header():
         rule(),
     ]
 
+def source_script(filename):
+    return [
+        assign('Script', filename), eol(),
+        require_script('"$Script"'), or_(), failed(), or_(), return_('$?'), eol(),
+        source('         "$Script"'), or_(), failed(), or_(), return_('$?'), eol(),
+    ]
+
 def todo(task):
     return comment('TODO: ' + task)
 
@@ -72,12 +78,24 @@ def failed():
 
 ####################################################################################################
 
-class _LogInfo(_Command):
-    def __init__(self, text):
-        _Command.__init__(self, 'logInfo', dq(text))
+class _Log(_Command):
+    def __init__(self, command, text):
+        _Command.__init__(self, command, dq(text))
+
+def log_debug(text):
+    return _Log('logDebug', text)
+
+def log_error(text):
+    return _Log('logError', text)
+
+def log_fatal(text):
+    return _Log('_logFatal', text)
 
 def log_info(text):
-    return _LogInfo(text)
+    return _Log('logInfo', text)
+
+def log_warn(text):
+    return _Log('logWarn', text)
 
 ####################################################################################################
 

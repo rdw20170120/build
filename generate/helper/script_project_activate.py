@@ -12,8 +12,8 @@ def abort_if_activated():
         line(),
         rule(),
         note('ABORT: if project is already activated'),
-        '[[ -n "$BO_Project" ]]', and_(),
-        echo('''"FATAL: Project '$BO_Project' is already activated, aborting"'''), and_(),
+        string_is_not_null('$BO_Project'), and_(),
+        echo_fatal("Project '$BO_Project' is already activated, aborting"), and_(),
         exit(100), eol(),
     ]
 
@@ -23,13 +23,7 @@ def activate_for_linux():
         rule(),
         comment('Activate as a Linux project'),
         line(),
-        assign('Script', '"$BO_Home/helper/activation/activate.src"'), eol(),
-        require_script('"$Script"'), or_(),
-        failed(), or_(),
-        return_('$?'), eol(),
-        source('         "$Script"'), or_(),
-        failed(), or_(),
-        return_('$?'), eol(),
+        source_script(dq('$BO_Home/helper/activation/activate.src')),
     ]
 
 def comments():
@@ -55,12 +49,12 @@ def capture_incoming_environment():
     return [
         line(),
         comment('Capture incoming BASH environment'),
-        if_('[[ -n "$TMPDIR" ]]'), seq(), then(), eol(),
-        '  ', line('env | sort >$TMPDIR/BO-env-incoming.out'),
+        if_(string_is_not_null('$TMPDIR')), seq(), then(), eol(),
+        '  ', command('env'), pipe(), command('sort', '>$TMPDIR/BO-env-incoming.out'), eol(),
         elif_('[[ -n "$BO_Project" ]]'), seq(), then(), eol(),
-        '  ', line('env | sort >$BO_Project/BO-env-incoming.out'),
+        '  ', command('env'), pipe(), command('sort', '>$BO_Project/BO-env-incoming.out'), eol(),
         else_(), eol(),
-        '  ', line('env | sort >$PWD/BO-env-incoming.out'),
+        '  ', command('env'), pipe(), command('sort', '>$PWD/BO-env-incoming.out'), eol(),
         fi(), eol(),
     ]
 
@@ -68,12 +62,12 @@ def capture_outgoing_environment():
     return [
         line(),
         comment('Capture outgoing BASH environment'),
-        if_('[[ -n "$TMPDIR" ]]'), seq(), then(), eol(),
-        '  ', line('env | sort >$TMPDIR/BO-env-outgoing.out'),
-        elif_('[[ -n "$BO_Project" ]]'), seq(), then(), eol(),
-        '  ', line('env | sort >$BO_Project/BO-env-outgoing.out'),
+        if_(string_is_not_null('$TMPDIR')), seq(), then(), eol(),
+        '  ', command('env'), pipe(), command('sort', '>$TMPDIR/BO-env-outgoing.out'), eol(),
+        elif_(string_is_not_null('$BO_Project')), seq(), then(), eol(),
+        '  ', command('env'), pipe(), command('sort', '>$BO_Project/BO-env-outgoing.out'), eol(),
         else_(), eol(),
-        '  ', line('env | sort >$PWD/BO-env-outgoing.out'),
+        '  ', command('env'), pipe(), command('sort', '>$PWD/BO-env-outgoing.out'), eol(),
         fi(), eol(),
     ]
 
@@ -83,13 +77,7 @@ def configure_for_briteonyx():
         rule(),
         comment('Configure for BriteOnyx'),
         line(),
-        assign('Script', '"$BO_Project/BriteOnyx/env.src"'), eol(),
-        require_script('"$Script"'), or_(),
-        failed(), or_(),
-        return_('$?'), eol(),
-        source('         "$Script"'), or_(),
-        failed(), or_(),
-        return_('$?'), eol(),
+        source_script(dq('$BO_Project/BriteOnyx/env.src')),
     ]
 
 def configure_for_project():
@@ -98,13 +86,7 @@ def configure_for_project():
         rule(),
         comment('Configure for this project'),
         line(),
-        assign('Script', '$BO_Project/env.src'), eol(),
-        require_script('$Script'), or_(),
-        failed(), or_(),
-        return_('$?'), eol(),
-        source('         $Script'), or_(),
-        failed(), or_(),
-        return_('$?'), eol(),
+        source_script('$BO_Project/env.src'),
     ]
 
 def configure_for_user():
@@ -113,13 +95,7 @@ def configure_for_user():
         rule(),
         comment('Configure for this user'),
         line(),
-        assign('Script', '$HOME/.BriteOnyx.src'), eol(),
-        require_script('"$Script"'), or_(),
-        failed(), or_(),
-        return_('$?'), eol(),
-        source('         "$Script"'), or_(),
-        failed(), or_(),
-        return_('$?'), eol(),
+        source_script('$HOME/.BriteOnyx.src'),
     ]
 
 def copy_starter_files():
@@ -132,8 +108,8 @@ def copy_starter_files():
         line(),
         require_variable('HOME'), eol(),
         assign('DirTgt', '$HOME'), eol(),
-        '[[ ! -e "$DirTgt" ]]', and_(),
-        line('mkdir -p $DirTgt'),
+        path_does_not_exist('$DirTgt'), and_(),
+        command('mkdir', ['-p', '$DirTgt']), eol(),
         line(),
         assign('FileTgt', '$DirTgt/.BriteOnyx.src'), eol(),
         comment('Move previous scripts to new path'),
@@ -245,11 +221,11 @@ def demonstrate_logging():
         rule(),
         comment('Demonstrate logging'),
         line(),
-        line('logDebug  "EXAMPLE: This is a debugging message"'),
-        line('logInfo   "EXAMPLE: This is an informational message"'),
-        line('logWarn   "EXAMPLE: This is a warning message"'),
-        line('logError  "EXAMPLE: This is an error message"'),
-        line('_logFatal "EXAMPLE: This is a fatal message"'),
+        log_debug('EXAMPLE: This is a debugging message'), eol(),
+        log_info('EXAMPLE: This is an informational message'), eol(),
+        log_warn('EXAMPLE: This is a warning message'), eol(),
+        log_error('EXAMPLE: This is an error message'), eol(),
+        log_fatal('"EXAMPLE: This is a fatal message'), eol(),
     ]
 
 def initialize_logging_file():
@@ -274,7 +250,7 @@ def normalize_reference_to_project_root():
         line(),
         require_variable("'BO_Project'"), or_(),
         failed(), or_(),
-        return_('$?'), eol(),
+        return_last_status(), eol(),
         trace_variable("'BO_Project'"), eol(),
         export('BO_Project', '"$(boNodeCanonical $BO_Project)"'), eol(),
         trace_variable("'BO_Project'"), eol(),
@@ -282,7 +258,7 @@ def normalize_reference_to_project_root():
         eol(),
         require_directory('"$BO_Project"'), or_(),
         failed(), or_(),
-        return_('$?'), eol(),
+        return_last_status(), eol(),
     ]
 
 def remember_path():
@@ -306,7 +282,7 @@ def remember_project_root():
         line(),
         todo('REVIEW: Shall we NOT cd into our project directory since it changes'),
         comment("the caller's execution environment?"),
-        comment('cd "$BO_Project" || return $?'),
+        comment([command('cd', dq('$BO_Project')), or_(), return_last_status()]),
     ]
 
 def set_tmpdir():
@@ -316,8 +292,8 @@ def set_tmpdir():
         comment('Set TMPDIR '),
         comment('DISABLED: MOVED: to Linux activation script'),
         line(),
-        comment('export TMPDIR=$TMPDIR/$BO_ProjectName'),
-        comment('''echo "INFO:  Remembering TMPDIR='$TMPDIR'"'''),
+        comment(export('TMPDIR', '$TMPDIR/$BO_ProjectName')),
+        comment(echo_info("Remembering TMPDIR='$TMPDIR'")),
     ]
 
 def shutdown():
@@ -339,14 +315,14 @@ def verify_briteonyx_bootstrap():
         line(),
         require_variable('  BO_Home'), or_(),
         failed(), or_(),
-        return_('$?'), eol(),
+        return_last_status(), eol(),
         require_directory('$BO_Home'), or_(),
         failed(), or_(),
-        return_('$?'), eol(),
+        return_last_status(), eol(),
         line(),
         require_variable('BO_ProjectName'), or_(),
         failed(), or_(),
-        return_('$?'), eol(),
+        return_last_status(), eol(),
     ]
 
 
