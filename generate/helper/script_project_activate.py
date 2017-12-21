@@ -91,7 +91,7 @@ def configure_for_briteonyx():
         rule(),
         comment('Configure for BriteOnyx'),
         line(),
-        source_script(dq(pathname(vr('BO_Project'), 'BriteOnyx/env.src'))),
+        source_script(dq(pathname(vr('BO_Project'), 'BriteOnyx', 'env.src'))),
     ]
 
 def configure_for_project():
@@ -109,7 +109,7 @@ def configure_for_user():
         rule(),
         comment('Configure for this user'),
         line(),
-        source_script('$HOME/.BriteOnyx.src'),
+        source_script(pathname(vr('HOME'), '.BriteOnyx.src')),
     ]
 
 def copy_starter_files():
@@ -120,8 +120,8 @@ def copy_starter_files():
         line(),
         assign('DirSrc', pathname(vr('BO_Project'), 'BriteOnyx/starter')), eol(),
         line(),
-        require_variable('HOME'), eol(),
-        assign('DirTgt', '$HOME'), eol(),
+        require_variable(vn('HOME')), eol(),
+        assign('DirTgt', vr('HOME')), eol(),
         path_does_not_exist('$DirTgt'), and_(),
         command('mkdir', ['-p', '$DirTgt']), eol(),
         line(),
