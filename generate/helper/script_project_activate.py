@@ -61,7 +61,9 @@ def capture_incoming_environment():
         '  ', command('env'), pipe(),
         command('sort', ['>', pathname(vr('BO_Project'), 'BO-env-incoming.out')]),
         eol(), else_(), eol(),
-        '  ', command('env'), pipe(), command('sort', '>$PWD/BO-env-incoming.out'), eol(),
+        '  ', command('env'), pipe(),
+        command('sort', ['>', pathname(vr('PWD'), 'BO-env-incoming.out')]),
+        eol(),
         fi(), eol(),
     ]
 
@@ -77,7 +79,9 @@ def capture_outgoing_environment():
         '  ', command('env'), pipe(),
         command('sort', ['>', pathname(vr('BO_Project'), 'BO-env-outgoing.out')]),
         eol(), else_(), eol(),
-        '  ', command('env'), pipe(), command('sort', '>$PWD/BO-env-outgoing.out'), eol(),
+        '  ', command('env'), pipe(),
+        command('sort', ['>', pathname(vr('PWD'), 'BO-env-outgoing.out')]),
+        eol(),
         fi(), eol(),
     ]
 
@@ -248,7 +252,7 @@ def initialize_logging_file():
         elif_(string_is_not_null(vr('BO_Project'))), seq(), then(), eol(),
         '  ', export('BO_FileLog', pathname(vr('BO_Project'), '$BO_FileLog')), eol(),
         else_(), eol(),
-        '  ', export('BO_FileLog', '$PWD/$BO_FileLog'), eol(),
+        '  ', export('BO_FileLog', pathname(vr('PWD'), '$BO_FileLog')), eol(),
         fi(), eol(),
         echo_info("Activating..."), ' >$BO_FileLog', eol(),
         echo_info("Activating the BriteOnyx framework for this project..."), eol(),

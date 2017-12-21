@@ -46,7 +46,7 @@ if [[ -n "$TMPDIR" ]] ; then
 elif [[ -n "$BO_Project" ]] ; then
   env | sort > $BO_Project/BO-env-incoming.out
 else
-  env | sort >$PWD/BO-env-incoming.out
+  env | sort > $PWD/BO-env-incoming.out
 fi
 
 ####################################################################################################
@@ -207,7 +207,7 @@ if [[ -n "$TMPDIR" ]] ; then
 elif [[ -n "$BO_Project" ]] ; then
   env | sort > $BO_Project/BO-env-outgoing.out
 else
-  env | sort >$PWD/BO-env-outgoing.out
+  env | sort > $PWD/BO-env-outgoing.out
 fi
 
 ####################################################################################################
