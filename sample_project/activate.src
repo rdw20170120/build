@@ -44,7 +44,7 @@ echo "WARN:  This script MUST be executed as 'source activate.src', WAS IT?"
 if [[ -n "$TMPDIR" ]] ; then
   env | sort >$TMPDIR/BO-env-incoming.out
 elif [[ -n "$BO_Project" ]] ; then
-  env | sort >$BO_Project/BO-env-incoming.out
+  env | sort > $BO_Project/BO-env-incoming.out
 else
   env | sort >$PWD/BO-env-incoming.out
 fi
@@ -205,7 +205,7 @@ logInfo "Project '$BO_ProjectName' in directory '$BO_Project' is now activated, 
 if [[ -n "$TMPDIR" ]] ; then
   env | sort >$TMPDIR/BO-env-outgoing.out
 elif [[ -n "$BO_Project" ]] ; then
-  env | sort >$BO_Project/BO-env-outgoing.out
+  env | sort > $BO_Project/BO-env-outgoing.out
 else
   env | sort >$PWD/BO-env-outgoing.out
 fi

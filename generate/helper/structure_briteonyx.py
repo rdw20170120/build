@@ -20,26 +20,26 @@ def disabled_content_footer():
         line('DisabledContent'),
     ]
 
-def echo_fatal(text):
-    return echo(dq('FATAL: ' + text))
+def echo_fatal(content):
+    return echo(dq(['FATAL: ', content]))
 
-def echo_info(text):
-    return echo(dq('INFO:  ' + text))
+def echo_info(content):
+    return echo(dq(['INFO:  ', content]))
 
-def echo_warn(text):
-    return echo(dq('WARN:  ' + text))
+def echo_warn(content):
+    return echo(dq(['WARN:  ', content]))
 
 def execution_trace():
     return line('''[[ -n "$BO_Trace" ]] && echo "TRACE: Executing '$BASH_SOURCE'"''')
 
-def note(note):
-    return comment('NOTE: ' + note)
+def note(content):
+    return comment(['NOTE: ', content])
 
 def rule():
     return line('#' * 100)
 
 def someday(task):
-    return todo('SOMEDAY: ' + task)
+    return todo(['SOMEDAY: ', task])
 
 def source_header():
     return [
@@ -56,7 +56,7 @@ def source_script(filename):
     ]
 
 def todo(task):
-    return comment('TODO: ' + task)
+    return comment(['TODO: ', task])
 
 ####################################################################################################
 

@@ -80,6 +80,21 @@ def visit_command(element, walker):
 def command(command, arguments=None):
     return _Command(command, arguments)
 
+def echo(arguments):
+    return command('echo', arguments)
+
+def exit(arguments):
+    return command('exit', arguments)
+
+def return_(status):
+    return command('return', status)
+
+def return_last_status():
+    return return_('$?')
+
+def source(filename):
+    return command('source', filename)
+
 ####################################################################################################
 
 class _Assign(_Command):
@@ -142,21 +157,19 @@ def string_is_null(expression):
 
 ####################################################################################################
 
-class _Echo(_Command):
-    def __init__(self, arguments):
-        _Command.__init__(self, 'echo', arguments)
+class _DoubleQuoted(object):
+    def __init__(self, content):
+        object.__init__(self)
+        self.content = content
 
-def echo(arguments):
-    return _Echo(arguments)
+@VISITOR_MAP.register(_DoubleQuoted)
+def visit_double_quoted(element, walker):
+    walker.emit('"')
+    walker.walk(element.content)
+    walker.emit('"')
 
-####################################################################################################
-
-class _Exit(_Command):
-    def __init__(self, arguments):
-        _Command.__init__(self, 'exit', arguments)
-
-def exit(status):
-    return _Exit(status)
+def dq(content):
+    return _DoubleQuoted(content)
 
 ####################################################################################################
 
@@ -177,15 +190,22 @@ def export(variable, expression):
 
 ####################################################################################################
 
-class _Return(_Command):
-    def __init__(self, arguments):
-        _Command.__init__(self, 'return', arguments)
+class _Pathname(object):
+    def __init__(self, *elements):
+        object.__init__(self)
+        self.elements = elements
 
-def return_(status):
-    return _Return(status)
+@VISITOR_MAP.register(_Pathname)
+def visit_pathname(element, walker):
+    if element.elements is not None:
+        past_first = False
+        for e in element.elements:
+            if past_first: walker.emit('/')
+            walker.walk(e)
+            past_first = True
 
-def return_last_status():
-    return return_('$?')
+def pathname(*elements):
+    return _Pathname(*elements)
 
 ####################################################################################################
 
@@ -207,31 +227,6 @@ def shebang_source():
 
 ####################################################################################################
 
-class _Source(_Command):
-    def __init__(self, arguments):
-        _Command.__init__(self, 'source', arguments)
-
-def source(filename):
-    return _Source(filename)
-
-####################################################################################################
-
-class _DoubleQuoted(object):
-    def __init__(self, content):
-        object.__init__(self)
-        self.content = content
-
-@VISITOR_MAP.register(_DoubleQuoted)
-def visit_double_quoted(element, walker):
-    walker.emit('"')
-    walker.walk(element.content)
-    walker.emit('"')
-
-def dq(content):
-    return _DoubleQuoted(content)
-
-####################################################################################################
-
 class _SingleQuoted(object):
     def __init__(self, content):
         object.__init__(self)
@@ -245,6 +240,35 @@ def visit_single_quoted(element, walker):
 
 def sq(content):
     return _SingleQuoted(content)
+
+####################################################################################################
+
+class _Variable(object):
+    def __init__(self, variable_name):
+        object.__init__(self)
+        self.name = variable_name
+
+@VISITOR_MAP.register(_Variable)
+def visit_variable(element, walker):
+    walker.walk(element.name)
+
+def vn(variable_name):
+    return _Variable(variable_name)
+
+####################################################################################################
+
+class _VariableReference(object):
+    def __init__(self, variable_name):
+        object.__init__(self)
+        self.name = variable_name
+
+@VISITOR_MAP.register(_VariableReference)
+def visit_variable_reference(element, walker):
+    walker.emit('$')
+    walker.walk(element.name)
+
+def vr(variable_name):
+    return _VariableReference(variable_name)
 
 ####################################################################################################
 """ Disabled content

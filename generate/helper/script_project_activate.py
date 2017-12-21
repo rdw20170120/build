@@ -12,8 +12,8 @@ def abort_if_activated():
         line(),
         rule(),
         note('ABORT: if project is already activated'),
-        string_is_not_null('$BO_Project'), and_(),
-        echo_fatal("Project '$BO_Project' is already activated, aborting"), and_(),
+        string_is_not_null(vr('BO_Project')), and_(),
+        echo_fatal(['Project ', sq(vr('BO_Project')), ' is already activated, aborting']), and_(),
         exit(100), eol(),
     ]
 
@@ -42,7 +42,11 @@ def comments():
         comment("  useful feedback and interrupts their work, which is unacceptable.  Instead, the BASH 'return'"),
         comment('  statement should be invoked to end execution with an appropriate status code.'),
         comment(),
-        someday('Verify that $BO_Project does indeed point to the root of our project directory tree'),
+        someday([
+            'Verify that ',
+            vr('BO_Project'),
+            ' does indeed point to the root of our project directory tree',
+        ]),
     ]
 
 def capture_incoming_environment():
@@ -51,9 +55,10 @@ def capture_incoming_environment():
         comment('Capture incoming BASH environment'),
         if_(string_is_not_null('$TMPDIR')), seq(), then(), eol(),
         '  ', command('env'), pipe(), command('sort', '>$TMPDIR/BO-env-incoming.out'), eol(),
-        elif_(string_is_not_null('$BO_Project')), seq(), then(), eol(),
-        '  ', command('env'), pipe(), command('sort', '>$BO_Project/BO-env-incoming.out'), eol(),
-        else_(), eol(),
+        elif_(string_is_not_null(vr('BO_Project'))), seq(), then(), eol(),
+        '  ', command('env'), pipe(),
+        command('sort', ['>', pathname(vr('BO_Project'), 'BO-env-incoming.out')]),
+        eol(), else_(), eol(),
         '  ', command('env'), pipe(), command('sort', '>$PWD/BO-env-incoming.out'), eol(),
         fi(), eol(),
     ]
@@ -64,9 +69,10 @@ def capture_outgoing_environment():
         comment('Capture outgoing BASH environment'),
         if_(string_is_not_null('$TMPDIR')), seq(), then(), eol(),
         '  ', command('env'), pipe(), command('sort', '>$TMPDIR/BO-env-outgoing.out'), eol(),
-        elif_(string_is_not_null('$BO_Project')), seq(), then(), eol(),
-        '  ', command('env'), pipe(), command('sort', '>$BO_Project/BO-env-outgoing.out'), eol(),
-        else_(), eol(),
+        elif_(string_is_not_null(vr('BO_Project'))), seq(), then(), eol(),
+        '  ', command('env'), pipe(),
+        command('sort', ['>', pathname(vr('BO_Project'), 'BO-env-outgoing.out')]),
+        eol(), else_(), eol(),
         '  ', command('env'), pipe(), command('sort', '>$PWD/BO-env-outgoing.out'), eol(),
         fi(), eol(),
     ]
@@ -77,7 +83,7 @@ def configure_for_briteonyx():
         rule(),
         comment('Configure for BriteOnyx'),
         line(),
-        source_script(dq('$BO_Project/BriteOnyx/env.src')),
+        source_script(dq(pathname(vr('BO_Project'), 'BriteOnyx/env.src'))),
     ]
 
 def configure_for_project():
@@ -86,7 +92,7 @@ def configure_for_project():
         rule(),
         comment('Configure for this project'),
         line(),
-        source_script('$BO_Project/env.src'),
+        source_script(pathname(vr('BO_Project'), 'env.src')),
     ]
 
 def configure_for_user():
@@ -104,7 +110,7 @@ def copy_starter_files():
         rule(),
         comment('Copy starter files into place as necessary'),
         line(),
-        assign('DirSrc', '$BO_Project/BriteOnyx/starter'), eol(),
+        assign('DirSrc', pathname(vr('BO_Project'), 'BriteOnyx/starter')), eol(),
         line(),
         require_variable('HOME'), eol(),
         assign('DirTgt', '$HOME'), eol(),
@@ -123,7 +129,7 @@ def copy_starter_files():
         path_is_not_file('$FileTgt'), and_(),
         command('cp', ['$DirSrc/user-BriteOnyx.src', '$FileTgt']), eol(),
         line(),
-        assign('DirTgt', '$BO_Project'), eol(),
+        assign('DirTgt', pathname(vr('BO_Project'))), eol(),
         path_does_not_exist('$DirTgt'), and_(),
         command('mkdir', ['-p', '$DirTgt']), eol(),
         line(),
@@ -135,7 +141,7 @@ def copy_starter_files():
         path_is_not_file('$FileTgt'), and_(),
         command('cp', ['$DirSrc/project.hgignore', '$FileTgt']), eol(),
         line(),
-        assign('DirTgt', '$BO_Project/bin'), eol(),
+        assign('DirTgt', pathname(vr('BO_Project'), 'bin')), eol(),
         path_does_not_exist('$DirTgt'), and_(),
         command('mkdir', ['-p', '$DirTgt']), eol(),
         line(),
@@ -160,7 +166,7 @@ def copy_starter_files():
         path_is_not_file('$FileTgt'), and_(),
         command('cp', ['$DirSrc/project-README.rst', '$FileTgt']), eol(),
         line(),
-        assign('DirTgt', '$BO_Project/bin/helper/Linux'), eol(),
+        assign('DirTgt', pathname(vr('BO_Project'), 'bin/helper/Linux')), eol(),
         path_does_not_exist('$DirTgt'), and_(),
         command('mkdir', ['-p', '$DirTgt']), eol(),
         line(),
@@ -185,7 +191,7 @@ def declare_for_bootstrap():
         rule(),
         comment('Declare BriteOnyx support functionality'),
         line(),
-        assign('Script', '"$BO_Project/BriteOnyx/declare.src"'), eol(),
+        assign('Script', dq(pathname(vr('BO_Project'), 'BriteOnyx/declare.src'))), eol(),
         path_is_not_file('$Script'), and_(),
         echo_fatal("Missing script '$Script'"), and_(),
         return_(63), eol(),
@@ -205,7 +211,7 @@ def declare_for_project():
         rule(),
         comment('Declare optional project functionality'),
         line(),
-        assign('Script', '"$BO_Project/declare.src"'), eol(),
+        assign('Script', dq(pathname(vr('BO_Project'), 'declare.src'))), eol(),
         if_(file_exists('$Script')), seq(), then(), eol(),
         '  ', source(dq('$Script')), seq(),
         assign('Status', '$?'), eol(),
@@ -235,8 +241,8 @@ def initialize_logging_file():
         assign('BO_FileLog', 'BO.log'), eol(),
         if_(string_is_not_null('$TMPDIR')), seq(), then(), eol(),
         '  ', export('BO_FileLog', '$TMPDIR/$BO_FileLog'), eol(),
-        elif_(string_is_not_null('$BO_Project')), seq(), then(), eol(),
-        '  ', export('BO_FileLog', '$BO_Project/$BO_FileLog'), eol(),
+        elif_(string_is_not_null(vr('BO_Project'))), seq(), then(), eol(),
+        '  ', export('BO_FileLog', pathname(vr('BO_Project'), '$BO_FileLog')), eol(),
         else_(), eol(),
         '  ', export('BO_FileLog', '$PWD/$BO_FileLog'), eol(),
         fi(), eol(),
@@ -248,15 +254,20 @@ def initialize_logging_file():
 def normalize_reference_to_project_root():
     return [
         line(),
-        require_variable("'BO_Project'"), or_(),
+        require_variable(sq(vn('BO_Project'))), or_(),
         failed(), or_(),
         return_last_status(), eol(),
-        trace_variable("'BO_Project'"), eol(),
-        export('BO_Project', '"$(boNodeCanonical $BO_Project)"'), eol(),
-        trace_variable("'BO_Project'"), eol(),
-        bo_log_info("Canonical form of BO_Project directory pathname is '$BO_Project'"),
+        trace_variable(sq(vn('BO_Project'))), eol(),
+        export(vn('BO_Project'), dq(['$(boNodeCanonical ', vr('BO_Project'), ')'])), eol(),
+        trace_variable(sq(vn('BO_Project'))), eol(),
+        bo_log_info([
+            'Canonical form of ',
+            vn('BO_Project'),
+            ' directory pathname is ',
+            sq(vr('BO_Project')),
+        ]),
         eol(),
-        require_directory('$BO_Project'), or_(),
+        require_directory(vr('BO_Project')), or_(),
         failed(), or_(),
         return_last_status(), eol(),
     ]
@@ -278,11 +289,11 @@ def remember_project_root():
         rule(),
         comment('Remember the directory containing this script as our project root'),
         line(),
-        export('BO_Project', '"$(dirname $BASH_SOURCE)"'), eol(),
+        export(vn('BO_Project'), '"$(dirname $BASH_SOURCE)"'), eol(),
         line(),
         todo('REVIEW: Shall we NOT cd into our project directory since it changes'),
         comment("the caller's execution environment?"),
-        comment([command('cd', dq('$BO_Project')), or_(), return_last_status()]),
+        comment([command('cd', dq(pathname(vr('BO_Project')))), or_(), return_last_status()]),
     ]
 
 def set_tmpdir():
@@ -292,7 +303,7 @@ def set_tmpdir():
         comment('Set TMPDIR '),
         comment('DISABLED: MOVED: to Linux activation script'),
         line(),
-        comment(export('TMPDIR', '$TMPDIR/$BO_ProjectName')),
+        comment(export('TMPDIR', pathname('$TMPDIR', vr('BO_ProjectName')))),
         comment(echo_info("Remembering TMPDIR='$TMPDIR'")),
     ]
 
@@ -302,7 +313,13 @@ def shutdown():
         rule(),
         comment('Shutdown'),
         line(),
-        log_info("Project '$BO_ProjectName' in directory '$BO_Project' is now activated, done."),
+        log_info([
+            'Project ',
+            sq(vr('BO_ProjectName')),
+            ' in directory ',
+            sq(vr('BO_Project')),
+            ' is now activated, done.',
+        ]),
         eol(),
         capture_outgoing_environment(),
     ]
@@ -320,7 +337,7 @@ def verify_briteonyx_bootstrap():
         failed(), or_(),
         return_last_status(), eol(),
         line(),
-        require_variable('BO_ProjectName'), or_(),
+        require_variable(vn('BO_ProjectName')), or_(),
         failed(), or_(),
         return_last_status(), eol(),
     ]
