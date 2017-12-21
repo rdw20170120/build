@@ -23,7 +23,7 @@ def activate_for_linux():
         rule(),
         comment('Activate as a Linux project'),
         line(),
-        source_script(dq('$BO_Home/helper/activation/activate.src')),
+        source_script(dq(pathname(vr('BO_Home'), 'helper', 'activation', 'activate.src'))),
     ]
 
 def comments():
@@ -53,8 +53,10 @@ def capture_incoming_environment():
     return [
         line(),
         comment('Capture incoming BASH environment'),
-        if_(string_is_not_null('$TMPDIR')), seq(), then(), eol(),
-        '  ', command('env'), pipe(), command('sort', '>$TMPDIR/BO-env-incoming.out'), eol(),
+        if_(string_is_not_null(vr('TMPDIR'))), seq(), then(), eol(),
+        '  ', command('env'), pipe(),
+        command('sort', ['>', pathname(vr('TMPDIR'), 'BO-env-incoming.out')]),
+        eol(),
         elif_(string_is_not_null(vr('BO_Project'))), seq(), then(), eol(),
         '  ', command('env'), pipe(),
         command('sort', ['>', pathname(vr('BO_Project'), 'BO-env-incoming.out')]),
@@ -67,8 +69,10 @@ def capture_outgoing_environment():
     return [
         line(),
         comment('Capture outgoing BASH environment'),
-        if_(string_is_not_null('$TMPDIR')), seq(), then(), eol(),
-        '  ', command('env'), pipe(), command('sort', '>$TMPDIR/BO-env-outgoing.out'), eol(),
+        if_(string_is_not_null(vr('TMPDIR'))), seq(), then(), eol(),
+        '  ', command('env'), pipe(),
+        command('sort', ['>', pathname(vr('TMPDIR'), 'BO-env-outgoing.out')]),
+        eol(),
         elif_(string_is_not_null(vr('BO_Project'))), seq(), then(), eol(),
         '  ', command('env'), pipe(),
         command('sort', ['>', pathname(vr('BO_Project'), 'BO-env-outgoing.out')]),
@@ -179,10 +183,10 @@ def copy_starter_files():
 def create_random_tmpdir():
     return [
         line(),
-        comment('Create random TMPDIR'),
+        comment(['Create random ', vn('TMPDIR')]),
         assign('Dir', '$(mktemp --tmpdir -d BO-XXXXXXXX)'), eol(),
         directory_exists('$Dir'), and_(),
-        export('TMPDIR', '$Dir'), eol(),
+        export(vn('TMPDIR'), '$Dir'), eol(),
     ]
 
 def declare_for_bootstrap():
@@ -239,8 +243,8 @@ def initialize_logging_file():
         line(),
         comment('Initialize BriteOnyx logging file'),
         assign('BO_FileLog', 'BO.log'), eol(),
-        if_(string_is_not_null('$TMPDIR')), seq(), then(), eol(),
-        '  ', export('BO_FileLog', '$TMPDIR/$BO_FileLog'), eol(),
+        if_(string_is_not_null(vr('TMPDIR'))), seq(), then(), eol(),
+        '  ', export('BO_FileLog', pathname(vr('TMPDIR'), '$BO_FileLog')), eol(),
         elif_(string_is_not_null(vr('BO_Project'))), seq(), then(), eol(),
         '  ', export('BO_FileLog', pathname(vr('BO_Project'), '$BO_FileLog')), eol(),
         else_(), eol(),
@@ -300,11 +304,11 @@ def set_tmpdir():
     return [
         line(),
         rule(),
-        comment('Set TMPDIR '),
+        comment(['Set ', vn('TMPDIR'), ' ']),
         comment('DISABLED: MOVED: to Linux activation script'),
         line(),
-        comment(export('TMPDIR', pathname('$TMPDIR', vr('BO_ProjectName')))),
-        comment(echo_info("Remembering TMPDIR='$TMPDIR'")),
+        comment(export(vn('TMPDIR'), pathname(vr('TMPDIR'), vr('BO_ProjectName')))),
+        comment(echo_info(['Remembering ', vn('TMPDIR'), '=', sq(vr('TMPDIR'))])),
     ]
 
 def shutdown():
@@ -330,10 +334,10 @@ def verify_briteonyx_bootstrap():
         rule(),
         comment('Verify BriteOnyx bootstrap configuration'),
         line(),
-        require_variable('  BO_Home'), or_(),
+        require_variable(vn('BO_Home')), or_(),
         failed(), or_(),
         return_last_status(), eol(),
-        require_directory('$BO_Home'), or_(),
+        require_directory(vr('BO_Home')), or_(),
         failed(), or_(),
         return_last_status(), eol(),
         line(),

@@ -42,7 +42,7 @@ echo "WARN:  This script MUST be executed as 'source activate.src', WAS IT?"
 
 # Capture incoming BASH environment
 if [[ -n "$TMPDIR" ]] ; then
-  env | sort >$TMPDIR/BO-env-incoming.out
+  env | sort > $TMPDIR/BO-env-incoming.out
 elif [[ -n "$BO_Project" ]] ; then
   env | sort > $BO_Project/BO-env-incoming.out
 else
@@ -152,7 +152,7 @@ source          "$Script" || boFailed "$0" "$LINENO" $? || return $?
 ####################################################################################################
 # Verify BriteOnyx bootstrap configuration
 
-boVariableRequire   BO_Home || boFailed "$0" "$LINENO" $? || return $?
+boVariableRequire BO_Home || boFailed "$0" "$LINENO" $? || return $?
 boDirectoryRequire "$BO_Home" || boFailed "$0" "$LINENO" $? || return $?
 
 boVariableRequire BO_ProjectName || boFailed "$0" "$LINENO" $? || return $?
@@ -203,7 +203,7 @@ logInfo "Project '$BO_ProjectName' in directory '$BO_Project' is now activated, 
 
 # Capture outgoing BASH environment
 if [[ -n "$TMPDIR" ]] ; then
-  env | sort >$TMPDIR/BO-env-outgoing.out
+  env | sort > $TMPDIR/BO-env-outgoing.out
 elif [[ -n "$BO_Project" ]] ; then
   env | sort > $BO_Project/BO-env-outgoing.out
 else
