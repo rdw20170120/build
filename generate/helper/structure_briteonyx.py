@@ -48,9 +48,9 @@ def source_header():
         rule(),
     ]
 
-def source_script(filename):
+def source_script(file_name):
     return [
-        assign('Script', filename), eol(),
+        assign('Script', file_name), eol(),
         require_script('"$Script"'), or_(), failed(), or_(), return_('$?'), eol(),
         source('         "$Script"'), or_(), failed(), or_(), return_('$?'), eol(),
     ]
@@ -109,11 +109,11 @@ def require_directory(directory_name):
 ####################################################################################################
 
 class _BoRequireScript(_Command):
-    def __init__(self, filename):
-        _Command.__init__(self, 'boScriptRequire', filename)
+    def __init__(self, file_name):
+        _Command.__init__(self, 'boScriptRequire', file_name)
 
-def require_script(filename):
-    return _BoRequireScript(filename)
+def require_script(file_name):
+    return _BoRequireScript(file_name)
 
 ####################################################################################################
 

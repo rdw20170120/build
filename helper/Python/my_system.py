@@ -16,17 +16,17 @@ def clone_files(source_directory, target_directory):
     assert directory_exists(target_directory), directory_exists_message(target_directory)
     assert FALSE, "TODO: Implement"
 
-def create_directory(pathname):
-    assert has_type(pathname, StringType), has_type_message(pathname, StringType)
-    os.makedirs(pathname)
+def create_directory(path_name):
+    assert has_type(path_name, StringType), has_type_message(path_name, StringType)
+    os.makedirs(path_name)
 
-def delete_directory(pathname):
-    assert has_type(pathname, StringType), has_type_message(pathname, StringType)
-    shutil.rmtree(pathname)
+def delete_directory(path_name):
+    assert has_type(path_name, StringType), has_type_message(path_name, StringType)
+    shutil.rmtree(path_name)
 
-def directory_exists(pathname):
-    assert has_type(pathname, StringType), has_type_message(pathname, StringType)
-    result = os.path.isdir(pathname)
+def directory_exists(path_name):
+    assert has_type(path_name, StringType), has_type_message(path_name, StringType)
+    result = os.path.isdir(path_name)
     assert has_type(result, BooleanType), has_type_message(result, BooleanType)
     return result
 
@@ -35,15 +35,15 @@ def directory_exists_message(directory):
         directory
         )
 
-def file_exists(filename):
-    assert has_type(filename, StringType), has_type_message(filename, StringType)
-    result = os.path.isfile(filename)
+def file_exists(file_name):
+    assert has_type(file_name, StringType), has_type_message(file_name, StringType)
+    result = os.path.isfile(file_name)
     assert has_type(result, BooleanType), has_type_message(result, BooleanType)
     return result
 
-def file_is_empty(filename):
-    assert has_type(filename, StringType), has_type_message(filename, StringType)
-    result = (os.path.getsize(filename) > 0) if file_exists(filename) else False
+def file_is_empty(file_name):
+    assert has_type(file_name, StringType), has_type_message(file_name, StringType)
+    result = (os.path.getsize(file_name) > 0) if file_exists(file_name) else False
     assert has_type(result, BooleanType), has_type_message(result, BooleanType)
     return result
 
@@ -59,9 +59,9 @@ def get_empty_files(directory, pattern):
     assert has_type(result, ListType), has_type_message(result, ListType)
     return result
 
-def get_file_contents(pathname):
-    assert has_type(pathname, StringType), has_type_message(pathname, StringType)
-    with open(pathname, 'r') as f:
+def get_file_contents(path_name):
+    assert has_type(path_name, StringType), has_type_message(path_name, StringType)
+    with open(path_name, 'r') as f:
         result = f.read()
     assert has_type(result, StringType), has_type_message(result, StringType)
     return result
@@ -73,10 +73,10 @@ def get_files(directory, pattern):
     assert has_type(result, ListType), has_type_message(result, ListType)
     return result
 
-def get_file_modified_time(pathname):
-    """Return Unix epoch for when pathname was last modified"""
-    assert has_type(pathname, StringType), has_type_message(pathname, StringType)
-    result = os.path.getmtime(pathname)
+def get_file_modified_time(path_name):
+    """Return Unix epoch for when path_name was last modified"""
+    assert has_type(path_name, StringType), has_type_message(path_name, StringType)
+    result = os.path.getmtime(path_name)
     assert has_type(result, FloatType), has_type_message(result, FloatType)
     result = timestamp_as_datetime_utc(result)
     assert has_type(result, datetime), has_type_message(result, datetime)
@@ -89,26 +89,26 @@ def get_uptime_from_proc():
     assert has_type(result, FloatType), has_type_message(result, FloatType)
     return result
 
-def maybe_create_directory(pathname):
-    if not directory_exists(pathname): create_directory(pathname)
+def maybe_create_directory(path_name):
+    if not directory_exists(path_name): create_directory(path_name)
 
-def maybe_delete_directory(pathname):
-    if directory_exists(pathname): delete_directory(pathname)
+def maybe_delete_directory(path_name):
+    if directory_exists(path_name): delete_directory(path_name)
 
-def path_exists(pathname):
-    assert has_type(pathname, StringType), has_type_message(pathname, StringType)
-    result = os.path.exists(pathname)
+def path_exists(path_name):
+    assert has_type(path_name, StringType), has_type_message(path_name, StringType)
+    result = os.path.exists(path_name)
     assert has_type(result, BooleanType), has_type_message(result, BooleanType)
     return result
 
-def recreate_directory(pathname):
-    maybe_delete_directory(pathname)
-    create_directory(pathname)
+def recreate_directory(path_name):
+    maybe_delete_directory(path_name)
+    create_directory(path_name)
 
-def set_file_contents(pathname, contents):
-    assert has_type(pathname, StringType), has_type_message(pathname, StringType)
+def set_file_contents(path_name, contents):
+    assert has_type(path_name, StringType), has_type_message(path_name, StringType)
     assert has_type(contents, StringType), has_type_message(contents, StringType)
-    with open(pathname, 'w') as f:
+    with open(path_name, 'w') as f:
         f.write(contents)
 
 

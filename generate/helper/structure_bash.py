@@ -92,8 +92,8 @@ def return_(status):
 def return_last_status():
     return return_('$?')
 
-def source(filename):
-    return command('source', filename)
+def source(file_name):
+    return command('source', file_name)
 
 ####################################################################################################
 
@@ -140,14 +140,14 @@ class _Condition(_Command):
 def directory_exists(directory_name):
     return _Condition(['-d', dq(directory_name), ])
 
-def file_exists(filename):
-    return _Condition(['-f', dq(filename), ])
+def file_exists(file_name):
+    return _Condition(['-f', dq(file_name), ])
 
-def path_does_not_exist(pathname):
-    return _Condition(['!', '-e', dq(pathname), ])
+def path_does_not_exist(path_name):
+    return _Condition(['!', '-e', dq(path_name), ])
 
-def path_is_not_file(pathname):
-    return _Condition(['!', '-f', dq(pathname), ])
+def path_is_not_file(path_name):
+    return _Condition(['!', '-f', dq(path_name), ])
 
 def string_is_not_null(expression):
     return _Condition(['-n', dq(expression), ])
@@ -190,13 +190,13 @@ def export(variable, expression):
 
 ####################################################################################################
 
-class _Pathname(object):
+class _FileSystemPath(object):
     def __init__(self, *elements):
         object.__init__(self)
         self.elements = elements
 
-@VISITOR_MAP.register(_Pathname)
-def visit_pathname(element, walker):
+@VISITOR_MAP.register(_FileSystemPath)
+def visit_file_system_path(element, walker):
     if element.elements is not None:
         past_first = False
         for e in element.elements:
@@ -204,8 +204,8 @@ def visit_pathname(element, walker):
             walker.walk(e)
             past_first = True
 
-def pathname(*elements):
-    return _Pathname(*elements)
+def path(*elements):
+    return _FileSystemPath(*elements)
 
 ####################################################################################################
 

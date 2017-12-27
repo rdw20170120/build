@@ -18,11 +18,11 @@ class Renderer(object):
     def _print_output(self, output):
         print output.encode(self._encoding)
 
-    def render(self, content, filename=None):
-        if filename is None:
+    def render(self, content, file_name=None):
+        if file_name is None:
             self._print_output(self._get_output(content))
         else:
-            with open(filename, 'w') as f:
+            with open(file_name, 'w') as f:
                 f.write(self._get_output(content).encode(self._encoding))
 
 
