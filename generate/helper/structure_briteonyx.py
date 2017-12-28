@@ -20,26 +20,26 @@ def disabled_content_footer():
         line('DisabledContent'),
     ]
 
-def echo_fatal(content):
-    return echo(dq(['FATAL: ', content]))
+def echo_fatal(*elements):
+    return echo(dq('FATAL: ', *elements))
 
-def echo_info(content):
-    return echo(dq(['INFO:  ', content]))
+def echo_info(*elements):
+    return echo(dq('INFO:  ', *elements))
 
-def echo_warn(content):
-    return echo(dq(['WARN:  ', content]))
+def echo_warn(*elements):
+    return echo(dq('WARN:  ', *elements))
 
 def execution_trace():
     return line('''[[ -n "$BO_Trace" ]] && echo "TRACE: Executing '$BASH_SOURCE'"''')
 
-def note(content):
-    return comment(['NOTE: ', content])
+def note(*elements):
+    return comment('NOTE: ', *elements)
 
 def rule():
     return line('#' * 100)
 
-def someday(task):
-    return todo(['SOMEDAY: ', task])
+def someday(*elements):
+    return todo('SOMEDAY: ', *elements)
 
 def source_header():
     return [
@@ -55,23 +55,23 @@ def source_script(file_name):
         source('         "$Script"'), or_(), failed(), or_(), return_('$?'), eol(),
     ]
 
-def todo(task):
-    return comment(['TODO: ', task])
+def todo(*elements):
+    return comment('TODO: ', *elements)
 
 ####################################################################################################
 
 class _BoLogInfo(_Command):
-    def __init__(self, text):
-        _Command.__init__(self, 'boLogInfo', dq(text))
+    def __init__(self, *elements):
+        _Command.__init__(self, 'boLogInfo', dq(elements))
 
-def bo_log_info(text):
-    return _BoLogInfo(text)
+def bo_log_info(*elements):
+    return _BoLogInfo(*elements)
 
 ####################################################################################################
 
 class _Failed(_Command):
     def __init__(self):
-        _Command.__init__(self, 'boFailed', [dq('$0'), dq('$LINENO'), '$?'])
+        _Command.__init__(self, 'boFailed', dq('$0'), dq('$LINENO'), '$?')
 
 def failed():
     return _Failed()
@@ -79,23 +79,23 @@ def failed():
 ####################################################################################################
 
 class _Log(_Command):
-    def __init__(self, command, text):
-        _Command.__init__(self, command, dq(text))
+    def __init__(self, command, *elements):
+        _Command.__init__(self, command, dq(elements))
 
-def log_debug(text):
-    return _Log('logDebug', text)
+def log_debug(*elements):
+    return _Log('logDebug', *elements)
 
-def log_error(text):
-    return _Log('logError', text)
+def log_error(*elements):
+    return _Log('logError', *elements)
 
-def log_fatal(text):
-    return _Log('_logFatal', text)
+def log_fatal(*elements):
+    return _Log('_logFatal', *elements)
 
-def log_info(text):
-    return _Log('logInfo', text)
+def log_info(*elements):
+    return _Log('logInfo', *elements)
 
-def log_warn(text):
-    return _Log('logWarn', text)
+def log_warn(*elements):
+    return _Log('logWarn', *elements)
 
 ####################################################################################################
 

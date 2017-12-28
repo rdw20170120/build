@@ -1,25 +1,38 @@
+import itertools
+
 from script_bash import VISITOR_MAP
 
+
+####################################################################################################
+
+def flatten_via_chain(list_):
+    return list(itertools.chain.from_iterable(*list_))
+
+def flatten(sequence, types=(list, tuple)):
+    """ Flatten sequence made of types, returned as the same outer type as sequence.
+    REF: http://rightfootin.blogspot.com/2006/09/more-on-python-flatten.html
+    """
+    sequence_type = type(sequence)
+    sequence = list(sequence)
+    i = 0
+    while i < len(sequence):
+        while isinstance(sequence[i], types):
+            if not sequence[i]:
+                sequence.pop(i)
+                i -= 1
+                break
+            else:
+                sequence[i:i + 1] = sequence[i]
+        i += 1
+    return sequence_type(sequence)
 
 ####################################################################################################
 
 def and_():
     return ' && '
 
-def elif_(condition):
-    return ['elif ', condition]
-
-def else_():
-    return 'else'
-
 def eol():
     return '\n'
-
-def fi():
-    return 'fi'
-
-def if_(condition):
-    return ['if ', condition]
 
 def line(text=None):
     return [text, eol()]
@@ -53,9 +66,9 @@ def visit_statement(element, walker):
 ####################################################################################################
 
 class _Arguments(object):
-    def __init__(self, arguments):
+    def __init__(self, *argument):
         object.__init__(self)
-        self.arguments = arguments
+        self.arguments = argument
 
 @VISITOR_MAP.register(_Arguments)
 def visit_arguments(element, walker):
@@ -65,11 +78,9 @@ def visit_arguments(element, walker):
             walker.walk(a)
 
 class _Command(_Statement):
-    def __init__(self, command, arguments=None):
+    def __init__(self, command, *argument):
         _Statement.__init__(self, '_Command')
-        if arguments is None:             self.arguments = None
-        elif isinstance(arguments, list): self.arguments = _Arguments(arguments)
-        else:                             self.arguments = _Arguments([arguments,])
+        self.arguments = _Arguments(*argument)
         self.command = command
 
 @VISITOR_MAP.register(_Command)
@@ -77,14 +88,14 @@ def visit_command(element, walker):
     walker.walk(element.command)
     walker.walk(element.arguments)
 
-def command(command, arguments=None):
-    return _Command(command, arguments)
+def command(command, *argument):
+    return _Command(command, *argument)
 
-def echo(arguments):
-    return command('echo', arguments)
+def echo(*argument):
+    return command('echo', *argument)
 
-def exit(arguments):
-    return command('exit', arguments)
+def exit(*argument):
+    return command('exit', *argument)
 
 def return_(status):
     return command('return', status)
@@ -98,69 +109,75 @@ def source(file_name):
 ####################################################################################################
 
 class _Assign(_Command):
-    def __init__(self, variable, expression, command=None):
-        if command is None: _Command.__init__(self, '_Assign')
-        else:               _Command.__init__(self, command)
-        self.expression = expression
+    def __init__(self, command, variable, *expression):
+        self.command = command
+        self.expressions = expression
         self.variable = variable
 
 @VISITOR_MAP.register(_Assign)
 def visit_assign(element, walker):
+    if element.command is not None:
+        walker.walk(element.command)
+        walker.emit(' ')
     walker.walk(element.variable)
     walker.emit('=')
-    walker.walk(element.expression)
+    walker.walk(element.expressions)
 
-def assign(variable, expression):
-    return _Assign(variable, expression)
+def assign(variable, *expression):
+    return _Assign(None, variable, *expression)
+
+def export(variable, *expression):
+    return _Assign('export', variable, *expression)
 
 ####################################################################################################
 
 class _Comment(_Statement):
-    def __init__(self, content):
+    def __init__(self, *element):
         _Statement.__init__(self, '_Comment')
-        self.content = content
+        self.content = element
 
 @VISITOR_MAP.register(_Comment)
 def visit_comment(element, walker):
     walker.emit('#')
-    walker.walk(element.content)
+    if isinstance(element.content, tuple):
+        if len(element.content) > 0:
+            walker.emit(' ')
+            walker.walk(element.content)
     walker.emit('\n')
 
-def comment(content=None):
-    if content is None: return _Comment(None)
-    else:               return _Comment([' ', content])
+def comment(*element):
+    return _Comment(*element)
 
 ####################################################################################################
 
 class _Condition(_Command):
-    def __init__(self, arguments):
-        arguments.append(']]')
-        _Command.__init__(self, '[[', arguments)
+    def __init__(self, *argument):
+        _Command.__init__(self, *argument)
 
 def directory_exists(directory_name):
-    return _Condition(['-d', dq(directory_name), ])
+    return _Condition('[[', '-d', dq(directory_name), ']]')
 
 def file_exists(file_name):
-    return _Condition(['-f', dq(file_name), ])
+    return _Condition('[[', '-f', dq(file_name), ']]')
 
 def path_does_not_exist(path_name):
-    return _Condition(['!', '-e', dq(path_name), ])
+    return _Condition('[[', '!', '-e', dq(path_name), ']]')
 
 def path_is_not_file(path_name):
-    return _Condition(['!', '-f', dq(path_name), ])
+    return _Condition('[[', '!', '-f', dq(path_name), ']]')
 
 def string_is_not_null(expression):
-    return _Condition(['-n', dq(expression), ])
+    return _Condition('[[', '-n', dq(expression), ']]')
 
 def string_is_null(expression):
-    return _Condition(['-z', dq(expression), ])
+    return _Condition('[[', '-z', dq(expression), ']]')
 
 ####################################################################################################
 
 class _DoubleQuoted(object):
-    def __init__(self, content):
+    def __init__(self, *element):
         object.__init__(self)
-        self.content = content
+        self.content = element
 
 @VISITOR_MAP.register(_DoubleQuoted)
 def visit_double_quoted(element, walker):
@@ -168,32 +185,65 @@ def visit_double_quoted(element, walker):
     walker.walk(element.content)
     walker.emit('"')
 
-def dq(content):
-    return _DoubleQuoted(content)
+def dq(*element):
+    return _DoubleQuoted(*element)
 
 ####################################################################################################
 
-class _Export(_Assign):
-    def __init__(self, variable, expression):
-        _Assign.__init__(self, variable, expression, 'export')
+class _Else(object):
+    def __init__(self, *statement):
+        object.__init__(self)
+        self.statements = statement
 
-@VISITOR_MAP.register(_Export)
-def visit_export(element, walker):
-    walker.emit(element.command)
-    walker.emit(' ')
-    walker.walk(element.variable)
-    walker.emit('=')
-    walker.walk(element.expression)
+@VISITOR_MAP.register(_Else)
+def visit_else(element, walker):
+    walker.emit('else')
+    walker.emit(eol())
+    walker.walk(element.statements)
 
-def export(variable, expression):
-    return _Export(variable, expression)
+def else_(*statement):
+    return _Else(*statement)
+
+####################################################################################################
+
+class _ElseIf(object):
+    def __init__(self, condition, *statement):
+        object.__init__(self)
+        self.condition = condition
+        self.statements = statement
+
+@VISITOR_MAP.register(_ElseIf)
+def visit_elif(element, walker):
+    walker.emit('elif ')
+    walker.walk(element.condition)
+    walker.emit(seq())
+    walker.emit(then())
+    walker.emit(eol())
+    walker.walk(element.statements)
+
+def elif_(condition, *statement):
+    return _ElseIf(condition, *statement)
+
+####################################################################################################
+
+class _Fi(object):
+    def __init__(self):
+        object.__init__(self)
+
+@VISITOR_MAP.register(_Fi)
+def visit_fi(element, walker):
+    walker.emit('fi')
+    walker.emit(eol())
+
+def fi():
+    return _Fi()
 
 ####################################################################################################
 
 class _FileSystemPath(object):
-    def __init__(self, *elements):
+    def __init__(self, *element):
         object.__init__(self)
-        self.elements = elements
+        self.elements = element
 
 @VISITOR_MAP.register(_FileSystemPath)
 def visit_file_system_path(element, walker):
@@ -204,8 +254,28 @@ def visit_file_system_path(element, walker):
             walker.walk(e)
             past_first = True
 
-def path(*elements):
-    return _FileSystemPath(*elements)
+def path(*element):
+    return _FileSystemPath(*element)
+
+####################################################################################################
+
+class _If(object):
+    def __init__(self, condition, *statement):
+        object.__init__(self)
+        self.condition = condition
+        self.statements = statement
+
+@VISITOR_MAP.register(_If)
+def visit_if(element, walker):
+    walker.emit('if ')
+    walker.walk(element.condition)
+    walker.emit(seq())
+    walker.emit(then())
+    walker.emit(eol())
+    walker.walk(element.statements)
+
+def if_(condition, *statement):
+    return _If(condition, *statement)
 
 ####################################################################################################
 
@@ -228,9 +298,9 @@ def shebang_source():
 ####################################################################################################
 
 class _SingleQuoted(object):
-    def __init__(self, content):
+    def __init__(self, *element):
         object.__init__(self)
-        self.content = content
+        self.content = element
 
 @VISITOR_MAP.register(_SingleQuoted)
 def visit_single_quoted(element, walker):
@@ -238,8 +308,8 @@ def visit_single_quoted(element, walker):
     walker.walk(element.content)
     walker.emit("'")
 
-def sq(content):
-    return _SingleQuoted(content)
+def sq(*element):
+    return _SingleQuoted(*element)
 
 ####################################################################################################
 
@@ -272,5 +342,11 @@ def vr(variable_name):
 
 ####################################################################################################
 """ Disabled content
+        if arguments is None:             self.arguments = None
+        elif isinstance(arguments, list): self.arguments = _Arguments(arguments)
+        else:                             self.arguments = _Arguments([arguments,])
+
+    if content is None: return _Comment(None)
+    else:               return _Comment([' ', content])
 """
 
