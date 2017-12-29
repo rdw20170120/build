@@ -37,5 +37,5 @@ boDirectoryRequire $BO_Project || boFailed "$0" "$LINENO" $? || return $?
 return 0
 
 ####################################################################################################
-: <<'DisabledContent'
+: << 'DisabledContent'
 DisabledContent

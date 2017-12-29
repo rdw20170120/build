@@ -99,5 +99,5 @@ echo "INFO: Activated Python virtual environment (PVE) in '${DirPVE}'"
 echo "INFO: Found '$(python --version 2>&1)' at '$(which python)'"
 
 ####################################################################################################
-: <<'DisabledContent'
+: << 'DisabledContent'
 DisabledContent

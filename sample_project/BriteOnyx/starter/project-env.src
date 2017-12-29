@@ -7,5 +7,5 @@
 export BO_ProjectName=TODO
 
 ####################################################################################################
-: <<'DisabledContent'
+: << 'DisabledContent'
 DisabledContent

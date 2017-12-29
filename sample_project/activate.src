@@ -133,21 +133,21 @@ DisabledContent
 
 Script=$HOME/.BriteOnyx.src
 boScriptRequire "$Script" || boFailed "$0" "$LINENO" $? || return $?
-source          "$Script" || boFailed "$0" "$LINENO" $? || return $?
+source "$Script" || boFailed "$0" "$LINENO" $? || return $?
 
 ####################################################################################################
 # Configure for this project
 
 Script=$BO_Project/env.src
 boScriptRequire "$Script" || boFailed "$0" "$LINENO" $? || return $?
-source          "$Script" || boFailed "$0" "$LINENO" $? || return $?
+source "$Script" || boFailed "$0" "$LINENO" $? || return $?
 
 ####################################################################################################
 # Configure for BriteOnyx
 
 Script="$BO_Project/BriteOnyx/env.src"
 boScriptRequire "$Script" || boFailed "$0" "$LINENO" $? || return $?
-source          "$Script" || boFailed "$0" "$LINENO" $? || return $?
+source "$Script" || boFailed "$0" "$LINENO" $? || return $?
 
 ####################################################################################################
 # Verify BriteOnyx bootstrap configuration
@@ -169,7 +169,7 @@ boVariableRequire BO_ProjectName || boFailed "$0" "$LINENO" $? || return $?
 
 Script="$BO_Home/helper/activation/activate.src"
 boScriptRequire "$Script" || boFailed "$0" "$LINENO" $? || return $?
-source          "$Script" || boFailed "$0" "$LINENO" $? || return $?
+source "$Script" || boFailed "$0" "$LINENO" $? || return $?
 
 ####################################################################################################
 # Set TMPDIR 
@@ -211,5 +211,5 @@ else
 fi
 
 ####################################################################################################
-: <<'DisabledContent'
+: << 'DisabledContent'
 DisabledContent

@@ -253,5 +253,5 @@ boExecute () {
 return 0
 
 ####################################################################################################
-: <<'DisabledContent'
+: << 'DisabledContent'
 DisabledContent

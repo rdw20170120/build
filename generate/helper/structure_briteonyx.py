@@ -5,32 +5,17 @@ from structure_bash import *
 
 ####################################################################################################
 
-def debugging_comment():
-    return [
-        note('Uncomment the following two lines for debugging'),
-        comment('set -o verbose'),
-        comment('set -o xtrace'),
-    ]
-
-def disabled_content_footer():
-    return [
-        line(),
-        rule(),
-        ': <<', line(sq('DisabledContent')),
-        line('DisabledContent'),
-    ]
-
 def echo_fatal(*elements):
     return echo(dq('FATAL: ', *elements))
 
 def echo_info(*elements):
     return echo(dq('INFO:  ', *elements))
 
+def echo_trace(*elements):
+    return echo(dq('TRACE: ', *elements))
+
 def echo_warn(*elements):
     return echo(dq('WARN:  ', *elements))
-
-def execution_trace():
-    return line('''[[ -n "$BO_Trace" ]] && echo "TRACE: Executing '$BASH_SOURCE'"''')
 
 def note(*elements):
     return comment('NOTE: ', *elements)
@@ -40,20 +25,6 @@ def rule():
 
 def someday(*elements):
     return todo('SOMEDAY: ', *elements)
-
-def source_header():
-    return [
-        shebang_source(),
-        execution_trace(),
-        rule(),
-    ]
-
-def source_script(file_name):
-    return [
-        assign('Script', file_name), eol(),
-        require_script('"$Script"'), or_(), failed(), or_(), return_('$?'), eol(),
-        source('         "$Script"'), or_(), failed(), or_(), return_('$?'), eol(),
-    ]
 
 def todo(*elements):
     return comment('TODO: ', *elements)
@@ -132,6 +103,57 @@ class _BoTraceVariable(_Command):
 
 def trace_variable(variable_name):
     return _BoTraceVariable(variable_name)
+
+####################################################################################################
+
+def debugging_comment():
+    return [
+        note('Uncomment the following two lines for debugging'),
+        comment(set('-o', 'verbose')),
+        comment(set('-o', 'xtrace')),
+    ]
+
+def disabled_content_footer():
+    return [
+        line(),
+        rule(),
+        command(':', '<<', sq('DisabledContent')), eol(),
+        line('DisabledContent'),
+    ]
+
+def execution_trace():
+    return [
+        string_is_not_null(vr('BO_Trace')),
+        and_(),
+        echo_trace('Executing ', sq(vr('BASH_SOURCE'))),
+        eol(),
+    ]
+
+def remember_status():
+    return assign(vn('Status'), '$?')
+
+def report_status():
+    return echo_fatal('Script exited with ', sq(vr('Status')))
+
+def return_status():
+    return return_(vr('Status'))
+
+def source_header():
+    return [
+        shebang_source(),
+        execution_trace(),
+        rule(),
+    ]
+
+def source_script(file_name):
+    return [
+        assign(vn('Script'), file_name), eol(),
+        require_script(dq(vr('Script'))), or_(), failed(), or_(), return_last_status(), eol(),
+        source(dq(vr('Script'))), or_(), failed(), or_(), return_last_status(), eol(),
+    ]
+
+def status_is_failure():
+    return integer_is_not_equal(dq(vr('Status')), 0)
 
 ####################################################################################################
 """ Disabled content

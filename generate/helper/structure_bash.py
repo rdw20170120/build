@@ -88,6 +88,17 @@ def visit_command(element, walker):
     walker.walk(element.command)
     walker.walk(element.arguments)
 
+class _Substitution(_Command):
+    def __init__(self, command, *argument):
+        _Command.__init__(self, command, *argument)
+
+@VISITOR_MAP.register(_Substitution)
+def visit_substitution(element, walker):
+    walker.emit('$(')
+    walker.walk(element.command)
+    walker.walk(element.arguments)
+    walker.emit(')')
+
 def command(command, *argument):
     return _Command(command, *argument)
 
@@ -103,8 +114,14 @@ def return_(status):
 def return_last_status():
     return return_('$?')
 
+def set(*argument):
+    return command('set', *argument)
+
 def source(file_name):
     return command('source', file_name)
+
+def substitute(command, *argument):
+    return _Substitution(command, *argument)
 
 ####################################################################################################
 
@@ -159,6 +176,9 @@ def directory_exists(directory_name):
 
 def file_exists(file_name):
     return _Condition('[[', '-f', dq(file_name), ']]')
+
+def integer_is_not_equal(left, right):
+    return _Condition('[[', left, '-ne', right, ']]')
 
 def path_does_not_exist(path_name):
     return _Condition('[[', '!', '-e', dq(path_name), ']]')
@@ -290,10 +310,10 @@ def visit_comment(element, walker):
     walker.emit('\n')
 
 def shebang_execute():
-    return _Shebang(_Command('/bin/bash'))
+    return _Shebang(_Command(path('/bin', 'bash')))
 
 def shebang_source():
-    return _Shebang(_Command('/bin/cat'))
+    return _Shebang(_Command(path('/bin', 'cat')))
 
 ####################################################################################################
 
@@ -342,11 +362,5 @@ def vr(variable_name):
 
 ####################################################################################################
 """ Disabled content
-        if arguments is None:             self.arguments = None
-        elif isinstance(arguments, list): self.arguments = _Arguments(arguments)
-        else:                             self.arguments = _Arguments([arguments,])
-
-    if content is None: return _Comment(None)
-    else:               return _Comment([' ', content])
 """
 
