@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+# Intended to be executed in a Bash shell.
+[[ -n "${BO_Trace}" ]] && 1>&2 echo "Executing ${BASH_SOURCE}" && [[ "${BO_Trace}" != 'TRACE' ]] && set -vx
+# NO: set -e
+# NO: trap ... EXIT
+###############################################################################
+[[ -z "${BO_Project}" ]] &&
+    1>&2 echo "ERROR: Aborting, this project is NOT ACTIVATED" &&
+    exit 99
+
+main() {
+    # Create Anaconda environment private to this BriteOnyx project
+    require_arguments $# 0
+    require_variable BO_cmd_conda
+
+    require_variable BO_DirAnaconda
+    # TODO: Abort if directory already exists
+    log_info "Creating Anaconda environment in directory '${BO_DirAnaconda}'"
+    ${BO_cmd_conda} create --prefix "${BO_DirAnaconda}" --yes
+    require_directory_in BO_DirAnaconda
+}
+
+main $@
+
+###############################################################################
+# NOTE: Uncomment these lines for debugging, placed where needed
+# export PS4='$ ' ; set -vx
+# Code to debug...
+# set +vx
+
+: << 'DisabledContent'
+DisabledContent
+

@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+# Intended to be executed in a Bash shell.
+[[ -n "${BO_Trace}" ]] && 1>&2 echo "Executing ${BASH_SOURCE}" && [[ "${BO_Trace}" != 'TRACE' ]] && set -vx
+# NO: set -e
+trap warn_on_error EXIT
+###############################################################################
+[[ -z "${BO_Project}" ]] &&
+    1>&2 echo "ERROR: Aborting, this project is NOT ACTIVATED" &&
+    exit 99
+
+main() {
+    # Report Python code status
+    require_arguments $# 0
+
+    require_value tabnanny
+
+    Out=${BO_Project}/out/tabnanny.out
+     >"${Out}" 2>&1 ${tabnanny} -v "${BO_Project}/BriteOnyx/bin"
+    >>"${Out}" 2>&1 ${tabnanny} -v "${BO_Project}/bin"
+    >>"${Out}" 2>&1 ${tabnanny} -v "${BO_Project}/src/app"
+    >>"${Out}" 2>&1 ${tabnanny} -v "${BO_Project}/src/gen"
+    >>"${Out}" 2>&1 ${tabnanny} -v "${BO_Project}/src/lib"
+    cat "${Out}" \
+        | grep -v 'listing directory' \
+        | grep -v 'Clean bill of health.'
+    log_debug "No output means all Python code passes all TabNanny checks"
+
+    Out=${BO_Project}/out/py-format.out
+    &>"${Out}" py-format
+
+    return 0
+}
+
+main $@
+
+###############################################################################
+# NOTE: Uncomment these lines for debugging, placed where needed
+# export PS4='$ ' ; set -vx
+# Code to debug...
+# set +vx
+
+: << 'DisabledContent'
+DisabledContent
+

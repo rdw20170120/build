@@ -1,0 +1,64 @@
+#!/usr/bin/env bash
+# Intended to be executed in a Bash shell.
+[[ -n "${BO_Trace}" ]] && 1>&2 echo "Executing ${BASH_SOURCE}" && [[ "${BO_Trace}" != 'TRACE' ]] && set -vx
+# NO: set -e
+trap warn_on_error EXIT
+###############################################################################
+[[ -z "${BO_Project}" ]] &&
+    1>&2 echo "ERROR: Aborting, this project is NOT ACTIVATED" &&
+    exit 99
+
+findAnd() {
+    # Find and perform action $1 on files within directory $2 matching pattern $3
+    # $1 = action to perform, either 'delete' or 'print'
+    # $2 = directory in which to work
+    # $3 = filename pattern to match
+    find "$2" \
+	-not -path "${BO_Project}/.git/*" \
+	-not -path "${BO_DirAnaconda}/*" \
+	-and -name "$3" \
+	-and -type f \
+	-$1
+}
+
+main() {
+    # Clean project directory
+    require_arguments $# 0
+
+    log_debug "Found these files..."
+    findAnd print "${BO_Project}" '*.bak'
+    findAnd print "${BO_Project}" '*.log'
+    findAnd print "${BO_Project}" '*.pyc'
+    findAnd print "${BO_Project}" '__pycache__'
+
+    log_debug "Deleting files..."
+    findAnd delete "${BO_Project}" '*.bak'
+    findAnd delete "${BO_Project}" '*.pyc'
+    findAnd delete "${BO_Project}" '__pycache__'
+    findAnd delete "${BO_Project}/log" '*.log'
+ 
+
+    log_warn "Found these files REMAINING..."
+    findAnd print "${BO_Project}" '*.bak'
+    findAnd print "${BO_Project}" '*.log'
+    findAnd print "${BO_Project}" '*.pyc'
+    findAnd print "${BO_Project}" '__pycache__'
+
+    return 0
+}
+
+main $@
+
+###############################################################################
+# NOTE: Uncomment these lines for debugging, placed where needed
+# export PS4='$ ' ; set -vx
+# Code to debug...
+# set +vx
+
+: << 'DisabledContent'
+    maybe_delete_file "${BO_Project}/src/app/pytest.log"
+    maybe_delete_file "${BO_Project}/src/gen/pytest.log"
+    maybe_delete_file "${BO_Project}/src/lib/mine/pytest.log"
+    maybe_delete_file "${BO_Project}/src/lib/third_party/pytest.log"
+DisabledContent
+

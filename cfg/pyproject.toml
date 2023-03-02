@@ -1,0 +1,73 @@
+[tool.black]
+exclude = '''
+(
+    PLACEHOLDER$
+  # By parent directory
+  # By specific pathname
+  | bin/show_maybe_missed_source$
+  # By file suffix
+  # By more interesting patterns
+  | bin/.*-run$
+  | bin/all-.*$
+  | bin/anaconda-.*$
+  | bin/app-.*$
+  | bin/env-.*$
+  | bin/prj-.*$
+  | bin/pve-.*$
+  | bin/py-.*$
+  | bin/show_maybe_missed_source$
+  | bin/sig-.*$
+  | bin/sync_on_macOS$
+  | bin/tool-.*$
+  # Project-specific
+)
+'''
+force-exclude = '''
+(
+    PLACEHOLDER$
+  # By parent directory
+  | \.anaconda/.*$
+  | \.git/.*$
+  | \.pytest_cache/.*$
+  | __pycache__/.*$
+  | log/.*$
+  | out/.*$
+  # By specific pathname
+  | Dockerfile$
+  | \.DS_Store$
+  | \.bash_logout$
+  | \.bash_profile$
+  | \.bashrc$
+  | \.coverage$
+  | \.coveragerc$
+  | \.gitignore$
+  | \.grep-exclude-from$
+  | \.mailmap$
+  | \.profile$
+  | \.xprofile$
+  # By file suffix
+  | \.avsc$
+  | \.bash$
+  | \.c$
+  | \.cfg$
+  | \.env$
+  | \.log$
+  | \.md$
+  | \.java$
+  | \.json$
+  | \.nix$
+  | \.out$
+  | \.properties$
+  | \.rst$
+  | \.sh$
+  | \.sig$
+  | \.sql$
+  | \.toml$
+  | \.txt$
+  | \.vim$
+  | \.yaml$
+  | \.yml$
+  # By more interesting patterns
+)
+'''
+

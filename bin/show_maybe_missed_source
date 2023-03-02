@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+# Intended to be executed in a Bash shell.
+[[ -n "${BO_Trace}" ]] && 1>&2 echo "Executing ${BASH_SOURCE}" && [[ "${BO_Trace}" != 'TRACE' ]] && set -vx
+# NO: set -e
+trap warn_on_error EXIT
+###############################################################################
+[[ -z "${BO_Project}" ]] &&
+    1>&2 echo "ERROR: Aborting, this project is NOT ACTIVATED" &&
+    exit 99
+
+main() {
+    # List files that are ignored by source control but MAY be wrongly left out
+    require_arguments $# 0
+
+    git status --ignored |
+        grep -v \.DS_Store |
+        grep -v \.anaconda |
+        grep -v \.cache\/ |
+        grep -v \.class |
+        grep -v \.html |
+        grep -v \.pytest_cache |
+        grep -v __pycache__ |
+        grep -v cfg\/\.coverage |
+        grep -v context\.bash |
+        grep -v htmlcov\/ |
+        grep -v log\/ |
+        grep -v out\/coverage |
+        grep -v pytest\.log
+
+    return 0
+}
+
+main $@
+
+###############################################################################
+# NOTE: Uncomment these lines for debugging, placed where needed
+# export PS4='$ ' ; set -vx
+# Code to debug...
+# set +vx
+
+: << 'DisabledContent'
+DisabledContent
+

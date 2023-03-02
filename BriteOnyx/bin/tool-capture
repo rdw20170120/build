@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+# Intended to be executed in a Bash shell.
+[[ -n "${BO_Trace}" ]] && 1>&2 echo "Executing ${BASH_SOURCE}" && [[ "${BO_Trace}" != 'TRACE' ]] && set -vx
+# NO: set -e
+trap warn_on_error EXIT
+###############################################################################
+[[ -z "${BO_Project}" ]] &&
+    1>&2 echo "ERROR: Aborting, this project is NOT ACTIVATED" &&
+    exit 99
+
+main() {
+    # Capture tool status
+    require_arguments $# 0
+
+    local -r Dir=${BO_Project}/out
+    require_directory "${Dir}"
+    local -r File=${Dir}/tool.out
+
+    log_debug "Capturing tool status to '${File}'"
+    &>"${File}" tool-report
+    require_file "${File}"
+}
+
+main $@
+
+###############################################################################
+# NOTE: Uncomment these lines for debugging, placed where needed
+# export PS4='$ ' ; set -vx
+# Code to debug...
+# set +vx
+
+: << 'DisabledContent'
+DisabledContent
+

@@ -1,0 +1,46 @@
+[coverage:report]
+show_missing = false
+skip_covered = false
+skip_empty = false
+sort = Cover
+
+[coverage:run]
+branch = true
+data_file = ${BO_Project?}/.coverage
+omit =
+  */__init__.py
+  */__main__.py
+  */app.py
+  */app/MODULE/task/*.py
+  */config.py
+  */conftest.py
+  */gen/generate/**/all.py
+  */gen/generate/script/bash/activating/activate.py
+  */gen/generate/script/bash/activating/set_path.py
+  */lib/mine/aws/ec2.py
+  */lib/mine/aws/s3.py
+  */lib/mine/src_gen/**/render.py
+  */lib/mine/src_gen/renderer.py
+  */lib/mine/src_gen/script/bash/activating/element.py
+  */lib/mine/src_gen/script/bash/briteonyx/element.py
+  */lib/mine/src_gen/script/bash/element.py
+  */lib/mine/src_gen/script/document/markdown/element.py
+  */lib/mine/src_gen/script/element.py
+  */lib/mine/src_gen/script/python/element.py
+  */lib/mine/task/task.py
+  */lib/mine/task/task_manager.py
+  */lib/mine/utility/color_log_formatter.py
+  */lib/mine/utility/environment.py
+  */lib/mine/utility/filesystem.py
+  */lib/mine/utility/my_assert_filesystem.py
+  */lib/mine/utility/my_logging.py
+  */lib/mine/utility/my_terminal.py
+  */lib/mine/utility/processing.py
+  */lib/mine/utility/singleton_application.py
+
+[html]
+directory = ${BO_Project?}/out/coverage
+
+[json]
+pretty_print = true
+

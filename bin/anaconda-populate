@@ -1,0 +1,50 @@
+#!/usr/bin/env bash
+# Intended to be executed in a Bash shell.
+[[ -n "${BO_Trace}" ]] && 1>&2 echo "Executing ${BASH_SOURCE}" && [[ "${BO_Trace}" != 'TRACE' ]] && set -vx
+# NO: set -e
+# NO: trap ... EXIT
+###############################################################################
+[[ -z "${BO_Project}" ]] &&
+    1>&2 echo "ERROR: Aborting, this project is NOT ACTIVATED" &&
+    exit 99
+
+main() {
+    # Populate Anaconda environment with desired packages (not PIP-based)
+    require_arguments $# 0
+    require_directory_in BO_DirAnaconda
+    require_variable BO_cmd_conda
+
+    # Need Python itself
+    local Packages="python=3.11.*"
+
+    # Need Python support tools
+    Packages="${Packages} ansi2html"
+    Packages="${Packages} black"
+    Packages="${Packages} coverage"
+    # TODO: FIX: Why does icdiff=2.0.* seem to all be corrupted?
+    Packages="${Packages} icdiff=1.9.*"
+    Packages="${Packages} pip"
+    Packages="${Packages} pytest"
+    Packages="${Packages} pytest-cov"
+    Packages="${Packages} pytest-html"
+    Packages="${Packages} pytest-icdiff"
+    Packages="${Packages} pytest-sugar"
+
+    # Need Python packages required by project source code
+    Packages="${Packages} logzero"
+
+    log_info "Installing desired packages into Anaconda environment '${BO_DirAnaconda}'"
+    ${BO_cmd_conda} install --yes ${Packages}
+}
+
+main $@
+
+###############################################################################
+# NOTE: Uncomment these lines for debugging, placed where needed
+# export PS4='$ ' ; set -vx
+# Code to debug...
+# set +vx
+
+: << 'DisabledContent'
+DisabledContent
+

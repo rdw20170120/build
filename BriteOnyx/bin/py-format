@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+# Intended to be executed in a Bash shell.
+[[ -n "${BO_Trace}" ]] && 1>&2 echo "Executing ${BASH_SOURCE}" && [[ "${BO_Trace}" != 'TRACE' ]] && set -vx
+# NO: set -e
+trap warn_on_error EXIT
+###############################################################################
+[[ -z "${BO_Project}" ]] &&
+    1>&2 echo "ERROR: Aborting, this project is NOT ACTIVATED" &&
+    exit 99
+
+main() {
+    # Reformat Python code using Black
+    require_arguments $# 0
+
+    require_variable BO_cmd_black
+
+    # Temporarily override user setting to keep Black's cache under BO_Project
+    export XDG_CACHE_HOME=${BO_Project}/.cache
+
+    log_debug "Reformatting Python code using Black"
+    ${BO_cmd_black} --config "${BO_Project}/cfg/pyproject.toml" "${BO_Project}"
+
+    return 0
+}
+
+main $@
+
+###############################################################################
+# NOTE: Uncomment these lines for debugging, placed where needed
+# export PS4='$ ' ; set -vx
+# Code to debug...
+# set +vx
+
+: << 'DisabledContent'
+DisabledContent
+

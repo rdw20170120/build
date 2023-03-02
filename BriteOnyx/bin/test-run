@@ -1,0 +1,80 @@
+#!/usr/bin/env bash
+# Intended to be executed in a Bash shell.
+[[ -n "${BO_Trace}" ]] && 1>&2 echo "Executing ${BASH_SOURCE}" && [[ "${BO_Trace}" != 'TRACE' ]] && set -vx
+# NO: set -e
+trap warn_on_error EXIT
+###############################################################################
+[[ -z "${BO_Project}" ]] &&
+    1>&2 echo "ERROR: Aborting, this project is NOT ACTIVATED" &&
+    exit 99
+
+run_coverage() {
+    # Run Python coverage on previous pytest data
+    require_arguments $# 1
+    # $1 = Python coverage configuration file
+    require_file "$1"
+
+    require_variable BO_cmd_coverage
+
+    ${BO_cmd_coverage} html --rcfile="$1"
+    abort_on_fail $? "from ${BO_cmd_coverage} html ..."
+    ${BO_cmd_coverage} report --rcfile="$1"
+    abort_on_fail $? "from ${BO_cmd_coverage} report ..."
+}
+
+run_pytest() {
+    # Run pytest on test suite known as $1 in directory $2
+    require_arguments $# 3
+    # $1 = Python coverage configuration file
+    # $2 = test suite name
+    # $3 = test suite parent directory
+    require_file "$1"
+    require_value "$2"
+    require_directory "$3"
+    require_variable BO_cmd_pytest
+
+    cd "$3" ; abort_on_fail $? "from cd"
+    ${BO_cmd_pytest} \
+        --cov="$3" \
+        --cov-append \
+        --cov-config="$1" \
+        --cov-report= \
+        --log-file="${BO_Project}/log/pytest-$2.log"
+    abort_on_fail $? "from ${BO_cmd_pytest} ..."
+}
+
+main() {
+    # Run Python test suites
+    require_arguments $# 0
+    require_variable BO_cmd_coverage
+
+    local -r Config=${BO_Project}/cfg/.coveragerc
+
+    ${BO_cmd_coverage} erase --rcfile="${Config}"
+    abort_on_fail $? "from ${BO_cmd_coverage} erase ..."
+
+    run_pytest "${Config}" mine "${BO_Project}/src/lib/mine"
+    run_pytest "${Config}" gen  "${BO_Project}/src/gen"
+    run_pytest "${Config}" app  "${BO_Project}/src/app"
+
+    if [[ -z "${BO_RunningHumanless}" ]] ; then
+        cd "${BO_Project}/src" ; abort_on_fail $? "from cd"
+        run_coverage "${Config}"
+        # TODO: Manage this hard-coded file path
+        log_info "Consider reviewing test coverage at '${BO_Project}/out/coverage/index.html'"
+    fi
+
+    return 0
+}
+
+main $@
+
+###############################################################################
+# NOTE: Uncomment these lines for debugging, placed where needed
+# export PS4='$ ' ; set -vx
+# Code to debug...
+# set +vx
+
+: << 'DisabledContent'
+DisabledContent
+

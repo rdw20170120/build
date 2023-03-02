@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+# Intended to be executed in a Bash shell.
+[[ -n "${BO_Trace}" ]] && 1>&2 echo "Executing ${BASH_SOURCE}" && [[ "${BO_Trace}" != 'TRACE' ]] && set -vx
+# NO: set -e
+trap warn_on_error EXIT
+###############################################################################
+[[ -z "${BO_Project}" ]] &&
+    1>&2 echo "ERROR: Aborting, this project is NOT ACTIVATED" &&
+    exit 99
+
+main() {
+    # Capture Bash environment status
+    require_arguments $# 0
+
+    local -r File=${BO_Project}/out/env.out
+
+    log_debug "Capturing Bash environment status to '${File}'"
+    &>"${File}" \
+        env-report
+
+    # TODO: Capture activation output (freeze instead?)
+    # cp "${BO_Project}"/*.env "${BO_Project}/out/"
+
+    return 0
+}
+
+main $@
+
+###############################################################################
+# NOTE: Uncomment these lines for debugging, placed where needed
+# export PS4='$ ' ; set -vx
+# Code to debug...
+# set +vx
+
+: << 'DisabledContent'
+DisabledContent
+
