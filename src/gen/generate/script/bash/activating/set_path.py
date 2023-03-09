@@ -14,11 +14,8 @@ def _comments():
         comment("Set PATH for project"),
         comment(),
         note("This specific ordering of PATH elements is REQUIRED."),
-        comment("The Python virtual environment MUST come first"),
-        comment("in order to override the system Python."),
-        comment("For now,"),
-        comment("that PATH element also includes the system PATH element,"),
-        comment("which is repeated here for when that is eventually fixed."),
+        comment("The Anaconda environment MUST come first"),
+        comment("in order to override everything else."),
         comment("The system PATH element MUST precede any user PATH elements"),
         comment("in order to make collisions fail-fast"),
         comment("and"),
@@ -30,46 +27,62 @@ def _comments():
         comment("in order to make collisions fail-fast."),
         comment("This arrangement is best"),
         comment("for ensuring consistent behavior"),
-        comment("of the Python virtual environment, the system, and the project."),
+        comment("of the environment, the system, and the project."),
         comment("It puts at-risk"),
         comment("only those user-specific commands, tools, and scripts"),
         comment("relevant to the current deployed environment--"),
         comment("where the specific user is best positioned to address them"),
         comment("and failures are most likely limited"),
-        comment("to affecting only them"),
+        comment("to affecting only"),
+        comment("the current project and user"),
         comment("(as they should)."),
-        _remember_path(),
     ]
 
 
-# TODO: SOMEDAY: Rearrange PATH
-# so that the Python virtual environment directory is first,
-# followed by tools and
-# then the system directories,
-# with the project 'bin' directory last.
-# Links are replaced by the linked directory,
-# and duplicates are removed
-# while preserving the order
-# of the system directories.
-def _remember_path():
+def _remember_paths():
     return [
         line(),
-        export(
+        export_if_null("BO_PathSystem", vr("PATH")), eol(),
+        export_if_null("BO_PathTool", ""), eol(),
+        line(),
+        require_variable(vn("BO_PathProject")), eol(),
+        require_variable(vn("BO_PathSystem")), eol(),
+        someday( require_variable(vn("BO_PathTool")),), eol(),
+        require_variable(vn("BO_PathUser")), eol(),
+        line(),
+        assign(vn("PATH"), vr("BO_PathTool")), eol(),
+        assign(
             vn("PATH"),
-            (
-                # Tool path must precede system path to override Python
-                vr("BO_PathTool"),
+            x(
+            vr("PATH"),
                 ":",
                 vr("BO_PathSystem"),
+                ),
+            ), eol(),
+        assign(
+            vn("PATH"),
+            x(
+            vr("PATH"),
                 ":",
                 vr("BO_PathProject"),
+                ),
+            ), eol(),
+        assign(
+            vn("PATH"),
+            x(
+            vr("PATH"),
                 ":",
                 vr("BO_PathUser"),
-            ),
-        ),
-        eol(),
-        remembering("PATH"),
-        eol(),
+                ),
+            ), eol(),
+        export(vn("PATH")), eol(),
+        line(),
+        remembering("BO_PathTool"), eol(),
+        remembering("BO_PathSystem"), eol(),
+        remembering("BO_PathProject"), eol(),
+        remembering("BO_PathUser"), eol(),
+        remembering("PATH"), eol(),
+        line(),
     ]
 
 
@@ -77,7 +90,7 @@ def build():
     return [
         header_activation(),
         _comments(),
-        line(),
+        _remember_paths(),
         disabled_content_footer(),
     ]
 

@@ -344,10 +344,8 @@ def _remember_paths():
         export(vn("BO_PathProject"), project_path),
         eol(),
         line(),
-        export_if_null("BO_PathSystem", vr("PATH")),
-        eol(),
-        export_if_null("BO_PathUser", x(vr("HOME"), "/bin")),
-        eol(),
+        export_if_null("BO_PathSystem", vr("PATH")), eol(),
+        export_if_null("BO_PathUser", x(vr("HOME"), "/bin")), eol(),
         line(),
     ]
 

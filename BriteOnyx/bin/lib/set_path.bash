@@ -26,7 +26,7 @@
 # relevant to the current deployed environment--
 # where the specific user is best positioned to address them
 # and failures are most likely limited
-# to affecting only 
+# to affecting only
 # the current project and user
 # (as they should).
 
@@ -35,7 +35,7 @@
 
 require_variable BO_PathProject
 require_variable BO_PathSystem
-# TODO: require_variable BO_PathTool
+# TODO: SOMEDAY: require_variable BO_PathTool
 require_variable BO_PathUser
 
 PATH=${BO_PathTool}

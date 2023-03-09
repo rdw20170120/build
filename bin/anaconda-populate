@@ -31,6 +31,8 @@ main() {
     Packages="${Packages} pytest-sugar"
 
     # Need Python packages required by project source code
+    Packages="${Packages} awscli"
+    Packages="${Packages} boto3"
     Packages="${Packages} logzero"
 
     log_info "Installing desired packages into Anaconda environment '${BO_DirAnaconda}'"

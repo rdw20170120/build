@@ -38,6 +38,9 @@ def header_executed():
 def header_sourced():
     raise NotImplementedError
 
+def require_variable(variable_name):
+    return command("require_variable", variable_name)
+
 
 """DisabledContent
 """
