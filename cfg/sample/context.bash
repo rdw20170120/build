@@ -45,7 +45,7 @@ unset BO_RunningHumanless
 # of each environment variable
 # used.
 
-export BO_NameApp=MODULE
+export BO_NameApp=my_app
 remembering BO_NameApp
 
 require_directory_in HOME
@@ -61,6 +61,8 @@ export BO_cmd_coverage="${BO_cmd_python3} -m coverage"
 remembering BO_cmd_coverage
 export BO_cmd_meld=$(which meld)
 remembering BO_cmd_meld
+export BO_cmd_pdoc=$(which pdoc)
+remembering BO_cmd_pdoc
 export BO_cmd_pip="${BO_cmd_python3} -m pip"
 remembering BO_cmd_pip
 export BO_cmd_pytest="${BO_cmd_python3} -m pytest"

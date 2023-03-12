@@ -39,9 +39,9 @@ require_variable BO_PathSystem
 require_variable BO_PathUser
 
 PATH=${BO_PathTool}
-PATH=${PATH}:${BO_PathSystem}
-PATH=${PATH}:${BO_PathProject}
-PATH=${PATH}:${BO_PathUser}
+PATH+=:${BO_PathSystem}
+PATH+=:${BO_PathProject}
+PATH+=:${BO_PathUser}
 export PATH
 
 remembering BO_PathTool

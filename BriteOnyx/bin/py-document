@@ -1,0 +1,92 @@
+#!/usr/bin/env bash
+# Intended to be executed in a Bash shell.
+[[ -n "${BO_Trace}" ]] && 1>&2 echo "Executing ${BASH_SOURCE}" && [[ "${BO_Trace}" != 'TRACE' ]] && set -vx
+# NO: set -e
+# NO: trap ... EXIT
+###############################################################################
+[[ -z "${BO_Project}" ]] &&
+    1>&2 echo "ERROR: Aborting, this project is NOT ACTIVATED" &&
+    exit 99
+
+copy_python_source() {
+    # Copy all Python source files
+    # $1 = source directory containing Python source files
+    # $2 = target directory
+    require_arguments $# 2
+    local -r DirSrc=$1 ; require_directory "${DirSrc}"
+    local -r DirTgt=$2
+
+    cp -r "${DirSrc}" "${DirTgt}"
+    abort_on_fail $? "from cp -r '${DirSrc}' '${DirTgt}'"
+    require_directory "${DirTgt}"
+}
+
+run_pdoc() {
+    # Run pdoc in source directory $2, generating documentation to output directory $1
+    # $1 = output directory
+    # $2 = source directory
+    # additional parameters are Python modules to document
+    local Cmd
+    local -r DirOut=$1 ; require_directory "${DirOut}"
+    local -r DirSrc=$2 ; require_directory "${DirSrc}"
+    require_variable BO_cmd_pdoc
+    shift 2
+
+    log_debug "Documenting Python source files to directory '${DirOut}'..."
+    cd "${DirSrc}" ; abort_on_fail $? "from cd '${DirSrc}'"
+    Cmd=${BO_cmd_pdoc}
+    Cmd+=" --output-directory ${DirOut}"
+    Cmd+=" $@"
+    log_info "${Cmd}"
+    ${Cmd}
+    abort_on_fail $? "from ${Cmd}"
+}
+
+main() {
+    # Document all Python source
+    require_arguments $# 0
+
+    require_directory_in TMPDIR
+    require_variable BO_NameApp
+
+    local -r DirOut=${BO_Project}/out/pdoc
+    log_debug "Recreating output directory '${DirOut}'"
+    maybe_delete_directory_tree "${DirOut}"
+    maybe_create_directory_tree "${DirOut}"
+
+    local -r DirTgt=${TMPDIR}/pdoc/src
+    log_debug "Recreating temporary directory '${DirTgt}' for copied Python source"
+    maybe_delete_directory_tree "${DirTgt}"
+    maybe_create_directory_tree "${DirTgt}"
+
+    log_debug "Copying Python source to temporary directory '${DirTgt}'"
+    copy_python_source "${BO_Project}/src/app/${BO_NameApp}" "${DirTgt}"
+    copy_python_source "${BO_Project}/src/gen/generate" "${DirTgt}"
+    copy_python_source "${BO_Project}/src/lib/mine/" "${DirTgt}"
+    copy_python_source "${BO_Project}/src/lib/third_party/" "${DirTgt}"
+
+    run_pdoc "${DirOut}" "${DirTgt}" \
+        ${BO_NameApp} \
+        aws \
+        generate \
+        src_gen \
+        task \
+        throw_out_your_templates \
+        utility
+
+    log_info "Consider reviewing Python documentation at '${DirOut}/index.html'"
+
+    return 0
+}
+
+main $@
+
+###############################################################################
+# NOTE: Uncomment these lines for debugging, placed where needed
+# export PS4='$ ' ; set -vx
+# Code to debug...
+# set +vx
+
+: << 'DisabledContent'
+DisabledContent
+

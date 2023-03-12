@@ -79,24 +79,9 @@ else
 fi
 remembering BO_OS
 
-# Create random temporary directory
-if [[ "${BO_OS}" == macOS ]] ; then
-    _result=$(mktemp -d -t "BO")
-else
-    _result=$(mktemp -d -t "BO-${USER}-XXXXXXX")
-fi
-if [[ -d "${_result}" ]] ; then
-    TMPDIR=${_result}
-    log_info "Created temporary directory '${TMPDIR}'"
-fi
-if [[ -d "${TMPDIR}" ]] ; then
-    export TMPDIR
-    remembering TMPDIR
-else
-    log_error "Aborting, failed to establish temporary directory '${TMPDIR}'"
-    kill -INT $$  # Interrupt the executing script, but do NOT kill the shell (terminal)
-fi
-
+export TMPDIR=${BO_Project}/tmp
+remembering TMPDIR
+maybe_create_directory_tree "${TMPDIR}"
 maybe_create_directory_tree "${BO_Project}/log"
 
 maybe_copy_file "${BO_Project}/cfg/sample/alias.bash" "${BO_Project}/alias.bash"
@@ -156,5 +141,23 @@ log_info "To get started, try executing the 'cycle' alias..."
 # set +vx
 
 : << 'DisabledContent'
+# Create random temporary directory
+if [[ "${BO_OS}" == macOS ]] ; then
+    _result=$(mktemp -d -t "BO")
+else
+    _result=$(mktemp -d -t "BO-${USER}-XXXXXXX")
+fi
+if [[ -d "${_result}" ]] ; then
+    TMPDIR=${_result}
+    log_info "Created temporary directory '${TMPDIR}'"
+fi
+if [[ -d "${TMPDIR}" ]] ; then
+    export TMPDIR
+    remembering TMPDIR
+else
+    log_error "Aborting, failed to establish temporary directory '${TMPDIR}'"
+    kill -INT $$  # Interrupt the executing script, but do NOT kill the shell (terminal)
+fi
+
 DisabledContent
 
