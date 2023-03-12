@@ -23,7 +23,6 @@ unless they should merely be deleted.
 1. [ ]  /  = 
 
 1. [ ]  /  = Add encoding header to all Python source
-1. [ ]  /  = Change temporary directory to a static `tmp` directory within project directory
 1. [ ]  /  = Convert all documentation to ReStructured Text (RST) format
 1. [ ]  /  = Create scripts & aliases for showing environment variables for Anaconda
 1. [ ]  /  = Create scripts & aliases for showing environment variables for BriteOnyx
@@ -37,7 +36,6 @@ unless they should merely be deleted.
 1. [ ]  /  = Filter sensitive values out of committed output (environment variables)
 1. [ ]  /  = Integrate OpenTelemetry into Python code
 1. [ ]  /  = Integrate `asciidoc` for generating all other documentation
-1. [ ]  /  = Integrate `pdoc` for generating documentation from Python source
 1. [ ]  /  = Investigate whether I want to capture log files during `test-run`
 1. [ ]  /  = Publish releases from source repositories to binary repositories
 1. [ ]  /  = Refactor Python libraries into separate repository
@@ -77,8 +75,10 @@ unless they should merely be deleted.
 1. [ ] 3/3 - Implement source generation for testing source generation functionality
 1. [ ] 3/3 - Switch font in Neovim for better readability
 1. [ ] 3/3 - Switch font in shell for better readability
+1. [X]  /  = Change temporary directory to a static `tmp` directory within project directory
 1. [X]  /  = Create scripts & aliases for managing Anaconda environments
 1. [X]  /  = Create scripts & aliases for managing Homebrew
+1. [X]  /  = Integrate `pdoc` for generating documentation from Python source
 1. [X]  /  = Research AsciiDoc for documentation tooling
 1. [X]  /  = Research documentation tooling
 1. [X] 1/1 - Add `redeclare` alias to `source` Bash function declarations again
