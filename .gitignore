@@ -1,26 +1,28 @@
+# *.env
+# *.html
+# *.json
+# *.log
+# *.out
+# *.sig
+# /out/
+# htmlcov/
 *.avro
 *.bak
 *.class
-*.env
-*.html
-*.json
 *.list
-*.log
-*.out
 *.parquet
 *.pid
 *.py[cdo]
-*.sig
 *.swp
 .DS_Store
-.coverage
+.pytest_cache/
 /.BO
 /.anaconda
+/.coverage
 /alias.bash
 /context.bash
 /log/
-/out/
+/out/coverage/
+/out/pdoc/
 /tmp/
 __pycache__/
-coverage/
-htmlcov/

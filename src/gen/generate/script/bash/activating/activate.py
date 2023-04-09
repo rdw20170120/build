@@ -8,26 +8,24 @@ TODO: REFACTOR: Divide into two submodules that respect activating versus briteo
 # Library modules   (absolute references, NOT packaged, in project)
 from src_gen.script.bash.activating.frame import *
 from src_gen.script.bash.activating.material import *
+from src_gen.script.bash.activating.render import generate
 
 # Project modules   (relative references, NOT packaged, in project)
 
-capture_directory = "BO_DirCapture"
-project_alias_script = x(vr("BO_Project"), "/alias.bash")
-project_context_script = x(vr("BO_Project"), "/context.bash")
-script = "_Script"
-status = "_Status"
+_script = "_Script"
+_status = "_Status"
 
 
-def _abort_if_activated():
+def _abort_if_activated(config):
     return [
         if_(
-            string_is_not_null(dq(vr("BO_Project"))),
+            string_is_not_null(dq(vr(config.var_project_directory))),
             indent(),
             "1>&2 ",
             echo(
                 dq(
                     "Aborting, this project is already activated as ",
-                    sq(vr("BO_Project")),
+                    sq(vr(config.var_project_directory)),
                 )
             ),
             eol(),
@@ -58,22 +56,23 @@ def _abort_if_missing_pwd():
     ]
 
 
-def _call_project_scripts():
-    briteonyx_alias_script = x(vr("BO_Project"), "/BriteOnyx/bin/lib/alias.bash")
-    project_declare_script = x(vr("BO_Project"), "/bin/lib/declare.bash")
+def _briteonyx_declare_script(config):
+    return x(vr(config.var_project_directory), "/BriteOnyx/bin/lib/declare.bash")
+
+
+def _build(config):
     return [
-        maybe_source_or_abort(dq(project_declare_script), script, status),
-        line(),
-        source_or_abort(dq(project_context_script), script, status),
-        line(),
-        source_or_abort(dq(briteonyx_alias_script), script, status),
-        line(),
-        source_or_abort(dq(project_alias_script), script, status),
+        _header(config),
+        _create_capture_directory(config),
+        _capture_environment(config, "activation", "before"),
+        _declare_logging(),
+        _remember(config),
+        _declare_briteonyx(config),
         line(),
     ]
 
 
-def _capture_environment(where, when):
+def _capture_environment(config, where, when):
     return [
         "(",
         set_("-o", "posix"),
@@ -81,7 +80,11 @@ def _capture_environment(where, when):
         set_(),
         ")",
         pipe(),
-        command("sort", ">", dq(vr(capture_directory), "/", when, "/", where, ".env")),
+        command(
+            "sort",
+            ">",
+            dq(vr(config.var_capture_directory), "/", when, "/", where, ".env"),
+        ),
         eol(),
     ]
 
@@ -105,120 +108,30 @@ def _comments():
     ]
 
 
-def _configure_anaconda():
-    configure_anaconda_script = x(
-        vr("BO_Project"), "/BriteOnyx/bin/lib/configure_Anaconda.bash"
-    )
+def _create_capture_directory(config):
     return [
-        comment("Configure Anaconda environment"),
-        _capture_environment("Anaconda", "before"),
-        source_or_abort(configure_anaconda_script, script, status),
-        _capture_environment("Anaconda", "after"),
-        line(),
-    ]
-
-
-def _configure_python():
-    configure_python_script = x(
-        vr("BO_Project"), "/BriteOnyx/bin/lib/configure_Python.bash"
-    )
-    return [
-        comment("Configure Python"),
-        _capture_environment("Python", "before"),
-        source_or_abort(configure_python_script, script, status),
-        _capture_environment("Python", "after"),
-        line(),
-    ]
-
-
-def _create_capture_directory():
-    return [
-        export(vn(capture_directory), dq(vr("PWD"), "/.BO/capture")),
+        export(vn(config.var_capture_directory), dq(vr("PWD"), "/.BO/capture")),
         eol(),
         command(
             "mkdir",
             "-p",
-            dq(vr(capture_directory), "/after"),
-            dq(vr(capture_directory), "/before"),
-            dq(vr(capture_directory), "/current"),
+            dq(vr(config.var_capture_directory), "/after"),
+            dq(vr(config.var_capture_directory), "/before"),
+            dq(vr(config.var_capture_directory), "/current"),
         ),
         eol(),
     ]
 
 
-def _create_random_tmpdir():
-    local = "_result"
-    # TODO: Consider capturing this special variable
-    tmpdir = "TMPDIR"
-    user = "USER"
+def _declare_briteonyx(config):
     return [
-        comment("Create random temporary directory"),
-        # TODO: Consider creating method for 'mktemp'
-        if_(
-            string_equals(dq(vr("BO_OS")), "macOS"),
-            indent(),
-            assign(
-                vn(local),
-                substitute("mktemp", "-d", "-t", dq("BO")),
-            ),
-            eol(),
-        ),
-        else_(
-            indent(),
-            assign(
-                vn(local),
-                substitute("mktemp", "-d", "-t", dq("BO-", vr(user), "-XXXXXXX")),
-            ),
-            eol(),
-        ),
-        fi(),
-        if_(
-            directory_exists(dq(vr(local))),
-            indent(),
-            assign(vn(tmpdir), vr(local)),
-            eol(),
-            indent(),
-            log_info("Created temporary directory ", sq(vr(tmpdir))),
-            eol(),
-        ),
-        fi(),
-        if_(
-            directory_exists(dq(vr(tmpdir))),
-            indent(),
-            export(vn(tmpdir)),
-            eol(),
-            indent(),
-            remembering(tmpdir),
-            eol(),
-        ),
-        else_(
-            indent(),
-            log_error(
-                "Aborting, failed to establish temporary directory ",
-                sq(vr(tmpdir)),
-            ),
-            eol(),
-            indent(),
-            abort_script(),
-        ),
-        fi(),
-    ]
-
-
-def _declare_briteonyx():
-    briteonyx_declare_script = x(vr("BO_Project"), "/BriteOnyx/bin/lib/declare.bash")
-    return [
-        source_or_abort(briteonyx_declare_script, script, status),
-        line(),
-        note("We can now use BriteOnyx Bash functionality."),
-        line(),
+        source_or_abort(_briteonyx_declare_script(config), _script, _status),
     ]
 
 
 def _declare_logging():
-    log4bash_script = x(vr("PWD"), "/BriteOnyx/bin/lib/declare-log4bash.bash")
     return [
-        source_or_abort(log4bash_script, script, status),
+        source_or_abort(_log4bash_script(), _script, _status),
         line(),
         log_info("Activating ", sq(vr("PWD")), " as the current project"),
         eol(),
@@ -252,130 +165,41 @@ def _declare_remembering():
     ]
 
 
-def _detect_operating_system():
-    # TODO: Make appropriate constants
-    local = "_result"
+def _header(config):
     return [
-        comment("Detect operating system"),
-        todo("Write as function"),
-        todo("Add detection of various Linux, when we care"),
-        assign(vn(local), substitute("uname")),
-        eol(),
-        if_(
-            string_equals(dq(vr(local)), "Darwin"),
-            indent(),
-            export(vn("BO_OS"), "macOS"),
-            eol(),
-        ),
-        else_(
-            indent(),
-            export(vn("BO_OS"), "UNKNOWN"),
-            eol(),
-        ),
-        fi(),
-        remembering("BO_OS"),
-        eol(),
-        line(),
-    ]
-
-
-def _footer():
-    return [
-        log_good("BriteOnyx has successfully activated this project"),
-        eol(),
-        log_info("To get started, try executing the 'cycle' alias..."),
-        eol(),
-        line(),
-        disabled_content_footer(),
-    ]
-
-
-def _header():
-    return [
-        header_activation(),
+        header_activation(config),
         _comments(),
-        _abort_if_activated(),
+        _abort_if_activated(config),
         line(),
         _abort_if_missing_pwd(),
         line(),
     ]
 
 
-def _prepare_file_system():
-    alias_sample = x(vr("BO_Project"), "/cfg/sample/alias.bash")
-    context_sample = x(vr("BO_Project"), "/cfg/sample/context.bash")
-    log_directory = x(vr("BO_Project"), "/log")
-    return [
-        _create_random_tmpdir(),
-        line(),
-        command("maybe_create_directory_tree", dq(log_directory)),
-        eol(),
-        line(),
-        maybe_copy_file(dq(alias_sample), dq(project_alias_script)),
-        eol(),
-        maybe_copy_file(dq(context_sample), dq(project_context_script)),
-        eol(),
-        line(),
-    ]
+def _log4bash_script():
+    return x(vr("PWD"), "/BriteOnyx/bin/lib/declare-log4bash.bash")
 
 
-def _prepare_paths():
-    set_path_script = x(vr("BO_Project"), "/BriteOnyx/bin/lib/set_path.bash")
-    return [
-        _remember_paths(),
-        line(),
-        source_or_abort(set_path_script, script, status),
-        line(),
-    ]
-
-
-def _remember():
+def _remember(config):
     return [
         _declare_remembering(),
         line(),
-        _remember_project_root(),
+        _remember_project_root(config),
         line(),
     ]
 
 
-def _remember_paths():
-    project_path = x(vr("BO_Project"), "/BriteOnyx/bin", ":", vr("BO_Project"), "/bin")
+def _remember_project_root(config):
     return [
-        export(vn("BO_PathProject"), project_path),
+        export(vn(config.var_project_directory), vr("PWD")),
         eol(),
-        line(),
-        export_if_null("BO_PathSystem", vr("PATH")), eol(),
-        export_if_null("BO_PathUser", x(vr("HOME"), "/bin")), eol(),
-        line(),
-    ]
-
-
-def _remember_project_root():
-    return [
-        export(vn("BO_Project"), vr("PWD")),
-        eol(),
-        remembering("BO_Project"),
+        remembering(config.var_project_directory),
         eol(),
     ]
 
 
-def build():
-    return [
-        _header(),
-        _create_capture_directory(),
-        _capture_environment("activation", "before"),
-        _declare_logging(),
-        _remember(),
-        _declare_briteonyx(),
-        _prepare_paths(),
-        _detect_operating_system(),
-        _prepare_file_system(),
-        _configure_anaconda(),
-        _configure_python(),
-        _call_project_scripts(),
-        _capture_environment("activation", "after"),
-        _footer(),
-    ]
+def render(config):
+    return generate(_build(config))
 
 
 """DisabledContent

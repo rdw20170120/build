@@ -3,10 +3,27 @@
 # Internal packages (absolute references, distributed with Python)
 # External packages (absolute references, NOT distributed with Python)
 # Library modules   (absolute references, NOT packaged, in project)
-from src_gen.script.bash.activating.frame import *
-from src_gen.script.bash.activating.material import *
+from src_gen.script.bash.activating.frame import remembering
+from src_gen.script.bash.briteonyx.frame import *
+from src_gen.script.bash.briteonyx.material import *
 
 # Project modules   (relative references, NOT packaged, in project)
+
+
+def _build_path(config):
+    return [
+        line(),
+        assign("PATH", vr(config.var_tool_path)),
+        eol(),
+        assign("PATH", x(vr("PATH"), ":", vr(config.var_system_path))),
+        eol(),
+        assign("PATH", x(vr("PATH"), ":", vr(config.var_project_path))),
+        eol(),
+        assign("PATH", x(vr("PATH"), ":", vr(config.var_user_path))),
+        eol(),
+        export(vn("PATH")),
+        eol(),
+    ]
 
 
 def _comments():
@@ -39,58 +56,61 @@ def _comments():
     ]
 
 
-def _remember_paths():
+def _maybe_initialize_paths(config):
     return [
-        line(),
-        export_if_null("BO_PathSystem", vr("PATH")), eol(),
-        export_if_null("BO_PathTool", ""), eol(),
-        line(),
-        require_variable(vn("BO_PathProject")), eol(),
-        require_variable(vn("BO_PathSystem")), eol(),
-        someday( require_variable(vn("BO_PathTool")),), eol(),
-        require_variable(vn("BO_PathUser")), eol(),
-        line(),
-        assign(vn("PATH"), vr("BO_PathTool")), eol(),
-        assign(
-            vn("PATH"),
-            x(
-            vr("PATH"),
-                ":",
-                vr("BO_PathSystem"),
-                ),
-            ), eol(),
-        assign(
-            vn("PATH"),
-            x(
-            vr("PATH"),
-                ":",
-                vr("BO_PathProject"),
-                ),
-            ), eol(),
-        assign(
-            vn("PATH"),
-            x(
-            vr("PATH"),
-                ":",
-                vr("BO_PathUser"),
-                ),
-            ), eol(),
-        export(vn("PATH")), eol(),
-        line(),
-        remembering("BO_PathTool"), eol(),
-        remembering("BO_PathSystem"), eol(),
-        remembering("BO_PathProject"), eol(),
-        remembering("BO_PathUser"), eol(),
-        remembering("PATH"), eol(),
-        line(),
+        string_is_null(dq(vr(config.var_system_path))),
+        and_(),
+        " ",
+        export(config.var_system_path, vr("PATH")),
+        eol(),
+        string_is_null(dq(vr(config.var_tool_path))),
+        and_(),
+        " ",
+        export(config.var_tool_path, ""),
+        eol(),
     ]
 
 
-def build():
+def _remember_paths(config):
     return [
-        header_activation(),
+        remembering(config.var_project_path),
+        eol(),
+        remembering(config.var_system_path),
+        eol(),
+        remembering(config.var_tool_path),
+        eol(),
+        remembering(config.var_user_path),
+        eol(),
+        remembering("PATH"),
+        eol(),
+    ]
+
+
+def _require_variables(config):
+    return [
+        require_variable(config.var_project_path),
+        eol(),
+        require_variable(config.var_system_path),
+        eol(),
+        todo(require_variable(config.var_tool_path)),
+        require_variable(config.var_user_path),
+        eol(),
+    ]
+
+
+def build(config):
+    return [
+        header_sourced(config),
         _comments(),
-        _remember_paths(),
+        line(),
+        _maybe_initialize_paths(config),
+        line(),
+        _require_variables(config),
+        line(),
+        _build_path(config),
+        line(),
+        _remember_paths(config),
+        line(),
         disabled_content_footer(),
     ]
 

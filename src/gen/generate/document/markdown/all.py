@@ -61,6 +61,7 @@ def _generate_briteonyx_doc(dir_):
     markdown(document(), dir_, "HowTo-use-Homebrew.md")
     markdown(document(), dir_, "HowTo-use-Vim.md")
     markdown(document(), dir_, "README.md")
+    markdown(document(), dir_, "Solarized.md")
     markdown(document(), dir_, "project_initiation.md")
     markdown(document(), dir_, "testssl.md")
 
@@ -225,7 +226,7 @@ def _generate_src_lib_third_party(dir_):
     markdown(document(), dir_, "README.md")
 
 
-def generate(directory):
+def generate(config, directory):
     _generate(directory)
 
 

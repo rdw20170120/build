@@ -58,5 +58,25 @@ def test_temporary_directory(config):
     assert fs_is_.absolute_directory(v)
 
 
+def test_trace_minimal(config):
+    assert is_.equal(config.trace_minimal, "TRACE")
+
+
+def test_var_application_name(config):
+    assert is_.equal(config.var_application_name, "BO_NameApp")
+
+
+def test_var_project_directory(config):
+    assert is_.equal(config.var_project_directory, "BO_Project")
+
+
+def test_var_temporary_directory(config):
+    assert is_.equal(config.var_temporary_directory, "BO_DirTemp")
+
+
+def test_var_trace(config):
+    assert is_.equal(config.var_trace, "BO_Trace")
+
+
 """DisabledContent
 """
