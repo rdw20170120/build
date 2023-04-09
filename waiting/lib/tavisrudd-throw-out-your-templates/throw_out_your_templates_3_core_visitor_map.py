@@ -5,6 +5,7 @@ from types import InstanceType
 ################################################################################
 # 3: VisitorMap
 
+
 class VisitorMap(dict):
     """Maps Python types to visitors that know how to serialize them.
 
@@ -12,6 +13,7 @@ class VisitorMap(dict):
     fall-back to if it doesn't have a visitor registered for a
     specific type (or one of that types base classes).
     """
+
     def __init__(self, map_or_seq=(), parent_map=None):
         super(VisitorMap, self).__init__(map_or_seq)
         self.parent_map = parent_map
@@ -29,8 +31,7 @@ class VisitorMap(dict):
         `None`.
         """
         py_type = type(obj)
-        result = (self.get(py_type)
-                  or self._get_parent_type_visitor(obj, py_type))
+        result = self.get(py_type) or self._get_parent_type_visitor(obj, py_type)
         if result:
             return result
         elif self.parent_map is not None:
@@ -42,13 +43,14 @@ class VisitorMap(dict):
         return result
 
     def _get_parent_type_visitor(self, obj, py_type):
-        if py_type is InstanceType: # support old-style classes
+        if py_type is InstanceType:  # support old-style classes
             m = [t for t in self if isinstance(obj, t)]
             for i, t in enumerate(m):
-                if not any(t2 for t2 in m[i+i:]
-                           if t2 is not t and issubclass(t2, t)):
+                if not any(
+                    t2 for t2 in m[i + i :] if t2 is not t and issubclass(t2, t)
+                ):
                     return self[t]
-        else: # newstyle type/class
+        else:  # newstyle type/class
             for base in py_type.__mro__:
                 if base in self:
                     return self[base]
@@ -78,17 +80,22 @@ class VisitorMap(dict):
         if visitor:
             self[py_type] = visitor
         else:
+
             def decorator(f):
                 self[py_type] = f
                 return f
+
             return decorator
+
 
 class DEFAULT:
     ">>> visitor_map[DEFAULT] = visitor # sets default fallback visitor"
 
+
 class _VisitorMapContextManager(object):
     """The `with` statement context manager returned by
     VisitorMap.as_context()"""
+
     def __init__(self, vmap, walker, set_parent_map=True):
         self.vmap = vmap
         self.original_map = None
@@ -106,4 +113,3 @@ class _VisitorMapContextManager(object):
         self.walker.visitor_map = self.original_map
         if self.set_parent_map:
             self.vmap.parent_map = None
-

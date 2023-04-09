@@ -29,4 +29,3 @@ def visit_script(script, walker):
 
 """ Disabled content
 """
-
