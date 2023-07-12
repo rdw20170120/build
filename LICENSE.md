@@ -1,7 +1,6 @@
 MIT License
 
-Copyright (C) ????-2020
-by Rob Williams.
+Copyright (C) by Rob Williams <rob@refactory.biz>.
 
 Permission is hereby granted,
 free of charge,
